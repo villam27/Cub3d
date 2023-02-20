@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 16:38:36 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 17:09:11 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_vec2d
 typedef struct s_player
 {
 	t_vec2d	pos;
+	t_vec2d	dir;
 	float	angle;
 }	t_player;
 
@@ -44,6 +45,12 @@ typedef struct s_data
 }	t_data;
 
 t_rectangle	player_tile;
+
+void	update_player_dir(t_player *player)
+{
+	player->dir.x = sinf(player->angle);
+	player->dir.y = cosf(player->angle);
+}
 
 void	ilx_change_button_color(t_data *data)
 {
@@ -303,6 +310,8 @@ void	print_input(t_data *data)
 int	ft_render_next_frame(t_data *data)
 {
 	move_player(data);
+	update_player_dir(data->player);
+	//printf("x : %f   y : %f\n", data->player->dir.x, data->player->dir.y);
 	ilx_clear_window(data->ilx->window, 0);
 	if (!data->clic)
 		ilx_change_button_color(data);
@@ -344,7 +353,7 @@ int	main(void)
 
 	player.pos.x = 150.0f;
 	player.pos.y = 150.0f;
-	player.angle = 0.0f;
+	player.angle = M_PI;
 	map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, 800, 600, "cub3D");

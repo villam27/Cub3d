@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 17:09:11 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 18:39:31 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,10 @@ int	**create_map()
 
 void	draw_player(t_ilx *ilx, t_player *player)
 {
+	t_line	direction;
 
+	direction = ilx_set_line(player->pos.x + 5.0f, player->pos.y + 5.0f, (player->pos.x + 20.0f * player->dir.x) + 5.0f, (player->pos.y + 20.0f * player->dir.y) + 5.0f);
+	ilx_draw_line(ilx->window, &direction, 1, 0xff0000);
 	player_tile.height = 10;
 	player_tile.width = 10;
 	player_tile.x = player->pos.x;
@@ -287,6 +290,30 @@ void	move_player(t_data *data)
 		data->player->angle -= 0.03f;
 	else if (data->key_tab[1] == 1)
 		data->player->angle += 0.03f;
+	if (data->key_tab[2] && data->key_tab[4])
+	{
+		move(data, 1.25f, 0.0f);
+		move(data, 1.25f, M_PI_2);
+		return ;
+	}
+	if (data->key_tab[2] && data->key_tab[5])
+	{
+		move(data, 1.25f, 0.0f);
+		move(data, -1.25f, M_PI_2);
+		return ;
+	}
+	if (data->key_tab[3] && data->key_tab[4])
+	{
+		move(data, -1.25f, 0.0f);
+		move(data, 1.25f, M_PI_2);
+		return ;
+	}
+	if (data->key_tab[3] && data->key_tab[5])
+	{
+		move(data, -1.0f, 0.0f);
+		move(data, -1.0f, M_PI_2);
+		return ;
+	}
 	if (data->key_tab[2] == 1)
 		move(data, 2.0f, 0.0f);
 	if (data->key_tab[3] == 1)
@@ -311,7 +338,6 @@ int	ft_render_next_frame(t_data *data)
 {
 	move_player(data);
 	update_player_dir(data->player);
-	//printf("x : %f   y : %f\n", data->player->dir.x, data->player->dir.y);
 	ilx_clear_window(data->ilx->window, 0);
 	if (!data->clic)
 		ilx_change_button_color(data);

@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/02/20 17:08:27 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/02/20 22:31:50 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ MAKE		= make -C
 MKDIR		= mkdir
 ECHO		:= echo -e
 MLX_FLAGS	= -Llibmlx -lmlx -L/usr/lib -lXext -lX11 -lm -lz
-MLX_CCFLAGS	= #-O3
+MLX_CCFLAGS	= #-O2
 
 all : banner libs $(NAME)
 

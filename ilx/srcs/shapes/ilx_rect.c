@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:48 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/20 22:00:09 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 22:12:34 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,23 @@ void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 
 void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 {
-	t_line	l1;
-	t_line	l2;
-	t_line	l3;
-	t_line	l4;
+	int				i;
+	int				j;
 
-	l1 = ilx_set_line(rect->x, rect->y, rect->x + rect->width, rect->y);
-	l2 = ilx_set_line(rect->x, rect->y, rect->x, rect->y + rect->height);
-	l3 = ilx_set_line(rect->x + rect->width, rect->y,
-			rect->x + rect->width, rect->y + rect->height);
-	l4 = ilx_set_line(rect->x, rect->y + rect->height,
-			rect->x + rect->width, rect->y + rect->height);
-	ilx_draw_line(win, &l1, 1, colors);
-	ilx_draw_line(win, &l2, 1, colors);
-	ilx_draw_line(win, &l3, 1, colors);
-	ilx_draw_line(win, &l4, 1, colors);
+	i = 0;
+	while (i < rect->height)
+	{
+		j = 0;
+		while (j < rect->width)
+		{
+			if (j == 1 && i != 0 && i != rect->height - 1)
+				j = rect->width - 1;
+			//ilx_pixel_put(win, j + rect->x, i + rect->y, colors);
+			//if (i == 0 && j == 0)
+			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
+			win->renderer[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH] = colors;
+			j++;
+		}
+		i++;
+	}
 }

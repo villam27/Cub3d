@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 21:57:04 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 22:20:30 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,53 +275,53 @@ void	draw_player(t_ilx *ilx, t_player *player)
 {
 	t_line	direction;
 
-	direction = ilx_set_line(player->pos.x + 5.0f, player->pos.y + 5.0f, (player->pos.x + 20.0f * player->dir.x) + 5.0f, (player->pos.y + 20.0f * player->dir.y) + 5.0f);
+	direction = ilx_set_line(player->pos.x , player->pos.y, player->pos.x + 20.0f * player->dir.x, player->pos.y + 20.0f * player->dir.y);
 	ilx_draw_line(ilx->window, &direction, 1, 0xff0000);
 	player_tile.height = 10;
 	player_tile.width = 10;
-	player_tile.x = player->pos.x;
-	player_tile.y = player->pos.y;
+	player_tile.x = player->pos.x - 5.0f;
+	player_tile.y = player->pos.y - 5.0f;
 	ilx_draw_fill_rect(ilx->window, &player_tile, 0xff0000);
 }
 
 void	move_player(t_data *data)
 {
 	if (data->key_tab[0] == 1)
-		data->player->angle -= 0.03f;
+		data->player->angle -= 0.01f;
 	else if (data->key_tab[1] == 1)
-		data->player->angle += 0.03f;
+		data->player->angle += 0.01f;
 	if (data->key_tab[2] && data->key_tab[4])
 	{
-		move(data, 1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, 0.6f, 0.0f);
+		move(data, 0.6f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] && data->key_tab[5])
 	{
-		move(data, 1.25f, 0.0f);
-		move(data, -1.25f, M_PI_2);
+		move(data, 0.6f, 0.0f);
+		move(data, -0.6f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[4])
 	{
-		move(data, -1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, -0.6f, 0.0f);
+		move(data, 0.6f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[5])
 	{
-		move(data, -1.0f, 0.0f);
-		move(data, -1.0f, M_PI_2);
+		move(data, -0.6f, 0.0f);
+		move(data, -0.6f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] == 1)
-		move(data, 2.0f, 0.0f);
+		move(data, 1.0f, 0.0f);
 	if (data->key_tab[3] == 1)
-		move(data, -2.0f, 0.0f);
+		move(data, -1.0f, 0.0f);
 	if (data->key_tab[4] == 1)
-		move(data, 2.0f, M_PI_2);
+		move(data, 1.0f, M_PI_2);
 	if (data->key_tab[5] == 1)
-		move(data, -2.0f, M_PI_2);
+		move(data, -1.0f, M_PI_2);
 }
 
 void	print_input(t_data *data)

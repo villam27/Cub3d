@@ -6,9 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 10:14:09 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 10:14:24 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 10:37:18 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ilx.h"
 
 int	main(void)
 {

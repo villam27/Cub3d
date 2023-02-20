@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/02/17 18:10:18 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/02/20 10:33:58 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,19 @@ NAME		= cub3d
 
 VERSION		= 0.0.1
 
-SRCS		= 
+SRCS		= ilx/srcs/main.c \
+			  ilx/srcs/window/window.c \
+			  ilx/srcs/shapes/ilx_circle.c \
+			  ilx/srcs/shapes/ilx_line.c \
+			  ilx/srcs/shapes/ilx_rect.c \
+			  ilx/srcs/shapes/ilx_point.c \
+			  ilx/srcs/gui/gui.c \
+			  ilx/srcs/gui/button.c \
+			  ilx/srcs/gui/button_utils.c \
+			  ilx/srcs/textures/ilx_texture.c \
 
 HEADERS		= includes \
+			  ilx/includes \
 			  
 CCDEFS		= VERSION=\"$(VERSION)\" \
 			  NAME=\"$(NAME)\" \

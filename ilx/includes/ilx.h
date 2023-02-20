@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 11:08:58 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 21:47:41 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 
 # define FILL 0
 # define EMPTY 1
+
+# define WIN_WIDTH 800
+# define WIN_HEIGHT 600
 
 enum {
 	ON_KEYDOWN = 2,

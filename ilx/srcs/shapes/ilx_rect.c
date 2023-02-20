@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:48 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/15 16:19:40 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 22:00:09 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_rectangle	ilx_new_rect(float x, float y, float w, float h)
 
 void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 {
-	int	i;
-	int	j;
+	int				i;
+	int				j;
 
 	i = 0;
 	while (i < rect->height)
@@ -48,7 +48,10 @@ void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 		j = 0;
 		while (j < rect->width)
 		{
-			ilx_pixel_put(win, j + rect->x, i + rect->y, colors);
+			//ilx_pixel_put(win, j + rect->x, i + rect->y, colors);
+			//if (i == 0 && j == 0)
+			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
+			win->renderer[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH] = colors;
 			j++;
 		}
 		i++;

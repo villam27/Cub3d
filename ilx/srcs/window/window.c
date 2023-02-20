@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 10:00:23 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 10:16:08 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 21:59:48 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_window	*ilx_create_window(t_ilx *ilx, int x, int y, char *win_name)
 	ilx->window->addr = mlx_get_data_addr(ilx->window->img,
 			&ilx->window->bits_per_pixel, &ilx->window->line_length,
 			&ilx->window->endian);
+	ilx->window->renderer = (unsigned int *)ilx->window->addr;
 	return (ilx->window);
 }
 

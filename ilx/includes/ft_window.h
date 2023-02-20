@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 10:00:51 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 10:16:17 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 21:58:57 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_window
 	char			*win_name;
 	void			*img;
 	char			*addr;
+	unsigned int	*renderer;
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;

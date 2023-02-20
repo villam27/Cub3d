@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 18:39:31 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 21:57:04 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,8 +381,8 @@ int	main(void)
 	player.pos.y = 150.0f;
 	player.angle = M_PI;
 	map = create_map();
-	ilx = ilx_init();
-	ilx.window = ilx_create_window(&ilx, 800, 600, "cub3D");
+	ilx = ilx_init(); 
+	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	test = ilx_create_gui();
 
 	data.clic = 0;

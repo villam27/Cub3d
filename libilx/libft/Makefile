@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/07 13:00:14 by lcrimet           #+#    #+#              #
-#    Updated: 2023/02/06 12:33:59 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/02/15 11:22:02 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ CC		= gcc
 
 RM		= rm -f
 
-CFLAGS	= -Wall -Wextra -Werror #-fsanitize=address -g#-I ${INCL}
+CFLAGS	= -Wall -Wextra -Werror #-fsanitize=address -g
 
 %.o:		%.c includes/libft.h Makefile
 			${CC} ${CFLAGS} -I $(INCL) -c $< -o ${<:.c=.o}

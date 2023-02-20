@@ -1,16 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ilx.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/20 10:14:09 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 10:14:24 by lcrimet          ###   ########lyon.fr   */
+/*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
+/*   Updated: 2023/02/20 10:16:43 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(void)
+#ifndef ILX_H
+# define ILX_H
+
+# include "mlx.h"
+# include "ft_window.h"
+# include "ilx_shapes.h"
+# include "colors.h"
+
+# define FILL 0
+# define EMPTY 1
+
+enum {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
+
+typedef struct s_ilx
 {
-	return (0);
-}
+	t_window	*window;
+	void		*mlx;
+}	t_ilx;
+
+#endif

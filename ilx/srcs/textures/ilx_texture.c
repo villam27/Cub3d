@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/15 16:20:51 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/20 10:43:34 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 
 void	ilx_destroy_texture(t_ilx *ilx, t_ilx_texture *texture)
 {
+	if (!texture)
+		return ;
 	mlx_destroy_image(ilx->mlx, texture->img);
 	free(texture);
 }

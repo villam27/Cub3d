@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ilx_keycodes.h                                     :+:      :+:    :+:   */
+/*   mlx_keycodes.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 10:17:26 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/15 10:38:17 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2022/12/07 18:58:06 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ILX_KEYCODES_H
-# define ILX_KEYCODES_H
+#ifndef MLX_KEYCODES_H
+# define MLX_KEYCODES_H
 
 # ifdef __gnu_linux__
 

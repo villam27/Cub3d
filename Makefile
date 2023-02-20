@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/02/20 10:33:58 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/02/20 10:41:48 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME		= cub3d
 
 VERSION		= 0.0.1
 
-SRCS		= ilx/srcs/main.c \
-			  ilx/srcs/window/window.c \
+SRCS		= ilx/srcs/window/window.c \
 			  ilx/srcs/shapes/ilx_circle.c \
 			  ilx/srcs/shapes/ilx_line.c \
 			  ilx/srcs/shapes/ilx_rect.c \
@@ -24,9 +23,11 @@ SRCS		= ilx/srcs/main.c \
 			  ilx/srcs/gui/button.c \
 			  ilx/srcs/gui/button_utils.c \
 			  ilx/srcs/textures/ilx_texture.c \
+			  srcs/main.c \
 
 HEADERS		= includes \
-			  ilx/includes \
+
+ILX_HEADERS = ilx/includes \
 			  
 CCDEFS		= VERSION=\"$(VERSION)\" \
 			  NAME=\"$(NAME)\" \
@@ -85,7 +86,7 @@ re : fclean all
 
 $(BUILDDIR)/%.o : %.c Makefile $(LIB_PATHS)
 		@mkdir -p $(@D)
-		$(CC) $(CCWFLGS) $(CCDEPSFLAGS) $(CCDBGFLGS) $(CCDEFSFLGS) $(MLX_CCFLAGS) -I$(HEADERS) $(LIB_HEADERS) -c $< -o $@
+		$(CC) $(CCWFLGS) $(CCDEPSFLAGS) $(CCDBGFLGS) $(CCDEFSFLGS) $(MLX_CCFLAGS) -I$(HEADERS) -I$(ILX_HEADERS) $(LIB_HEADERS) -c $< -o $@
 
 banner :
 		

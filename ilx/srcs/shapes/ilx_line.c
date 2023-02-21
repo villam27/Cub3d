@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:46 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/21 13:21:11 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 14:43:23 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,14 @@ void	ilx_draw_line(t_window *win, t_line *line, int size, uint32_t colors)
 		x += ln.p1.x;
 		y += ln.p1.y;
 		i++;
+	}
+}
+
+void	ilx_draw_line_vertical(t_window *win, int start, int end, int x, uint32_t colors)
+{
+	while (start < end)
+	{
+		win->renderer[(x + start * win->win_width)] = colors;
+		start++;
 	}
 }

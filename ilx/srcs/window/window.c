@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 10:00:23 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/20 21:59:48 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 14:46:00 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ t_window	*ilx_create_window(t_ilx *ilx, int x, int y, char *win_name)
 
 void	ilx_clear_window(t_window *window, uint32_t color)
 {
-	t_rectangle	win;
-
-	win.x = 0;
-	win.y = 0;
-	win.width = window->win_width;
-	win.height = window->win_height;
-	ilx_draw_fill_rect(window, &win, color);
+	int	i;
+	int	max;
+	
+	i = 0;
+	max = window->win_height * window->win_width;
+	while (i < max)
+	{
+		window->renderer[i] = color;
+		i++;
+	}
 }
 
 

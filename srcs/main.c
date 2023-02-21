@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/21 15:17:41 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 17:05:51 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,12 @@ int	**create_map()
 	map[7][11] = 1;
 	map[8][11] = 1;
 	map[9][11] = 1;
+	map[2][1] = 1;
+	map[2][2] = 1;
+	map[2][3] = 1;
+	map[2][4] = 1;
+	map[2][5] = 1;
+	map[10][4] = 1;
 
 	return (map);
 }
@@ -431,7 +437,7 @@ void	update_ray(t_data *data)
 		else
 		{
 			data->ray.step.x = 1.0f;
-			data->ray.dist.x = (data->ray.pos.x + 1 - data->player->pos.x) * data->ray.delta.x;
+			data->ray.dist.x = (data->ray.pos.x + 1.0f - data->player->pos.x) * data->ray.delta.x;
 		}
 		if (data->ray.dir.y < 0)
 		{
@@ -441,7 +447,7 @@ void	update_ray(t_data *data)
 		else
 		{
 			data->ray.step.y = 1.0f;
-			data->ray.dist.y = (data->ray.pos.y + 1 - data->player->pos.y) * data->ray.delta.y;
+			data->ray.dist.y = (data->ray.pos.y + 1.0f - data->player->pos.y) * data->ray.delta.y;
 		}
 		while (!hit)
 		{
@@ -464,14 +470,13 @@ void	update_ray(t_data *data)
 			wall_dist = (data->ray.dist.x - data->ray.delta.x);
 		else
 			wall_dist = (data->ray.dist.y - data->ray.delta.y);
-		(void)wall_dist;
 		//ray_c = ilx_create_line(data->player->pos.x, data->player->pos.y, data->ray.pos.x, data->ray.pos.y);
 		//ray_c.p1.x = data->player->pos.x;
 		//ray_c.p1.y = data->player->pos.y;
 		//ray_c.p2.x = data->ray.pos.x;
 		//ray_c.p2.y = data->ray.pos.y;
 		//ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
-		wall_size = (int)((WIN_HEIGHT / wall_dist) * 25.0f);
+		wall_size = (int)((WIN_HEIGHT / wall_dist) * 30.0f);
 		start = (-wall_size >> 1) + (WIN_HEIGHT >> 1);
 		if (start < 0)
 			start = 0;
@@ -479,16 +484,31 @@ void	update_ray(t_data *data)
 		if (end >= WIN_HEIGHT)
 			end = WIN_HEIGHT - 1;
 		if (side)
-		{
 			ilx_draw_line_vertical(data->ilx->window, start, end, i, 0xff0000);
-			ilx_draw_line_vertical(data->ilx->window, start, end, i + 1, 0xff0000);
-		}
 		else
-		{
 			ilx_draw_line_vertical(data->ilx->window, start, end, i, 0xff);
-			ilx_draw_line_vertical(data->ilx->window, start, end, i + 1, 0xff);
-		}
-		i += 2;
+		i++;
+	}
+}
+
+void	draw_background(t_window *window, uint32_t color_ceiling, uint32_t color_floor)
+{
+	int	i;
+	int	max;
+	int	max2;
+	
+	i = 0;
+	max2 = window->win_height * window->win_width;
+	max = max2 >> 1;
+	while (i < max)
+	{
+		window->renderer[i] = color_ceiling;
+		i++;
+	}
+	while (i < max2)
+	{
+		window->renderer[i] = color_floor;
+		i++;
 	}
 }
 
@@ -498,13 +518,14 @@ int	ft_render_next_frame(t_data *data)
     static long	frame_time;
     int			fps;
     float		time;
+	char		*fps_str;
 
     prev_time = get_start_time();
 
 	move_player(data);
 	update_player_plane(data->player);
 	update_player_dir(data->player);
-	ilx_clear_window(data->ilx->window, 0);
+	draw_background(data->ilx->window, 0x808080, 0x696969);
 	if (!data->clic)
 		ilx_change_button_color(data);
 	//draw_map(data->map, data->ilx);
@@ -518,7 +539,10 @@ int	ft_render_next_frame(t_data *data)
 	frame_time = get_frame_time(prev_time);
     time = (float)frame_time / 1000000.0;
     fps = 1 / time;
-	printf("%d\n", fps);
+	fps_str = ft_itoa(fps);
+	mlx_string_put(data->ilx->mlx, data->ilx->window->window, 5, 15, 0, fps_str);
+	free(fps_str);
+	//printf("%d\n", fps);
 	return (0);
 }
 

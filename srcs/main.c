@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/21 17:05:51 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 22:24:47 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,31 +333,31 @@ void	move(t_data *data, float value, float angle_offset)
 void	move_player(t_data *data)
 {
 	if (data->key_tab[0] == 1)
-		data->player->angle += 0.03f;
-	else if (data->key_tab[1] == 1)
 		data->player->angle -= 0.03f;
+	else if (data->key_tab[1] == 1)
+		data->player->angle += 0.03f;
 	if (data->key_tab[2] && data->key_tab[4])
 	{
 		move(data, 1.25f, 0.0f);
-		move(data, -1.25f, M_PI_2);
+		move(data, 1.25f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] && data->key_tab[5])
 	{
 		move(data, 1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, -1.25f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[4])
 	{
 		move(data, -1.25f, 0.0f);
-		move(data, -1.25f, M_PI_2);
+		move(data, 1.25f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[5])
 	{
 		move(data, -1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, -1.25f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] == 1)
@@ -365,9 +365,9 @@ void	move_player(t_data *data)
 	if (data->key_tab[3] == 1)
 		move(data, -3.0f, 0.0f);
 	if (data->key_tab[4] == 1)
-		move(data, -3.0f, M_PI_2);
-	if (data->key_tab[5] == 1)
 		move(data, 3.0f, M_PI_2);
+	if (data->key_tab[5] == 1)
+		move(data, -3.0f, M_PI_2);
 }
 
 void	print_input(t_data *data)
@@ -410,7 +410,7 @@ void	update_ray(t_data *data)
 	int		start;
 	int		end;
 	int		wall_size;
-	//t_line	ray_c;
+	t_line	ray_c;
 
 	i = 0;
 	while (i < data->ilx->window->win_width)
@@ -455,22 +455,27 @@ void	update_ray(t_data *data)
 			{
 				data->ray.dist.x += data->ray.delta.x;
 				data->ray.pos.x += data->ray.step.x;
-				side = 0;
+				if (data->ray.dir.x > 0)
+					side = 0;
+				else
+					side = 1;
 			}
 			else
 			{
 				data->ray.dist.y += data->ray.delta.y;
 				data->ray.pos.y += data->ray.step.y;
-				side = 1;
+				if (data->ray.dir.y > 0)
+					side = 2;
+				else
+					side = 3;
 			}
 			if (data->map[(int)data->ray.pos.y / 30][(int)data->ray.pos.x / 30])
 				hit = 1;
 		}
-		if (!side)
+		if (side == 0 || side == 1)
 			wall_dist = (data->ray.dist.x - data->ray.delta.x);
 		else
 			wall_dist = (data->ray.dist.y - data->ray.delta.y);
-		//ray_c = ilx_create_line(data->player->pos.x, data->player->pos.y, data->ray.pos.x, data->ray.pos.y);
 		//ray_c.p1.x = data->player->pos.x;
 		//ray_c.p1.y = data->player->pos.y;
 		//ray_c.p2.x = data->ray.pos.x;
@@ -483,10 +488,26 @@ void	update_ray(t_data *data)
 		end = (wall_size >> 1) + (WIN_HEIGHT >> 1);
 		if (end >= WIN_HEIGHT)
 			end = WIN_HEIGHT - 1;
-		if (side)
-			ilx_draw_line_vertical(data->ilx->window, start, end, i, 0xff0000);
+		ray_c.p1.x = data->ilx->window->win_width - i - 1;
+		ray_c.p2.x = data->ilx->window->win_width - i - 1;
+		ray_c.p1.y = end;
+		ray_c.p2.y = start;
+		//if (side == 1)
+		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff0000);
+		//else if (side == 2)
+		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff00);
+		//else if (side == 3)
+		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xffff00);
+		//else
+		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff);
+		if (side == 1)
+			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
+		else if (side == 2)
+			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff00);
+		else if (side == 3)
+			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xffff00);
 		else
-			ilx_draw_line_vertical(data->ilx->window, start, end, i, 0xff);
+			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff);
 		i++;
 	}
 }
@@ -525,13 +546,13 @@ int	ft_render_next_frame(t_data *data)
 	move_player(data);
 	update_player_plane(data->player);
 	update_player_dir(data->player);
-	draw_background(data->ilx->window, 0x808080, 0x696969);
+	draw_background(data->ilx->window, 0x87CEFA, 0x353535);
 	if (!data->clic)
 		ilx_change_button_color(data);
 	//draw_map(data->map, data->ilx);
 	update_ray(data);
 	//draw_player(data->ilx, data->player);
-	//ilx_draw_texture(data->ilx->window, 5, 5, data->test);
+	ilx_draw_texture(data->ilx->window, 5, 5, data->test);
 	ilx_draw_gui(data->ilx, data->current_gui);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
@@ -576,7 +597,7 @@ int	main(void)
 
 	player.pos.x = 150.0f;
 	player.pos.y = 150.0f;
-	player.angle = M_PI;
+	player.angle = M_PI_2;
 	map = create_map();
 	ilx = ilx_init(); 
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");

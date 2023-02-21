@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:48 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/20 22:12:34 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 11:43:17 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_rectangle	ilx_new_rect(float x, float y, float w, float h)
 	return (rect);
 }
 
-void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t colors)
+void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t color)
 {
 	int				i;
 	int				j;
@@ -48,17 +48,17 @@ void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 		j = 0;
 		while (j < rect->width)
 		{
-			//ilx_pixel_put(win, j + rect->x, i + rect->y, colors);
+			//ilx_pixel_put(win, j + rect->x, i + rect->y, color);
 			//if (i == 0 && j == 0)
 			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
-			win->renderer[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH] = colors;
+			win->renderer[(j + (int)rect->x + (i + (int)rect->y) * win->win_width)] = color;
 			j++;
 		}
 		i++;
 	}
 }
 
-void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t colors)
+void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t color)
 {
 	int				i;
 	int				j;
@@ -71,10 +71,10 @@ void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t colors)
 		{
 			if (j == 1 && i != 0 && i != rect->height - 1)
 				j = rect->width - 1;
-			//ilx_pixel_put(win, j + rect->x, i + rect->y, colors);
+			//ilx_pixel_put(win, j + rect->x, i + rect->y, color);
 			//if (i == 0 && j == 0)
 			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
-			win->renderer[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH] = colors;
+			win->renderer[(j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH)] = color;
 			j++;
 		}
 		i++;

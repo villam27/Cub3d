@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:09:16 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/15 16:30:50 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 10:27:26 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ typedef struct s_circle
 
 t_point		*ilx_create_point(float x, float y);
 t_point		ilx_new_point(float x, float y);
+
+/* Deprecated. Use this function only if you really have to.
+   Use the renderer in the window structure like
+   win.renderer[x + y * win_width] for better performance*/
 void		ilx_pixel_put(t_window *win, int x, int y, uint32_t color);
 
 t_rectangle	*ilx_create_rect(float x, float y, float w, float h);

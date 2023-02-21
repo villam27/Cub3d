@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:46 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/14 09:49:31 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/21 13:21:11 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	ilx_draw_line(t_window *win, t_line *line, int size, uint32_t colors)
 	i = 0;
 	while (i <= step)
 	{
-		ilx_pixel_put(win, x, y, colors);
+		//if (((int)x + (int)y * win->win_width) >= 0 && ((int)x + (int)y * win->win_width) < win->win_height * win->win_width)
+			win->renderer[((int)x + (int)y * win->win_width)] = colors;
+		//ilx_pixel_put(win, x, y, colors);
 		x += ln.p1.x;
 		y += ln.p1.y;
 		i++;

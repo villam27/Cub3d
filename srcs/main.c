@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/22 15:56:26 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 16:26:53 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,7 +504,7 @@ void	update_ray(t_data *data)
 		//ray_c.p2.x = data->ray.pos.x;
 		//ray_c.p2.y = data->ray.pos.y;
 		//ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
-		wall_size = (int)((WIN_HEIGHT / wall_dist) * (float)SCALE);
+		wall_size = (int)((WIN_HEIGHT / wall_dist) * 0.9f);
 		//printf("x : %d wall_size : %d wall_dist : %f\n", i, wall_size, wall_dist);
 		start = (-wall_size >> 1) + (WIN_HEIGHT >> 1);
 		if (start < 0)

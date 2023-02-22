@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/21 22:24:47 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 15:56:26 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ typedef struct s_data
 	t_player		*player;
 	uint8_t			*key_tab;
 	t_ilx_texture	*test;
+	t_ilx_texture	*north_texture;
+	t_ilx_texture	*south_texture;
+	t_ilx_texture	*east_texture;
+	t_ilx_texture	*west_texture;
+	uint32_t		*texure_buffer;
 	t_ray			ray;
 }	t_data;
 
@@ -235,15 +240,15 @@ void	draw_map(int **map, t_ilx *ilx)
 	t_rectangle	tile;
 
 	i = 0;
-	tile.width = 30;
-	tile.height = 30;
+	tile.width = SCALE;
+	tile.height = SCALE;
 	while (i < MAP_HEIGHT)
 	{
 		j = 0;
-		tile.y = 30 * i;
+		tile.y = SCALE * i;
 		while (j < MAP_WIDTH)
 		{
-			tile.x = 30 * j;
+			tile.x = SCALE * j;
 			if (map[i][j])
 				ilx_draw_fill_rect(ilx->window, &tile, 0xff);
 			else
@@ -315,18 +320,18 @@ void	move(t_data *data, float value, float angle_offset)
 	x_step = data->player->pos.x + sinf(data->player->angle + angle_offset) * value;
 	y_step = data->player->pos.y + cosf(data->player->angle + angle_offset) * value;
 	if (x_step < data->player->pos.x)
-		x_offset = -5.0f;
+		x_offset = -0.17f * SCALE;
 	else
-		x_offset = 5.0f;
+		x_offset = 0.17f * SCALE;
 	if (y_step < data->player->pos.y)
-		y_offset = -5.0f;
+		y_offset = -0.17f * SCALE;
 	else
-		y_offset = 5.0f;
-	if (!data->map[((int)y_step + (int)y_offset) / 30][((int)data->player->pos.x + (int)x_offset) / 30]
-		&& !data->map[((int)y_step + (int)y_offset) / 30][((int)data->player->pos.x - (int)x_offset) / 30])
+		y_offset = 0.17f * SCALE;
+	if (!data->map[((int)(y_step + y_offset) / SCALE)][((int)(data->player->pos.x + x_offset) / SCALE)]
+		&& !data->map[((int)(y_step + y_offset) / SCALE)][((int)(data->player->pos.x - x_offset) / SCALE)])
 		data->player->pos.y = y_step;
-	if (!data->map[((int)data->player->pos.y + (int)y_offset) / 30][((int)x_step + (int)x_offset) / 30]
-		&& !data->map[((int)data->player->pos.y - (int)y_offset) / 30][((int)x_step + (int)x_offset) / 30])
+	if (!data->map[((int)(data->player->pos.y + y_offset) / SCALE)][((int)(x_step + x_offset) / SCALE)]
+		&& !data->map[((int)(data->player->pos.y - y_offset) / SCALE)][((int)(x_step + x_offset) / SCALE)])
 		data->player->pos.x = x_step;
 }
 
@@ -338,36 +343,36 @@ void	move_player(t_data *data)
 		data->player->angle += 0.03f;
 	if (data->key_tab[2] && data->key_tab[4])
 	{
-		move(data, 1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, 0.042f * SCALE, 0.0f);
+		move(data, 0.042f * SCALE, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] && data->key_tab[5])
 	{
-		move(data, 1.25f, 0.0f);
-		move(data, -1.25f, M_PI_2);
+		move(data, 0.042f * SCALE, 0.0f);
+		move(data, -0.042f * SCALE, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[4])
 	{
-		move(data, -1.25f, 0.0f);
-		move(data, 1.25f, M_PI_2);
+		move(data, -0.042f * SCALE, 0.0f);
+		move(data, 0.042f * SCALE, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[5])
 	{
-		move(data, -1.25f, 0.0f);
-		move(data, -1.25f, M_PI_2);
+		move(data, -0.042f * SCALE, 0.0f);
+		move(data, -0.042f * SCALE, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] == 1)
-		move(data, 3.0f, 0.0f);
+		move(data, 0.1f * SCALE, 0.0f);
 	if (data->key_tab[3] == 1)
-		move(data, -3.0f, 0.0f);
+		move(data, -0.1f * SCALE, 0.0f);
 	if (data->key_tab[4] == 1)
-		move(data, 3.0f, M_PI_2);
+		move(data, 0.1f * SCALE, M_PI_2);
 	if (data->key_tab[5] == 1)
-		move(data, -3.0f, M_PI_2);
+		move(data, -0.1f * SCALE, M_PI_2);
 }
 
 void	print_input(t_data *data)
@@ -402,15 +407,24 @@ long    get_start_time(void)
 
 void	update_ray(t_data *data)
 {
-	int		i;
-	int		hit;
-	int		side;
-	float	x_view;
-	float	wall_dist;
-	int		start;
-	int		end;
-	int		wall_size;
-	t_line	ray_c;
+	int				i;
+	int				y;
+	int				hit;
+	int				side;
+	float			x_view;
+	float			wall_dist;
+	float			wall_x;
+	int				start;
+	int				end;
+	int				wall_size;
+	t_ilx_texture	*current_texture;
+	uint32_t		*texture_addr;
+	int				texture_x;
+	int				texture_y;
+	float			texture_step;
+	float			texture_pos;
+	int				texture_height;
+	t_line			ray_c;
 
 	i = 0;
 	while (i < data->ilx->window->win_width)
@@ -419,14 +433,16 @@ void	update_ray(t_data *data)
 		x_view = (i << 1) / (float)data->ilx->window->win_width - 1;
 		data->ray.dir.x = data->player->dir.x + data->player->plane.x * x_view;
 		data->ray.dir.y = data->player->dir.y + data->player->plane.y * x_view;
-		data->ray.pos.x = data->player->pos.x;
-		data->ray.pos.y = data->player->pos.y;
+		data->ray.pos.x = (int)data->player->pos.x;
+		data->ray.pos.y = (int)data->player->pos.y;
 		if (data->ray.dir.x)
 			data->ray.delta.x = fabsf(1.0f / data->ray.dir.x);
+			//data->ray.delta.x = sqrt(1 + (data->ray.dir.y * data->ray.dir.y) / (data->ray.dir.x * data->ray.dir.x));
 		else
 			data->ray.delta.x = FLT_MAX;
 		if (data->ray.dir.y)
 			data->ray.delta.y = fabsf(1.0f / data->ray.dir.y);
+			//data->ray.delta.y = sqrt(1 + (data->ray.dir.x * data->ray.dir.x) / (data->ray.dir.y * data->ray.dir.y));
 		else
 			data->ray.delta.y = FLT_MAX;
 		if (data->ray.dir.x < 0)
@@ -469,19 +485,27 @@ void	update_ray(t_data *data)
 				else
 					side = 3;
 			}
-			if (data->map[(int)data->ray.pos.y / 30][(int)data->ray.pos.x / 30])
+			if (data->map[(int)data->ray.pos.y / SCALE][(int)data->ray.pos.x / SCALE])
 				hit = 1;
 		}
 		if (side == 0 || side == 1)
+		{
 			wall_dist = (data->ray.dist.x - data->ray.delta.x);
+			wall_x = data->player->pos.y + wall_dist * data->ray.dir.y;
+		}
 		else
+		{
 			wall_dist = (data->ray.dist.y - data->ray.delta.y);
+			wall_x = data->player->pos.x + wall_dist * data->ray.dir.x;
+		}
+		wall_x -= (float)floor((float)wall_x);
 		//ray_c.p1.x = data->player->pos.x;
 		//ray_c.p1.y = data->player->pos.y;
 		//ray_c.p2.x = data->ray.pos.x;
 		//ray_c.p2.y = data->ray.pos.y;
 		//ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
-		wall_size = (int)((WIN_HEIGHT / wall_dist) * 30.0f);
+		wall_size = (int)((WIN_HEIGHT / wall_dist) * (float)SCALE);
+		//printf("x : %d wall_size : %d wall_dist : %f\n", i, wall_size, wall_dist);
 		start = (-wall_size >> 1) + (WIN_HEIGHT >> 1);
 		if (start < 0)
 			start = 0;
@@ -500,14 +524,55 @@ void	update_ray(t_data *data)
 		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xffff00);
 		//else
 		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff);
+		//if (side == 1)
+		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
+		//else if (side == 2)
+		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff00);
+		//else if (side == 3)
+		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xffff00);
+		//else
+		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff);
 		if (side == 1)
-			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
+		{
+			texture_x = (int)(wall_x * (float)data->west_texture->w);
+			texture_step = 1.0f * data->west_texture->w / wall_size;
+			texture_height = data->west_texture->h;
+			current_texture = data->west_texture;
+		}
 		else if (side == 2)
-			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff00);
+		{
+			texture_x = (int)(wall_x * (float)data->south_texture->w);
+			texture_step = 1.0f * data->south_texture->w / wall_size;
+			texture_height = data->south_texture->h;
+			current_texture = data->south_texture;
+		}
 		else if (side == 3)
-			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xffff00);
+		{
+			texture_x = (int)(wall_x * (float)data->north_texture->w);
+			texture_x = data->north_texture->w - texture_x - 1;
+			texture_step = 1.0f * data->north_texture->w / wall_size;
+			texture_height = data->north_texture->h;
+			current_texture = data->north_texture;
+		}
 		else
-			ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff);
+		{
+			texture_x = (int)(wall_x * (float)data->east_texture->w);
+			texture_x = data->east_texture->w - texture_x - 1;
+			texture_step = 1.0f * data->east_texture->w / wall_size;
+			texture_height = data->east_texture->h;
+			current_texture = data->east_texture;
+		}
+		texture_pos = (start - data->ilx->window->win_height / 2 + wall_size / 2) * texture_step;
+		y = start;
+		texture_addr = (uint32_t *)current_texture->addr;
+		while (y < end)
+		{
+			texture_y = (int)texture_pos & (texture_height - 1);
+			texture_pos += texture_step;
+			data->texure_buffer[y - start] = texture_addr[texture_height * texture_y + (current_texture->h - 1 - texture_x)];
+			y++;
+		}
+		ilx_draw_texture_line(data->ilx->window, &ray_c, 1, data->texure_buffer);
 		i++;
 	}
 }
@@ -595,8 +660,8 @@ int	main(void)
 	int				**map; 
 	t_player		player;
 
-	player.pos.x = 150.0f;
-	player.pos.y = 150.0f;
+	player.pos.x = 5.0f * SCALE;
+	player.pos.y = 5.0f * SCALE;
 	player.angle = M_PI_2;
 	map = create_map();
 	ilx = ilx_init(); 
@@ -610,7 +675,12 @@ int	main(void)
 	data.player = &player;
 	data.gui = test;
 	data.ilx = &ilx;
-	data.test = ilx_create_texture(data.ilx, "ilx/assets/rocket.xpm");
+	data.test = ilx_create_texture(data.ilx, "assets/rocket.xpm");
+	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
+	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
+	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
+	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
+	data.texure_buffer = malloc(sizeof(uint32_t) * data.ilx->window->win_height);
 	data.key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data.key_tab, sizeof(uint8_t) * 6);
 

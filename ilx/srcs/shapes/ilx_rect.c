@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:48 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/21 22:17:51 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 13:17:05 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_rectangle	ilx_new_rect(float x, float y, float w, float h)
 
 void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t color)
 {
-	int				i;
-	int				j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < rect->height)
@@ -60,8 +60,8 @@ void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t color)
 
 void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t color)
 {
-	int				i;
-	int				j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < rect->height)

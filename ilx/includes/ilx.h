@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/21 22:13:37 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 11:48:43 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
+
+# define SCALE 1
 
 enum {
 	ON_KEYDOWN = 2,

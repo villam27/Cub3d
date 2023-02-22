@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:09:16 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/21 14:43:29 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 14:54:24 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ t_line		*ilx_create_line(float x1, float y1, float x2, float y2);
 t_line		ilx_set_line(float x1, float y1, float x2, float y2);
 void		ilx_draw_line(t_window *win, t_line *line,
 				int size, uint32_t colors);
+void		ilx_draw_texture_line(t_window *win, t_line *line,
+				int size, uint32_t *colors);
 void		ilx_draw_line_vertical(t_window *win, int start,
 				int end, int x, uint32_t colors);
 

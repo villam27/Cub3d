@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/22 16:26:53 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/22 16:57:44 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -517,14 +517,6 @@ void	update_ray(t_data *data)
 		ray_c.p1.y = end;
 		ray_c.p2.y = start;
 		//if (side == 1)
-		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff0000);
-		//else if (side == 2)
-		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff00);
-		//else if (side == 3)
-		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xffff00);
-		//else
-		//	ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1, 0xff);
-		//if (side == 1)
 		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
 		//else if (side == 2)
 		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff00);
@@ -657,14 +649,14 @@ int	main(void)
 	t_data			data;
 	t_gui			*test;
 	t_button		*quit_b;
-	int				**map; 
 	t_player		player;
+	int				**map; 
 
 	player.pos.x = 5.0f * SCALE;
 	player.pos.y = 5.0f * SCALE;
 	player.angle = M_PI_2;
 	map = create_map();
-	ilx = ilx_init(); 
+	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	test = ilx_create_gui();
 

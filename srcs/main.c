@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/22 16:57:44 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/23 13:37:44 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,18 +320,18 @@ void	move(t_data *data, float value, float angle_offset)
 	x_step = data->player->pos.x + sinf(data->player->angle + angle_offset) * value;
 	y_step = data->player->pos.y + cosf(data->player->angle + angle_offset) * value;
 	if (x_step < data->player->pos.x)
-		x_offset = -0.17f * SCALE;
+		x_offset = -0.17f;
 	else
-		x_offset = 0.17f * SCALE;
+		x_offset = 0.17f;
 	if (y_step < data->player->pos.y)
-		y_offset = -0.17f * SCALE;
+		y_offset = -0.17f;
 	else
-		y_offset = 0.17f * SCALE;
-	if (!data->map[((int)(y_step + y_offset) / SCALE)][((int)(data->player->pos.x + x_offset) / SCALE)]
-		&& !data->map[((int)(y_step + y_offset) / SCALE)][((int)(data->player->pos.x - x_offset) / SCALE)])
+		y_offset = 0.17f;
+	if (!data->map[((int)(y_step + y_offset))][((int)(data->player->pos.x + x_offset))]
+		&& !data->map[((int)(y_step + y_offset))][((int)(data->player->pos.x - x_offset))])
 		data->player->pos.y = y_step;
-	if (!data->map[((int)(data->player->pos.y + y_offset) / SCALE)][((int)(x_step + x_offset) / SCALE)]
-		&& !data->map[((int)(data->player->pos.y - y_offset) / SCALE)][((int)(x_step + x_offset) / SCALE)])
+	if (!data->map[((int)(data->player->pos.y + y_offset))][((int)(x_step + x_offset))]
+		&& !data->map[((int)(data->player->pos.y - y_offset))][((int)(x_step + x_offset))])
 		data->player->pos.x = x_step;
 }
 
@@ -343,36 +343,36 @@ void	move_player(t_data *data)
 		data->player->angle += 0.03f;
 	if (data->key_tab[2] && data->key_tab[4])
 	{
-		move(data, 0.042f * SCALE, 0.0f);
-		move(data, 0.042f * SCALE, M_PI_2);
+		move(data, 0.042f, 0.0f);
+		move(data, 0.042f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] && data->key_tab[5])
 	{
-		move(data, 0.042f * SCALE, 0.0f);
-		move(data, -0.042f * SCALE, M_PI_2);
+		move(data, 0.042f, 0.0f);
+		move(data, -0.042f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[4])
 	{
-		move(data, -0.042f * SCALE, 0.0f);
-		move(data, 0.042f * SCALE, M_PI_2);
+		move(data, -0.042f, 0.0f);
+		move(data, 0.042f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[3] && data->key_tab[5])
 	{
-		move(data, -0.042f * SCALE, 0.0f);
-		move(data, -0.042f * SCALE, M_PI_2);
+		move(data, -0.042f, 0.0f);
+		move(data, -0.042f, M_PI_2);
 		return ;
 	}
 	if (data->key_tab[2] == 1)
-		move(data, 0.1f * SCALE, 0.0f);
+		move(data, 0.1f, 0.0f);
 	if (data->key_tab[3] == 1)
-		move(data, -0.1f * SCALE, 0.0f);
+		move(data, -0.1f, 0.0f);
 	if (data->key_tab[4] == 1)
-		move(data, 0.1f * SCALE, M_PI_2);
+		move(data, 0.1f, M_PI_2);
 	if (data->key_tab[5] == 1)
-		move(data, -0.1f * SCALE, M_PI_2);
+		move(data, -0.1f, M_PI_2);
 }
 
 void	print_input(t_data *data)
@@ -405,6 +405,32 @@ long    get_start_time(void)
     return (start_time);
 }
 
+int	find_mask(int texture_h)
+{
+	int	i;
+	int	nb;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (texture_h == 1 << i)
+		{
+			texture_h--;
+			break;
+		}
+		i++;
+	}
+	i = 0;
+	nb = texture_h;
+	while (nb)
+	{
+		nb = texture_h >> i;
+		//printf("%d\n", i);
+		i++;
+	}
+	return (1 << (i - 1));
+}
+
 void	update_ray(t_data *data)
 {
 	int				i;
@@ -418,13 +444,13 @@ void	update_ray(t_data *data)
 	int				end;
 	int				wall_size;
 	t_ilx_texture	*current_texture;
-	uint32_t		*texture_addr;
 	int				texture_x;
 	int				texture_y;
 	float			texture_step;
 	float			texture_pos;
-	int				texture_height;
+	int				mask;
 	t_line			ray_c;
+	static int nb = 0;
 
 	i = 0;
 	while (i < data->ilx->window->win_width)
@@ -485,7 +511,7 @@ void	update_ray(t_data *data)
 				else
 					side = 3;
 			}
-			if (data->map[(int)data->ray.pos.y / SCALE][(int)data->ray.pos.x / SCALE])
+			if (data->map[(int)data->ray.pos.y][(int)data->ray.pos.x])
 				hit = 1;
 		}
 		if (side == 0 || side == 1)
@@ -498,20 +524,20 @@ void	update_ray(t_data *data)
 			wall_dist = (data->ray.dist.y - data->ray.delta.y);
 			wall_x = data->player->pos.x + wall_dist * data->ray.dir.x;
 		}
-		wall_x -= (float)floor((float)wall_x);
+		wall_x -= (float)floor((double)wall_x);
 		//ray_c.p1.x = data->player->pos.x;
 		//ray_c.p1.y = data->player->pos.y;
 		//ray_c.p2.x = data->ray.pos.x;
 		//ray_c.p2.y = data->ray.pos.y;
 		//ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
-		wall_size = (int)((WIN_HEIGHT / wall_dist) * 0.9f);
+		wall_size = (int)((data->ilx->window->win_height * 0.9f / wall_dist));
 		//printf("x : %d wall_size : %d wall_dist : %f\n", i, wall_size, wall_dist);
-		start = (-wall_size >> 1) + (WIN_HEIGHT >> 1);
+		start = (-wall_size >> 1) + (data->ilx->window->win_height >> 1);
 		if (start < 0)
 			start = 0;
-		end = (wall_size >> 1) + (WIN_HEIGHT >> 1);
-		if (end >= WIN_HEIGHT)
-			end = WIN_HEIGHT - 1;
+		end = (wall_size >> 1) + (data->ilx->window->win_height >> 1);
+		if (end >= data->ilx->window->win_height)
+			end = data->ilx->window->win_height - 1;
 		ray_c.p1.x = data->ilx->window->win_width - i - 1;
 		ray_c.p2.x = data->ilx->window->win_width - i - 1;
 		ray_c.p1.y = end;
@@ -526,46 +552,44 @@ void	update_ray(t_data *data)
 		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff);
 		if (side == 1)
 		{
-			texture_x = (int)(wall_x * (float)data->west_texture->w);
-			texture_step = 1.0f * data->west_texture->w / wall_size;
-			texture_height = data->west_texture->h;
 			current_texture = data->west_texture;
+			texture_x = (int)(wall_x * (float)data->west_texture->w);
+			texture_x = data->west_texture->w - texture_x - 1;
 		}
 		else if (side == 2)
 		{
-			texture_x = (int)(wall_x * (float)data->south_texture->w);
-			texture_step = 1.0f * data->south_texture->w / wall_size;
-			texture_height = data->south_texture->h;
 			current_texture = data->south_texture;
+			texture_x = (int)(wall_x * (float)data->south_texture->w);
+			texture_x = data->south_texture->w - texture_x - 1;
 		}
 		else if (side == 3)
 		{
-			texture_x = (int)(wall_x * (float)data->north_texture->w);
-			texture_x = data->north_texture->w - texture_x - 1;
-			texture_step = 1.0f * data->north_texture->w / wall_size;
-			texture_height = data->north_texture->h;
 			current_texture = data->north_texture;
+			texture_x = (int)(wall_x * (float)data->north_texture->w);
 		}
 		else
 		{
-			texture_x = (int)(wall_x * (float)data->east_texture->w);
-			texture_x = data->east_texture->w - texture_x - 1;
-			texture_step = 1.0f * data->east_texture->w / wall_size;
-			texture_height = data->east_texture->h;
 			current_texture = data->east_texture;
+			texture_x = (int)(wall_x * (float)data->east_texture->w);
 		}
-		texture_pos = (start - data->ilx->window->win_height / 2 + wall_size / 2) * texture_step;
+		//printf("%f\n", current_texture->h / (float)wall_size);
+		//exit(0);
+		texture_step = current_texture->h / (float)wall_size;
+		texture_pos = (start - (data->ilx->window->win_height >> 1) + (wall_size >> 1)) * texture_step;
 		y = start;
-		texture_addr = (uint32_t *)current_texture->addr;
+		mask = find_mask(current_texture->h) - 1;
 		while (y < end)
 		{
-			texture_y = (int)texture_pos & (texture_height - 1);
+			texture_y = (int)texture_pos & mask;
 			texture_pos += texture_step;
-			data->texure_buffer[y - start] = texture_addr[texture_height * texture_y + (current_texture->h - 1 - texture_x)];
+			//printf("%d x : %d y : %d texture_pos : %f\n", current_texture->h * texture_y + (current_texture->h - 1 - texture_x), texture_x, texture_y, texture_pos);
+			//exit(0);
+			data->texure_buffer[y - start] = current_texture->buffer[current_texture->w * texture_y + texture_x];
 			y++;
 		}
 		ilx_draw_texture_line(data->ilx->window, &ray_c, 1, data->texure_buffer);
 		i++;
+		nb++;
 	}
 }
 
@@ -608,6 +632,10 @@ int	ft_render_next_frame(t_data *data)
 		ilx_change_button_color(data);
 	//draw_map(data->map, data->ilx);
 	update_ray(data);
+	//update_ray(data);
+	//update_ray(data);
+	//update_ray(data);
+	//update_ray(data);
 	//draw_player(data->ilx, data->player);
 	ilx_draw_texture(data->ilx->window, 5, 5, data->test);
 	ilx_draw_gui(data->ilx, data->current_gui);
@@ -615,7 +643,7 @@ int	ft_render_next_frame(t_data *data)
 	ilx_draw_gui_text(data->ilx, data->current_gui);
 
 	frame_time = get_frame_time(prev_time);
-    time = (float)frame_time / 1000000.0;
+    time = (float)frame_time / 1000000.0f;
     fps = 1 / time;
 	fps_str = ft_itoa(fps);
 	mlx_string_put(data->ilx->mlx, data->ilx->window->window, 5, 15, 0, fps_str);
@@ -652,9 +680,9 @@ int	main(void)
 	t_player		player;
 	int				**map; 
 
-	player.pos.x = 5.0f * SCALE;
-	player.pos.y = 5.0f * SCALE;
-	player.angle = M_PI_2;
+	player.pos.x = 4.0f;
+	player.pos.y = 5.0f;
+	player.angle = M_PI;
 	map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
@@ -668,10 +696,12 @@ int	main(void)
 	data.gui = test;
 	data.ilx = &ilx;
 	data.test = ilx_create_texture(data.ilx, "assets/rocket.xpm");
-	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
+	data.north_texture = ilx_create_texture(data.ilx, "assets/shreck_chad_1.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
 	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
+	printf("%d\n", data.north_texture->w * data.north_texture->h);
+	//exit(0);
 	data.texure_buffer = malloc(sizeof(uint32_t) * data.ilx->window->win_height);
 	data.key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data.key_tab, sizeof(uint8_t) * 6);

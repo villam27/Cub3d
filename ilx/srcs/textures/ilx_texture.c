@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/22 15:41:40 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/23 10:08:04 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_ilx_texture	*ilx_create_texture(t_ilx *ilx, char *path)
 			&sprite->line_len, &sprite->endian);
 	if (!sprite->addr)
 		return ((void)mlx_destroy_image(ilx->mlx, sprite->img), NULL);
+	sprite->buffer = (uint32_t *)sprite->addr;
 	sprite->flip = 0;
 	sprite->scale_x = 1;
 	sprite->scale_y = 1;
@@ -37,9 +38,9 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 			t_ilx_texture *tex)
 {
 	//char	*dst;
-	char	*src;
-	int		i;
-	int		j;
+	uint32_t	*src;
+	int			i;
+	int			j;
 
 	i = 0;
 	while (i < tex->h)
@@ -51,10 +52,9 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 			{
 				//dst = (win->addr + ((y + i) * win->line_length + (x + j)
 				//			*(win->bits_per_pixel >> 3)));
-				src = (tex->addr + (i * tex->line_len + j
-							*(tex->bits_per_px >> 3)));
-				if (*(unsigned *)src != 0xff000000)
-					win->renderer[((y + i) * win->win_width + (x + j))] = *(unsigned long *)src;
+				src = (tex->buffer + (i * tex->w + j));
+				if (*src != 0xff000000)
+					win->renderer[((y + i) * win->win_width + (x + j))] = *src;
 			}
 			j++;
 		}

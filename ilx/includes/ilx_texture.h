@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:49 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/15 16:30:30 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/23 10:01:40 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@
 
 typedef struct s_ilx_texture
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_px;
-	int		line_len;
-	int		endian;
-	int		w;
-	int		h;
-	int		scale_x;
-	int		scale_y;
-	int		flip;
+	void		*img;
+	char		*addr;
+	int			bits_per_px;
+	int			line_len;
+	int			endian;
+	int			w;
+	int			h;
+	int			scale_x;
+	int			scale_y;
+	int			flip;
+	uint32_t	*buffer;
 }	t_ilx_texture;
 
 t_ilx_texture	*ilx_create_texture(t_ilx *ilx, char *path);

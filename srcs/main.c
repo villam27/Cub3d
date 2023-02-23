@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/23 13:37:44 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/23 16:31:10 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -428,7 +428,7 @@ int	find_mask(int texture_h)
 		//printf("%d\n", i);
 		i++;
 	}
-	return (1 << (i - 1));
+	return (1 << (i));
 }
 
 void	update_ray(t_data *data)
@@ -576,18 +576,19 @@ void	update_ray(t_data *data)
 		//exit(0);
 		texture_step = current_texture->h / (float)wall_size;
 		texture_pos = (start - (data->ilx->window->win_height >> 1) + (wall_size >> 1)) * texture_step;
-		y = start;
+		y = 0;
 		mask = find_mask(current_texture->h) - 1;
-		while (y < end)
+		while (y < end - start)
 		{
 			texture_y = (int)texture_pos & mask;
 			texture_pos += texture_step;
 			//printf("%d x : %d y : %d texture_pos : %f\n", current_texture->h * texture_y + (current_texture->h - 1 - texture_x), texture_x, texture_y, texture_pos);
 			//exit(0);
-			data->texure_buffer[y - start] = current_texture->buffer[current_texture->w * texture_y + texture_x];
+			data->texure_buffer[y] = current_texture->buffer[current_texture->w * texture_y + texture_x];
 			y++;
 		}
-		ilx_draw_texture_line(data->ilx->window, &ray_c, 1, data->texure_buffer);
+		(void)ray_c;
+		ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1,  data->texure_buffer);
 		i++;
 		nb++;
 	}
@@ -637,7 +638,7 @@ int	ft_render_next_frame(t_data *data)
 	//update_ray(data);
 	//update_ray(data);
 	//draw_player(data->ilx, data->player);
-	ilx_draw_texture(data->ilx->window, 5, 5, data->test);
+	//ilx_draw_texture(data->ilx->window, 5, 5, data->test);
 	ilx_draw_gui(data->ilx, data->current_gui);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
@@ -696,7 +697,7 @@ int	main(void)
 	data.gui = test;
 	data.ilx = &ilx;
 	data.test = ilx_create_texture(data.ilx, "assets/rocket.xpm");
-	data.north_texture = ilx_create_texture(data.ilx, "assets/shreck_chad_1.xpm");
+	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
 	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");

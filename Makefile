@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/02/24 14:55:34 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/02/24 17:31:27 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS		= ilx/srcs/window/window.c \
 			  srcs/key_binding/binding.c \
 			  srcs/graphics/background.c \
 			  srcs/raycasting/raycasting.c \
+			  srcs/quit.c\
 
 HEADERS		= includes \
 

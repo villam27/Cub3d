@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 13:09:39 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/24 15:31:21 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "raycasting.h"
 # include "player.h"
 # include "data.h"
+# include "quit.h"
 
 # include <sys/time.h>
 # include <string.h>

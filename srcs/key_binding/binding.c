@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:25:39 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 12:53:41 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/24 17:16:35 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,16 @@ int	on_clic(int key, int x, int y, t_data *data)
 	if (key == RIGHT_CLICK)
 	{
 		if (!data->current_gui)
+		{
+			ft_memset(data->key_tab, 0, sizeof(int) * 6);
+			mlx_mouse_show(data->ilx->mlx, data->ilx->window->window);
 			data->current_gui = data->gui;
+		}
 		else
+		{
+			mlx_mouse_hide(data->ilx->mlx, data->ilx->window->window);
 			data->current_gui = NULL;
+		}
 	}
 	if (key == LEFT_CLICK && data->current_gui)
 	{
@@ -75,6 +82,8 @@ int	on_release(int key, int x, int y, t_data *data)
 
 int	ft_press_key(int keycode, t_data *data)
 {
+	if (data->current_gui)
+		return (0);
 	if (keycode == RIGHT)
 		data->key_tab[0] = 1;
 	else if (keycode == LEFT)
@@ -87,11 +96,15 @@ int	ft_press_key(int keycode, t_data *data)
 		data->key_tab[4] = 1;
 	else if (keycode == D)
 		data->key_tab[5] = 1;
+	else if (keycode == ESC)
+		quit(data);
 	return (0);
 }
 
 int	ft_up_key(int keycode, t_data *data)
 {
+	if (data->current_gui)
+		return (0);
 	if (keycode == RIGHT)
 		data->key_tab[0] = 0;
 	else if (keycode == LEFT)

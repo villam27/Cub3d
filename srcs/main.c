@@ -6,37 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 15:03:46 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/24 17:27:43 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	ilx_destroy_window(t_ilx *ilx)
-{
-	mlx_destroy_image(ilx->mlx, ilx->window->img);
-	mlx_destroy_window(ilx->mlx, ilx->window->window);
-	free(ilx->window->win_name);
-	free(ilx->window);
-}
-
-void	*quit(void *param)
-{
-	t_data	*data;
-
-	data = (t_data *)param;
-	ilx_destroy_window(data->ilx);
-	mlx_destroy_display(data->ilx->mlx);
-	ilx_destroy_gui(data->gui);
-	free(data->ilx->mlx);
-	exit (0);
-}
-
-int	cross_quit(void *param)
-{
-	quit(param);
-	return (0);
-}
 
 int	**create_map()
 {
@@ -265,7 +239,6 @@ int	ft_render_next_frame(t_data *data)
 	ilx_draw_gui(data->ilx, data->current_gui);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
-
 	frame_time = get_frame_time(prev_time);
     time = (float)frame_time / 1000000.0f;
     fps = 1 / time;
@@ -294,7 +267,42 @@ void	print_map(int **map)
 	}
 }
 
+int	rotate(int x, int y, t_data *data)
+{
+	(void)y;
+	if (!data->current_gui)
+	{
+		if (x < data->prev_x)
+			data->player->angle += (0.005f * (data->prev_x - x));
+		if (x > data->prev_x)
+			data->player->angle -= (0.005f * (x - data->prev_x));
+	}
+	data->prev_x = x;
+	//if (x > data->ilx->window->win_width - 2)
+	//{
+	//	prev_x = 0;
+	//	mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, 0, y);
+	//}
+	//else if (x < 1)
+	//{
+	//	prev_x = data->ilx->window->win_width;
+	//	mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, data->ilx->window->win_width, y);
+	//}
+	return (0);
+}
 
+int	move_mouse(void *param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	if (!data->current_gui)
+	{
+		data->prev_x = data->ilx->window->win_width >> 1;
+		mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, data->ilx->window->win_width >> 1, data->ilx->window->win_height >> 1);
+	}
+	return (0);
+}
 
 int	main(void)
 {
@@ -303,7 +311,8 @@ int	main(void)
 	t_gui			*test;
 	t_button		*quit_b;
 	t_player		player;
-	int				**map; 
+	int				**map;
+	int				tmp;
 
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
@@ -314,6 +323,7 @@ int	main(void)
 	test = ilx_create_gui();
 
 	data.clic = 0;
+	mlx_mouse_get_pos(ilx.mlx, ilx.window->window, &data.prev_x, &tmp);
 	data.enable_input = 1;
 	data.current_gui = NULL;
 	data.map = map;
@@ -336,12 +346,15 @@ int	main(void)
 	ilx_add_button(test, quit_b, &quit);
 
 	print_map(data.map);
+	mlx_mouse_hide(ilx.mlx, ilx.window->window);
 	mlx_loop_hook(ilx.mlx, ft_render_next_frame, &data);
 	mlx_hook(ilx.window->window, ON_DESTROY, 0, cross_quit, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEUP, 1L << 3, on_release, &data);
 	mlx_hook(ilx.window->window, ON_KEYDOWN, 1L << 0, ft_press_key, &data);
+	mlx_hook(ilx.window->window, ON_MOUSEMOVE, 1L << 6, rotate, &data);
 	mlx_hook(ilx.window->window, ON_KEYUP, 1L << 1, ft_up_key, &data);
+	mlx_hook(ilx.window->window, 8, 1L << 5, move_mouse, &data);
 	mlx_loop(ilx.mlx);
 
 	return (0);

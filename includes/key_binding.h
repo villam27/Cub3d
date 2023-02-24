@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ilx.h                                              :+:      :+:    :+:   */
+/*   key_binding.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 11:59:01 by lcrimet          ###   ########lyon.fr   */
+/*   Created: 2023/02/24 11:47:27 by lcrimet           #+#    #+#             */
+/*   Updated: 2023/02/24 12:54:03 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ILX_H
-# define ILX_H
+#ifndef KEY_BINDING_H
+# define KEY_BINDING_H
 
-# include "mlx.h"
-# include "ft_window.h"
-# include "ilx_shapes.h"
-# include "colors.h"
+# include "data.h"
+# include "cub3D.h"
 
-# define FILL 0
-# define EMPTY 1
-
-enum {
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
-
-typedef struct s_ilx
-{
-	t_window	*window;
-	void		*mlx;
-}	t_ilx;
+int	on_clic(int key, int x, int y, t_data *data);
+int	on_release(int key, int x, int y, t_data *data);
+int	ft_press_key(int keycode, t_data *data);
+int	ft_up_key(int keycode, t_data *data);
 
 #endif

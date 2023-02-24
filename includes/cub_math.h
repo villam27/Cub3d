@@ -1,40 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ilx.h                                              :+:      :+:    :+:   */
+/*   cub_math.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 11:59:01 by lcrimet          ###   ########lyon.fr   */
+/*   Created: 2023/02/24 11:53:26 by lcrimet           #+#    #+#             */
+/*   Updated: 2023/02/24 12:05:08 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ILX_H
-# define ILX_H
+#ifndef CUB_MATH_H
+# define CUB_MATH_H
 
-# include "mlx.h"
-# include "ft_window.h"
-# include "ilx_shapes.h"
-# include "colors.h"
+# include <math.h>
+# include <float.h>
 
-# define FILL 0
-# define EMPTY 1
-
-enum {
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
-
-typedef struct s_ilx
+typedef struct s_vec2d
 {
-	t_window	*window;
-	void		*mlx;
-}	t_ilx;
+	float	x;
+	float	y;
+}	t_vec2d;
 
 #endif

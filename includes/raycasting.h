@@ -1,40 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ilx.h                                              :+:      :+:    :+:   */
+/*   raycasting.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 11:59:01 by lcrimet          ###   ########lyon.fr   */
+/*   Created: 2023/02/24 11:47:38 by lcrimet           #+#    #+#             */
+/*   Updated: 2023/02/24 15:04:30 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ILX_H
-# define ILX_H
+#ifndef RAYCASTING_H
+# define RAYCASTING_H
 
-# include "mlx.h"
-# include "ft_window.h"
-# include "ilx_shapes.h"
-# include "colors.h"
+# include "cub_math.h"
 
-# define FILL 0
-# define EMPTY 1
-
-enum {
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
-
-typedef struct s_ilx
+typedef struct s_ray
 {
-	t_window	*window;
-	void		*mlx;
-}	t_ilx;
+	t_vec2d	dir;
+	t_vec2d	delta;
+	t_vec2d	dist;
+	t_vec2d	step;
+	t_vec2d	pos;
+}	t_ray;
 
 #endif

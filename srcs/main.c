@@ -6,172 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/23 16:31:10 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/24 15:03:46 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ilx.h"
-#include "utils.h"
-#include "gui.h"
-#include "ilx_texture.h"
-#include <math.h>
-#include <float.h>
-
-#include <sys/time.h>
-
-#define MAP_WIDTH 20
-#define MAP_HEIGHT 20
-
-typedef struct s_vec2d
-{
-	float	x;
-	float	y;
-}	t_vec2d;
-
-typedef struct s_player
-{
-	t_vec2d	pos;
-	t_vec2d	dir;
-	t_vec2d	plane;
-	float	angle;
-}	t_player;
-
-typedef struct s_ray
-{
-	t_vec2d dir;
-	t_vec2d	delta;
-	t_vec2d	dist;
-	t_vec2d	step;
-	t_vec2d	pos;
-}	t_ray;
-
-typedef struct s_data
-{
-	t_ilx			*ilx;
-	t_gui			*gui;
-	uint8_t			clic;
-	uint8_t			enable_input;
-	t_gui			*current_gui;
-	int				**map;
-	t_player		*player;
-	uint8_t			*key_tab;
-	t_ilx_texture	*test;
-	t_ilx_texture	*north_texture;
-	t_ilx_texture	*south_texture;
-	t_ilx_texture	*east_texture;
-	t_ilx_texture	*west_texture;
-	uint32_t		*texure_buffer;
-	t_ray			ray;
-}	t_data;
-
-t_rectangle	player_tile;
-
-void	update_player_dir(t_player *player)
-{
-	player->dir.x = sinf(player->angle);
-	player->dir.y = cosf(player->angle);
-}
-
-void	update_player_plane(t_player *player)
-{
-	player->plane.x = sinf(player->angle + M_PI_2);
-	player->plane.y = cosf(player->angle + M_PI_2);
-}
-
-void	ilx_change_button_color(t_data *data)
-{
-	int	i;
-	int	x;
-	int	y;
-
-	i = 0;
-	x = 0;
-	y = 0;
-	if (!data->current_gui)
-		return ;
-	mlx_mouse_get_pos(data->ilx->mlx, data->ilx->window->window, &x, &y);
-	while (data->current_gui->buttons[i].label)
-	{
-		if (ilx_mouse_in_button(&data->current_gui->buttons[i], x, y))
-		{
-			data->current_gui->buttons[i].current_color
-				= data->current_gui->buttons[i].under_cursor_background;
-			data->current_gui->buttons[i].current_label_color
-				= data->current_gui->buttons[i].under_cursor_label;
-			return ;
-		}
-		else if (data->current_gui->buttons[i].current_color
-			== data->current_gui->buttons[i].under_cursor_background)
-		{
-			data->current_gui->buttons[i].current_color
-				= data->current_gui->buttons[i].default_background;
-			data->current_gui->buttons[i].current_label_color
-				= data->current_gui->buttons[i].default_label;
-		}
-		i++;
-	}
-}
-
-int	on_clic(int key, int x, int y, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	if (key == RIGHT_CLICK)
-	{
-		if (!data->current_gui)
-			data->current_gui = data->gui;
-		else
-			data->current_gui = NULL;
-	}
-	if (key == LEFT_CLICK && data->current_gui)
-	{
-		data->clic = 1;
-		while (data->current_gui->buttons[i].label)
-		{
-			if (ilx_mouse_in_button(&data->current_gui->buttons[i], x, y))
-			{
-				data->current_gui->buttons[i].current_color
-					= data->current_gui->buttons[i].clicked_background;
-				data->current_gui->buttons[i].current_label_color
-					= data->current_gui->buttons[i].clicked_label;
-				return (0);
-			}
-			i++;
-		}
-	}
-	return (0);
-}
-
-int	on_release(int key, int x, int y, t_data *data)
-{
-	int	i;
-
-	i = 0;
-	if (key == LEFT_CLICK && data->current_gui)
-	{
-		data->clic = 0;
-		while (data->current_gui->buttons[i].label)
-		{
-			data->current_gui->buttons[i].current_color
-				= data->current_gui->buttons[i].default_background;
-			data->current_gui->buttons[i].current_label_color
-				= data->current_gui->buttons[i].default_label;
-			i++;
-		}
-		i = 0;
-		while (data->current_gui->buttons[i].label)
-		{
-			if (ilx_mouse_in_button(&data->current_gui->buttons[i], x, y))
-			{
-				(*data->current_gui->buttons[i].f)(data);
-				return (0);
-			}
-			i++;
-		}
-	}
-	return (0);
-}
+#include "cub3D.h"
 
 void	ilx_destroy_window(t_ilx *ilx)
 {
@@ -197,66 +36,6 @@ int	cross_quit(void *param)
 {
 	quit(param);
 	return (0);
-}
-
-int	ft_press_key(int keycode, t_data *data)
-{
-	if (keycode == RIGHT)
-		data->key_tab[0] = 1;
-	else if (keycode == LEFT)
-		data->key_tab[1] = 1;
-	else if (keycode == W)
-		data->key_tab[2] = 1;
-	else if (keycode == S)
-		data->key_tab[3] = 1;
-	else if (keycode == A)
-		data->key_tab[4] = 1;
-	else if (keycode == D)
-		data->key_tab[5] = 1;
-	return (0);
-}
-
-int	ft_up_key(int keycode, t_data *data)
-{
-	if (keycode == RIGHT)
-		data->key_tab[0] = 0;
-	else if (keycode == LEFT)
-		data->key_tab[1] = 0;
-	else if (keycode == W)
-		data->key_tab[2] = 0;
-	else if (keycode == S)
-		data->key_tab[3] = 0;
-	else if (keycode == A)
-		data->key_tab[4] = 0;
-	else if (keycode == D)
-		data->key_tab[5] = 0;
-	return (0);
-}
-
-void	draw_map(int **map, t_ilx *ilx)
-{
-	int			i;
-	int			j;
-	t_rectangle	tile;
-
-	i = 0;
-	tile.width = SCALE;
-	tile.height = SCALE;
-	while (i < MAP_HEIGHT)
-	{
-		j = 0;
-		tile.y = SCALE * i;
-		while (j < MAP_WIDTH)
-		{
-			tile.x = SCALE * j;
-			if (map[i][j])
-				ilx_draw_fill_rect(ilx->window, &tile, 0xff);
-			else
-				ilx_draw_fill_rect(ilx->window, &tile, 0xff00);
-			j++;
-		}
-		i++;
-	}
 }
 
 int	**create_map()
@@ -294,97 +73,6 @@ int	**create_map()
 	return (map);
 }
 
-void	draw_player(t_ilx *ilx, t_player *player)
-{
-	t_line	direction;
-	t_line	plane;
-
-	direction = ilx_set_line(player->pos.x , player->pos.y, player->pos.x + 20.0f * player->dir.x, player->pos.y + 20.0f * player->dir.y);
-	ilx_draw_line(ilx->window, &direction, 1, 0xff0000);
-	plane = ilx_set_line(player->pos.x -40.0f * player->plane.x, player->pos.y -40.0f * player->plane.y, player->pos.x + 40.0f * player->plane.x, player->pos.y + 40.0f * player->plane.y);
-	ilx_draw_line(ilx->window, &plane, 1, 0xff0000);
-	player_tile.height = 10;
-	player_tile.width = 10;
-	player_tile.x = player->pos.x - 5.0f;
-	player_tile.y = player->pos.y - 5.0f;
-	ilx_draw_fill_rect(ilx->window, &player_tile, 0xff0000);
-}
-
-void	move(t_data *data, float value, float angle_offset)
-{
-	float	x_step;
-	float	y_step;
-	float	x_offset;
-	float	y_offset;
-	
-	x_step = data->player->pos.x + sinf(data->player->angle + angle_offset) * value;
-	y_step = data->player->pos.y + cosf(data->player->angle + angle_offset) * value;
-	if (x_step < data->player->pos.x)
-		x_offset = -0.17f;
-	else
-		x_offset = 0.17f;
-	if (y_step < data->player->pos.y)
-		y_offset = -0.17f;
-	else
-		y_offset = 0.17f;
-	if (!data->map[((int)(y_step + y_offset))][((int)(data->player->pos.x + x_offset))]
-		&& !data->map[((int)(y_step + y_offset))][((int)(data->player->pos.x - x_offset))])
-		data->player->pos.y = y_step;
-	if (!data->map[((int)(data->player->pos.y + y_offset))][((int)(x_step + x_offset))]
-		&& !data->map[((int)(data->player->pos.y - y_offset))][((int)(x_step + x_offset))])
-		data->player->pos.x = x_step;
-}
-
-void	move_player(t_data *data)
-{
-	if (data->key_tab[0] == 1)
-		data->player->angle -= 0.03f;
-	else if (data->key_tab[1] == 1)
-		data->player->angle += 0.03f;
-	if (data->key_tab[2] && data->key_tab[4])
-	{
-		move(data, 0.042f, 0.0f);
-		move(data, 0.042f, M_PI_2);
-		return ;
-	}
-	if (data->key_tab[2] && data->key_tab[5])
-	{
-		move(data, 0.042f, 0.0f);
-		move(data, -0.042f, M_PI_2);
-		return ;
-	}
-	if (data->key_tab[3] && data->key_tab[4])
-	{
-		move(data, -0.042f, 0.0f);
-		move(data, 0.042f, M_PI_2);
-		return ;
-	}
-	if (data->key_tab[3] && data->key_tab[5])
-	{
-		move(data, -0.042f, 0.0f);
-		move(data, -0.042f, M_PI_2);
-		return ;
-	}
-	if (data->key_tab[2] == 1)
-		move(data, 0.1f, 0.0f);
-	if (data->key_tab[3] == 1)
-		move(data, -0.1f, 0.0f);
-	if (data->key_tab[4] == 1)
-		move(data, 0.1f, M_PI_2);
-	if (data->key_tab[5] == 1)
-		move(data, -0.1f, M_PI_2);
-}
-
-void	print_input(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < 6)
-		printf("%d ", data->key_tab[i]);
-	printf("\n");
-}
-
 long    get_frame_time(long    start_time)
 {
     long            current_time;
@@ -405,27 +93,16 @@ long    get_start_time(void)
     return (start_time);
 }
 
-int	find_mask(int texture_h)
+static int	find_mask(int texture_h)
 {
 	int	i;
 	int	nb;
 
 	i = 0;
-	while (i < 16)
-	{
-		if (texture_h == 1 << i)
-		{
-			texture_h--;
-			break;
-		}
-		i++;
-	}
-	i = 0;
 	nb = texture_h;
 	while (nb)
 	{
 		nb = texture_h >> i;
-		//printf("%d\n", i);
 		i++;
 	}
 	return (1 << (i));
@@ -449,8 +126,6 @@ void	update_ray(t_data *data)
 	float			texture_step;
 	float			texture_pos;
 	int				mask;
-	t_line			ray_c;
-	static int nb = 0;
 
 	i = 0;
 	while (i < data->ilx->window->win_width)
@@ -525,31 +200,13 @@ void	update_ray(t_data *data)
 			wall_x = data->player->pos.x + wall_dist * data->ray.dir.x;
 		}
 		wall_x -= (float)floor((double)wall_x);
-		//ray_c.p1.x = data->player->pos.x;
-		//ray_c.p1.y = data->player->pos.y;
-		//ray_c.p2.x = data->ray.pos.x;
-		//ray_c.p2.y = data->ray.pos.y;
-		//ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
 		wall_size = (int)((data->ilx->window->win_height * 0.9f / wall_dist));
-		//printf("x : %d wall_size : %d wall_dist : %f\n", i, wall_size, wall_dist);
 		start = (-wall_size >> 1) + (data->ilx->window->win_height >> 1);
 		if (start < 0)
 			start = 0;
 		end = (wall_size >> 1) + (data->ilx->window->win_height >> 1);
 		if (end >= data->ilx->window->win_height)
 			end = data->ilx->window->win_height - 1;
-		ray_c.p1.x = data->ilx->window->win_width - i - 1;
-		ray_c.p2.x = data->ilx->window->win_width - i - 1;
-		ray_c.p1.y = end;
-		ray_c.p2.y = start;
-		//if (side == 1)
-		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff0000);
-		//else if (side == 2)
-		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff00);
-		//else if (side == 3)
-		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xffff00);
-		//else
-		//	ilx_draw_line(data->ilx->window, &ray_c, 1, 0xff);
 		if (side == 1)
 		{
 			current_texture = data->west_texture;
@@ -572,8 +229,6 @@ void	update_ray(t_data *data)
 			current_texture = data->east_texture;
 			texture_x = (int)(wall_x * (float)data->east_texture->w);
 		}
-		//printf("%f\n", current_texture->h / (float)wall_size);
-		//exit(0);
 		texture_step = current_texture->h / (float)wall_size;
 		texture_pos = (start - (data->ilx->window->win_height >> 1) + (wall_size >> 1)) * texture_step;
 		y = 0;
@@ -582,35 +237,10 @@ void	update_ray(t_data *data)
 		{
 			texture_y = (int)texture_pos & mask;
 			texture_pos += texture_step;
-			//printf("%d x : %d y : %d texture_pos : %f\n", current_texture->h * texture_y + (current_texture->h - 1 - texture_x), texture_x, texture_y, texture_pos);
-			//exit(0);
 			data->texure_buffer[y] = current_texture->buffer[current_texture->w * texture_y + texture_x];
 			y++;
 		}
-		(void)ray_c;
 		ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1,  data->texure_buffer);
-		i++;
-		nb++;
-	}
-}
-
-void	draw_background(t_window *window, uint32_t color_ceiling, uint32_t color_floor)
-{
-	int	i;
-	int	max;
-	int	max2;
-	
-	i = 0;
-	max2 = window->win_height * window->win_width;
-	max = max2 >> 1;
-	while (i < max)
-	{
-		window->renderer[i] = color_ceiling;
-		i++;
-	}
-	while (i < max2)
-	{
-		window->renderer[i] = color_floor;
 		i++;
 	}
 }
@@ -631,14 +261,7 @@ int	ft_render_next_frame(t_data *data)
 	draw_background(data->ilx->window, 0x87CEFA, 0x353535);
 	if (!data->clic)
 		ilx_change_button_color(data);
-	//draw_map(data->map, data->ilx);
 	update_ray(data);
-	//update_ray(data);
-	//update_ray(data);
-	//update_ray(data);
-	//update_ray(data);
-	//draw_player(data->ilx, data->player);
-	//ilx_draw_texture(data->ilx->window, 5, 5, data->test);
 	ilx_draw_gui(data->ilx, data->current_gui);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
@@ -649,7 +272,6 @@ int	ft_render_next_frame(t_data *data)
 	fps_str = ft_itoa(fps);
 	mlx_string_put(data->ilx->mlx, data->ilx->window->window, 5, 15, 0, fps_str);
 	free(fps_str);
-	//printf("%d\n", fps);
 	return (0);
 }
 
@@ -671,6 +293,8 @@ void	print_map(int **map)
 		i++;
 	}
 }
+
+
 
 int	main(void)
 {
@@ -696,13 +320,10 @@ int	main(void)
 	data.player = &player;
 	data.gui = test;
 	data.ilx = &ilx;
-	data.test = ilx_create_texture(data.ilx, "assets/rocket.xpm");
 	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
 	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
-	printf("%d\n", data.north_texture->w * data.north_texture->h);
-	//exit(0);
 	data.texure_buffer = malloc(sizeof(uint32_t) * data.ilx->window->win_height);
 	data.key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data.key_tab, sizeof(uint8_t) * 6);

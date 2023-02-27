@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:47:35 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 13:04:42 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/25 19:32:11 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_player
 
 void	update_player_dir(t_player *player);
 void	update_player_plane(t_player *player);
+int		rotate(int x, int y, t_data *data);
+int		move_mouse(void *param);
 void	move(t_data *data, float value, float angle_offset);
 void	move_player(t_data *data);
 

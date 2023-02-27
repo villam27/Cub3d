@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/23 10:08:04 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/25 12:01:14 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,25 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 	uint32_t	*src;
 	int			i;
 	int			j;
+	int			i_w;
+	int			i_y;
 
 	i = 0;
 	while (i < tex->h)
 	{
 		j = 0;
+		i_w = i * tex->w;
+		i_y = (i + y) * win->win_width + x;
 		while (j < tex->w)
 		{
-			if (x < win->win_width && x >= 0 && y < win->win_height && y >= 0)
-			{
+			//if (x < win->win_width && x >= 0 && y < win->win_height && y >= 0)
+			//{
 				//dst = (win->addr + ((y + i) * win->line_length + (x + j)
 				//			*(win->bits_per_pixel >> 3)));
-				src = (tex->buffer + (i * tex->w + j));
+				src = (tex->buffer + (i_w + j));
 				if (*src != 0xff000000)
-					win->renderer[((y + i) * win->win_width + (x + j))] = *src;
-			}
+					win->renderer[i_y + j] = *src;
+			//}
 			j++;
 		}
 		i++;

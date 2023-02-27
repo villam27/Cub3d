@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 17:27:43 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/25 19:33:34 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,24 @@ long    get_start_time(void)
     return (start_time);
 }
 
-static int	find_mask(int texture_h)
-{
-	int	i;
-	int	nb;
-
-	i = 0;
-	nb = texture_h;
-	while (nb)
-	{
-		nb = texture_h >> i;
-		i++;
-	}
-	return (1 << (i));
-}
+//static int	find_mask(int texture_h)
+//{
+//	int	i;
+//	int	nb;
+//
+//	i = 0;
+//	nb = texture_h;
+//	while (nb)
+//	{
+//		nb = texture_h >> i;
+//		i++;
+//	}
+//	return (1 << (i));
+//}
 
 void	update_ray(t_data *data)
 {
 	int				i;
-	int				y;
 	int				hit;
 	int				side;
 	float			x_view;
@@ -179,8 +178,8 @@ void	update_ray(t_data *data)
 		if (start < 0)
 			start = 0;
 		end = (wall_size >> 1) + (data->ilx->window->win_height >> 1);
-		if (end >= data->ilx->window->win_height)
-			end = data->ilx->window->win_height - 1;
+		if (end > data->ilx->window->win_height)
+			end = data->ilx->window->win_height;
 		if (side == 1)
 		{
 			current_texture = data->west_texture;
@@ -205,16 +204,17 @@ void	update_ray(t_data *data)
 		}
 		texture_step = current_texture->h / (float)wall_size;
 		texture_pos = (start - (data->ilx->window->win_height >> 1) + (wall_size >> 1)) * texture_step;
-		y = 0;
-		mask = find_mask(current_texture->h) - 1;
-		while (y < end - start)
+		mask = current_texture->h -1;
+		int	x = data->ilx->window->win_width - i - 1;
+		start *= data->ilx->window->win_width;
+		end *= data->ilx->window->win_width;
+		while (start < end)
 		{
 			texture_y = (int)texture_pos & mask;
 			texture_pos += texture_step;
-			data->texure_buffer[y] = current_texture->buffer[current_texture->w * texture_y + texture_x];
-			y++;
+			data->ilx->window->renderer[x + start] = current_texture->buffer[current_texture->w * texture_y + texture_x];
+			start += data->ilx->window->win_width;
 		}
-		ilx_draw_line_vertical(data->ilx->window, start, end, data->ilx->window->win_width - i - 1,  data->texure_buffer);
 		i++;
 	}
 }
@@ -267,43 +267,6 @@ void	print_map(int **map)
 	}
 }
 
-int	rotate(int x, int y, t_data *data)
-{
-	(void)y;
-	if (!data->current_gui)
-	{
-		if (x < data->prev_x)
-			data->player->angle += (0.005f * (data->prev_x - x));
-		if (x > data->prev_x)
-			data->player->angle -= (0.005f * (x - data->prev_x));
-	}
-	data->prev_x = x;
-	//if (x > data->ilx->window->win_width - 2)
-	//{
-	//	prev_x = 0;
-	//	mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, 0, y);
-	//}
-	//else if (x < 1)
-	//{
-	//	prev_x = data->ilx->window->win_width;
-	//	mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, data->ilx->window->win_width, y);
-	//}
-	return (0);
-}
-
-int	move_mouse(void *param)
-{
-	t_data	*data;
-
-	data = (t_data *)param;
-	if (!data->current_gui)
-	{
-		data->prev_x = data->ilx->window->win_width >> 1;
-		mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, data->ilx->window->win_width >> 1, data->ilx->window->win_height >> 1);
-	}
-	return (0);
-}
-
 int	main(void)
 {
 	t_ilx			ilx;
@@ -316,7 +279,7 @@ int	main(void)
 
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
-	player.angle = M_PI;
+	player.angle = M_PI_2;
 	map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
@@ -325,16 +288,15 @@ int	main(void)
 	data.clic = 0;
 	mlx_mouse_get_pos(ilx.mlx, ilx.window->window, &data.prev_x, &tmp);
 	data.enable_input = 1;
-	data.current_gui = NULL;
 	data.map = map;
 	data.player = &player;
 	data.gui = test;
+	data.current_gui = data.gui;
 	data.ilx = &ilx;
 	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
 	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
-	data.texure_buffer = malloc(sizeof(uint32_t) * data.ilx->window->win_height);
 	data.key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data.key_tab, sizeof(uint8_t) * 6);
 
@@ -346,7 +308,6 @@ int	main(void)
 	ilx_add_button(test, quit_b, &quit);
 
 	print_map(data.map);
-	mlx_mouse_hide(ilx.mlx, ilx.window->window);
 	mlx_loop_hook(ilx.mlx, ft_render_next_frame, &data);
 	mlx_hook(ilx.window->window, ON_DESTROY, 0, cross_quit, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, &data);

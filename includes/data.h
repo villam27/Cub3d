@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:28:49 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 17:27:48 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/25 12:07:43 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct s_data
 	t_ilx_texture	*south_texture;
 	t_ilx_texture	*east_texture;
 	t_ilx_texture	*west_texture;
-	uint32_t		*texure_buffer;
 	t_ray			ray;
 	int				prev_x;
 }	t_data;

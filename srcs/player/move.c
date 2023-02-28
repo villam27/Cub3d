@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:03:45 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/25 19:33:14 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/28 12:03:55 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	rotate(int x, int y, t_data *data)
 			data->player->angle += (0.002f * (data->prev_x - x));
 		if (x > data->prev_x)
 			data->player->angle -= (0.002f * (x - data->prev_x));
-		if (x == 0 || x == data->ilx->window->win_width - 1)
-			mlx_mouse_move(data->ilx->mlx,data->ilx->window->window, data->ilx->window->win_width >> 1, data->ilx->window->win_height >> 1);
 	}
 	data->prev_x = x;
 	//if (x > data->ilx->window->win_width - 2)
@@ -99,13 +97,13 @@ void	move_player(t_data *data)
 	else if (data->key_tab[1] == 1)
 		data->player->angle += 0.03f;
 	if (data->key_tab[2] && data->key_tab[4])
-		return (move(data, 0.042f, 0.0f), move(data, 0.042f, M_PI_2));
+		return (move(data, 0.05f, 0.0f), move(data, 0.05f, M_PI_2));
 	if (data->key_tab[2] && data->key_tab[5])
-		return (move(data, 0.042f, 0.0f), move(data, -0.042f, M_PI_2));
+		return (move(data, 0.05f, 0.0f), move(data, -0.05f, M_PI_2));
 	if (data->key_tab[3] && data->key_tab[4])
-		return (move(data, -0.042f, 0.0f), move(data, 0.042f, M_PI_2));
+		return (move(data, -0.05f, 0.0f), move(data, 0.05f, M_PI_2));
 	if (data->key_tab[3] && data->key_tab[5])
-		return (move(data, -0.042f, 0.0f), move(data, -0.042f, M_PI_2));
+		return (move(data, -0.05f, 0.0f), move(data, -0.05f, M_PI_2));
 	if (data->key_tab[2] == 1)
 		move(data, 0.1f, 0.0f);
 	if (data->key_tab[3] == 1)

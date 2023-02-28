@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ilx_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/25 12:01:14 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/28 17:01:43 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,46 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 			j++;
 		}
 		i++;
+	}
+}
+
+static void	ilx_render_px(t_window *win, t_ilx_texture *tex, t_rectangle *values)
+{
+	char		*dst;
+	char		*src;
+
+	dst = (win->addr + (((int)values->x) * win->line_length + ((int)values->y)
+				*(win->bits_per_pixel >> 3)));
+	src = (tex->addr + (((int)values->width) * tex->line_len + ((int)values->height)
+				*(tex->bits_per_px >> 3)));
+	if (*(unsigned *)src != 0xff000000)
+		*(unsigned long *)dst = *(unsigned long *)src;
+}
+
+void	ilx_render_copy(t_window *win, t_ilx_texture *tex,
+			t_point *pos, t_rectangle *rec)
+{
+	int			i;
+	int			j;
+	t_rectangle	p;
+
+	i = 0;
+	while (i < rec->height)
+	{
+		j = 0;
+		while (j < rec->width)
+		{
+			p = ilx_new_rect(pos->y + i, pos->x + j, rec->y + i, rec->x + j);
+			if (tex->flip)
+				p = ilx_new_rect(pos->y + i, pos->x + j, rec->y + i,
+						rec->width + rec->x - j - 1);
+			/*if ((pos->x < MAX_MAP && pos->x >= 0 && pos->y < MAX_MAP
+					&& pos->y >= 0) && (rec->x + j < tex->w && rec->x + j >= 0
+					&& rec->y + i < tex->h && rec->y + i >= 0))*/
+			ilx_render_px(win, tex, &p);
+			j++;
+		}
+	i++;
 	}
 }
 

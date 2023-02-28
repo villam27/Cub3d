@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:28:49 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/25 12:07:43 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/02/28 17:17:53 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 typedef struct s_player	t_player;
 
+/*
+	TODO: Remove test variables
+*/
 typedef struct s_data
 {
 	t_ilx			*ilx;
@@ -33,6 +36,9 @@ typedef struct s_data
 	t_ilx_texture	*south_texture;
 	t_ilx_texture	*east_texture;
 	t_ilx_texture	*west_texture;
+	t_ilx_texture	*test_texutre;
+	t_point			test_pts;
+	t_rectangle		test_rect;
 	t_ray			ray;
 	int				prev_x;
 }	t_data;

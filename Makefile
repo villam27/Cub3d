@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
+#    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/01 13:40:31 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/03/01 18:52:41 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCS		= ilx/srcs/window/window.c \
 			  srcs/graphics/background.c \
 			  srcs/raycasting/raycasting.c \
 			  srcs/time/time.c \
+			  srcs/parsing/parsing.c \
 			  srcs/quit.c\
 
 HEADERS		= includes \

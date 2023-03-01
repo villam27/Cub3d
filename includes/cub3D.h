@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 16:21:02 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:14:49 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,30 +101,32 @@ typedef struct s_data
 	int				prev_x;
 }	t_data;
 
-void	ilx_change_button_color(t_data *data);
+void		ilx_change_button_color(t_data *data);
 
-void	draw_textured_background(t_data *data);
-void	draw_background(t_window *window, uint32_t color_ceiling,
-			uint32_t color_floor);
+void		draw_textured_background(t_data *data);
+void		draw_background(t_window *window, uint32_t color_ceiling,
+				uint32_t color_floor);
 
-void	update_player_dir(t_player *player);
-void	update_player_plane(t_player *player);
-int		rotate(int x, int y, t_data *data);
-int		move_mouse(void *param);
-void	move(t_data *data, float value, float angle_offset);
-void	move_player(t_data *data, float delta);
+void		update_player_dir(t_player *player);
+void		update_player_plane(t_player *player);
+int			rotate(int x, int y, t_data *data);
+int			move_mouse(void *param);
+void		move(t_data *data, float value, float angle_offset);
+void		move_player(t_data *data, float delta);
 
-void	update_ray(t_data *data);
+void		update_ray(t_data *data);
 
-int		on_clic(int key, int x, int y, t_data *data);
-int		on_release(int key, int x, int y, t_data *data);
-int		ft_press_key(int keycode, t_data *data);
-int		ft_up_key(int keycode, t_data *data);
+int			on_clic(int key, int x, int y, t_data *data);
+int			on_release(int key, int x, int y, t_data *data);
+int			ft_press_key(int keycode, t_data *data);
+int			ft_up_key(int keycode, t_data *data);
 
-long	get_frame_time(long start_time);
-long	get_start_time(void);
+long		get_frame_time(long start_time);
+long		get_start_time(void);
 
-void	*quit(void *param);
-int		cross_quit(void *param);
+int			load_maps(t_data *data, char *path);
+
+void		*quit(void *param);
+int			cross_quit(void *param);
 
 #endif

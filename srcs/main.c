@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:53:58 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 19:17:12 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,11 @@ int	main(void)
 	data.gui = test;
 	data.current_gui = data.gui;
 	data.ilx = &ilx;
-	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
+	/*data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
-	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");
+	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");*/
+	load_maps(&data, "maps/map01.cub");
 	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
 	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");

@@ -6,7 +6,7 @@
 #    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/01 11:09:45 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/03/01 11:42:14 by lcrimet          ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,10 +25,13 @@ SRCS		= ilx/srcs/window/window.c \
 			  ilx/srcs/textures/ilx_texture.c \
 			  srcs/main.c \
 			  srcs/player/move.c \
+			  srcs/player/update_player.c \
 			  srcs/gui/buttons.c \
 			  srcs/key_binding/binding.c \
+			  srcs/key_binding/mouse_clic.c \
 			  srcs/graphics/background.c \
 			  srcs/raycasting/raycasting.c \
+			  srcs/time/time.c \
 			  srcs/quit.c\
 
 HEADERS		= includes \

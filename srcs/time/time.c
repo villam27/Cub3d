@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   background.c                                       :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/24 13:07:31 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:22:15 by lcrimet          ###   ########lyon.fr   */
+/*   Created: 2023/03/01 11:35:23 by lcrimet           #+#    #+#             */
+/*   Updated: 2023/03/01 11:50:49 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	draw_background(t_window *window, uint32_t color_ceiling,
-			uint32_t color_floor)
+long	get_frame_time(long start_time)
 {
-	int	i;
-	int	max;
-	int	max2;
+	long			current_time;
+	struct timeval	time;
 
-	max2 = window->win_height * window->win_width;
-	max = max2 >> 1;
-	i = 0;
-	while (i < max)
-	{
-		window->renderer[i] = color_ceiling;
-		i++;
-	}
-	while (i < max2)
-	{
-		window->renderer[i] = color_floor;
-		i++;
-	}
+	gettimeofday(&time, NULL);
+	current_time = (time.tv_sec * 1000 + time.tv_usec / 1000) - start_time;
+	return (current_time);
+}
+
+long	get_start_time(void)
+{
+	struct timeval	time;
+	long			start_time;
+
+	gettimeofday(&time, NULL);
+	start_time = (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (start_time);
 }

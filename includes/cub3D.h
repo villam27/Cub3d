@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:12:39 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 11:50:45 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,15 @@ int		move_mouse(void *param);
 void	move(t_data *data, float value, float angle_offset);
 void	move_player(t_data *data, float delta);
 
+void	update_ray(t_data *data);
+
 int		on_clic(int key, int x, int y, t_data *data);
 int		on_release(int key, int x, int y, t_data *data);
 int		ft_press_key(int keycode, t_data *data);
 int		ft_up_key(int keycode, t_data *data);
+
+long	get_frame_time(long start_time);
+long	get_start_time(void);
 
 void	*quit(void *param);
 int		cross_quit(void *param);

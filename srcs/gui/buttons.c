@@ -6,12 +6,20 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:10:04 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 10:12:54 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 11:33:18 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ilx.h"
 #include "cub3D.h"
+
+static void	in_button(t_data *data, int i)
+{
+	data->current_gui->buttons[i].current_color
+		= data->current_gui->buttons[i].under_cursor_background;
+	data->current_gui->buttons[i].current_label_color
+		= data->current_gui->buttons[i].under_cursor_label;
+}
 
 void	ilx_change_button_color(t_data *data)
 {
@@ -28,13 +36,7 @@ void	ilx_change_button_color(t_data *data)
 	while (data->current_gui->buttons[i].label)
 	{
 		if (ilx_mouse_in_button(&data->current_gui->buttons[i], x, y))
-		{
-			data->current_gui->buttons[i].current_color
-				= data->current_gui->buttons[i].under_cursor_background;
-			data->current_gui->buttons[i].current_label_color
-				= data->current_gui->buttons[i].under_cursor_label;
-			return ;
-		}
+			return (in_button(data, i));
 		else if (data->current_gui->buttons[i].current_color
 			== data->current_gui->buttons[i].under_cursor_background)
 		{

@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:50:45 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 12:32:58 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ typedef struct s_vec2d
 	float	x;
 	float	y;
 }	t_vec2d;
+
+typedef struct s_ivec2d
+{
+	int	x;
+	int	y;
+}	t_ivec2d;
 
 typedef struct s_player
 {
@@ -72,6 +78,8 @@ typedef struct s_data
 	t_ilx_texture	*south_texture;
 	t_ilx_texture	*east_texture;
 	t_ilx_texture	*west_texture;
+	t_ilx_texture	*floor_texture;
+	t_ilx_texture	*ceiling_texture;
 	t_ilx_texture	*test_texutre;
 	t_point			test_pts;
 	t_rectangle		test_rect;
@@ -80,6 +88,8 @@ typedef struct s_data
 }	t_data;
 
 void	ilx_change_button_color(t_data *data);
+
+void	draw_textured_background(t_data *data);
 void	draw_background(t_window *window, uint32_t color_ceiling,
 			uint32_t color_floor);
 

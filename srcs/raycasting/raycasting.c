@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:54:02 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:37:58 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 13:16:06 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	update_ray(t_data *data)
 			wall_x = data->player->pos.x + wall_dist * data->ray.dir.x;
 		}
 		wall_x -= (float)floor((double)wall_x);
-		wall_size = (int)((data->ilx->window->win_height * 0.9f / wall_dist));
+		wall_size = (int)((data->ilx->window->win_height / wall_dist));
 		start = (-wall_size >> 1) + (data->ilx->window->win_height >> 1);
 		if (start < 0)
 			start = 0;

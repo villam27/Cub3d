@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:58:03 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 13:10:43 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	ft_render_next_frame(t_data *data)
 	move_player(data, time);
 	update_player_plane(data->player);
 	update_player_dir(data->player);
-	draw_background(data->ilx->window, 0x87CEFA, 0x353535);
+	//draw_background(data->ilx->window, 0x87CEFA, 0x353535);
+	draw_textured_background(data);
 	if (!data->clic)
 		ilx_change_button_color(data);
 	update_ray(data);
@@ -70,6 +71,7 @@ int	ft_render_next_frame(t_data *data)
 		data->test_rect.x = 0;
 	frame_time = get_frame_time(prev_time);
 	time = frame_time / 1000.0;
+	printf("%f\n", 1 / time);
 	return (0);
 }
 
@@ -124,7 +126,9 @@ int	main(void)
 	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
-	data.east_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
+	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");
+	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
+	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");
 	data.test_pts = ilx_new_point(50, 50);
 	data.test_rect = ilx_new_rect(0, 0, 28, 28);

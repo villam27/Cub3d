@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:32:31 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 16:21:02 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,20 @@ typedef struct s_ray
 	t_vec2d	step;
 	t_vec2d	pos;
 }	t_ray;
+
+typedef struct s_map_data
+{
+	int	w;
+	int	h;
+	t_ilx_texture	*north_texture;
+	t_ilx_texture	*south_texture;
+	t_ilx_texture	*east_texture;
+	t_ilx_texture	*west_texture;
+	t_ilx_texture	*floor_texture;
+	t_ilx_texture	*ceiling_texture;
+	uint32_t		floor_color;
+	uint32_t		ceiling_color;
+}	t_map_data;
 
 /*
 	TODO: Remove test variables

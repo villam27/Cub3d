@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:30:24 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 13:43:09 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	ft_render_next_frame(t_data *data)
 		data->test_rect.x = 0;
 	frame_time = get_frame_time(prev_time);
 	time = frame_time / 1000.0;
+	//printf("%f\n", 1 / time);
 	return (0);
 }
 
@@ -106,7 +107,7 @@ int	main(void)
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
 	player.angle = M_PI_2;
-	player.player_speed = 5.5f;
+	player.player_speed = 3.5f;
 	player.rotation_speed = M_PI;
 	player.sprint_add = 3.0f;
 	map = create_map();

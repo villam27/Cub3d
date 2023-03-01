@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:43:09 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 13:53:58 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(void)
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
 	player.angle = M_PI_2;
-	player.player_speed = 3.5f;
+	player.player_speed = 9.5f;
 	player.rotation_speed = M_PI;
 	player.sprint_add = 3.0f;
 	map = create_map();

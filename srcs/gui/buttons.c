@@ -6,12 +6,12 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:10:04 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 12:29:47 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 10:12:54 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ilx.h"
-#include "data.h"
+#include "cub3D.h"
 
 void	ilx_change_button_color(t_data *data)
 {

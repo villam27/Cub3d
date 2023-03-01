@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/28 17:30:13 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/01 11:13:13 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@ int	**create_map()
 	return (map);
 }
 
-long    get_frame_time(long    start_time)
+long	get_frame_time(long start_time)
 {
-    long            current_time;
-    struct timeval    time;
+    long			current_time;
+    struct timeval	time;
 
     gettimeofday(&time, NULL);
-    current_time = time.tv_usec - start_time;
+    current_time = (time.tv_sec * 1000 + time.tv_usec / 1000) - start_time;
     return (current_time);
 }
 
-long    get_start_time(void)
+long	get_start_time(void)
 {
-    struct timeval    time;
-    long            start_time;
+	struct timeval	time;
+	long			start_time;
 
     gettimeofday(&time, NULL);
-    start_time = time.tv_usec;
+    start_time = (time.tv_sec * 1000 + time.tv_usec / 1000);
     return (start_time);
 }
 
@@ -223,13 +223,14 @@ int	ft_render_next_frame(t_data *data)
 {
 	static long	prev_time;
     static long	frame_time;
-    int			fps;
-    float		time;
-	char		*fps_str;
+    int				fps;
+    static double	time = 0;
+	char			*fps_str;
+	static int	i = 0;
 
     prev_time = get_start_time();
 
-	move_player(data);
+	move_player(data, time);
 	update_player_plane(data->player);
 	update_player_dir(data->player);
 	draw_background(data->ilx->window, 0x87CEFA, 0x353535);
@@ -240,15 +241,17 @@ int	ft_render_next_frame(t_data *data)
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
 	ilx_render_copy(data->ilx->window, data->test_texutre, &data->test_pts, &data->test_rect);
-	data->test_rect.x += 28;
+	if (!(i % 10))
+		data->test_rect.x += 28;
 	if (data->test_rect.x > 28 * 5)
 		data->test_rect.x = 0;
-	frame_time = get_frame_time(prev_time);
-    time = (float)frame_time / 1000000.0f;
     fps = 1 / time;
 	fps_str = ft_itoa(fps);
 	mlx_string_put(data->ilx->mlx, data->ilx->window->window, 5, 15, 0, fps_str);
 	free(fps_str);
+	i++;
+	frame_time = get_frame_time(prev_time);
+    time = frame_time / 1000.0;
 	return (0);
 }
 
@@ -284,6 +287,9 @@ int	main(void)
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
 	player.angle = M_PI_2;
+	player.player_speed = 7.5f;
+	player.rotation_speed = M_PI;
+	player.sprint_add = 5.0f;
 	map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
@@ -322,7 +328,7 @@ int	main(void)
 	mlx_hook(ilx.window->window, ON_KEYDOWN, 1L << 0, ft_press_key, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEMOVE, 1L << 6, rotate, &data);
 	mlx_hook(ilx.window->window, ON_KEYUP, 1L << 1, ft_up_key, &data);
-	mlx_hook(ilx.window->window, 8, 1L << 5, move_mouse, &data);
+	mlx_hook(ilx.window->window, EXIT_WIN, 1L << 5, move_mouse, &data);
 	mlx_loop(ilx.mlx);
 
 	return (0);

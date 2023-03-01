@@ -6,11 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:25:39 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 17:16:35 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 10:51:11 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "key_binding.h"
+#include "cub3D.h"
 
 int	on_clic(int key, int x, int y, t_data *data)
 {
@@ -82,6 +82,8 @@ int	on_release(int key, int x, int y, t_data *data)
 
 int	ft_press_key(int keycode, t_data *data)
 {
+	if (keycode == LSHIFT)
+		data->player->player_speed += data->player->sprint_add;
 	if (data->current_gui)
 		return (0);
 	if (keycode == RIGHT)
@@ -103,6 +105,8 @@ int	ft_press_key(int keycode, t_data *data)
 
 int	ft_up_key(int keycode, t_data *data)
 {
+	if (keycode == LSHIFT)
+		data->player->player_speed -= data->player->sprint_add;
 	if (data->current_gui)
 		return (0);
 	if (keycode == RIGHT)

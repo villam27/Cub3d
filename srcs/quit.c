@@ -6,11 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 15:29:43 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 15:30:52 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 10:13:20 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "quit.h"
+#include "cub3D.h"
 
 static void	ilx_destroy_window(t_ilx *ilx)
 {

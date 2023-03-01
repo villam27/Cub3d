@@ -6,11 +6,11 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:03:45 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/28 12:03:55 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 11:13:39 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "player.h"
+#include "cub3D.h"
 
 void	update_player_dir(t_player *player)
 {
@@ -90,26 +90,26 @@ void	move(t_data *data, float val, float angle_off)
 		data->player->pos.x = x_step;
 }
 
-void	move_player(t_data *data)
+void	move_player(t_data *data, float delta)
 {
 	if (data->key_tab[0] == 1)
-		data->player->angle -= 0.03f;
+		data->player->angle -= data->player->rotation_speed * delta;
 	else if (data->key_tab[1] == 1)
-		data->player->angle += 0.03f;
+		data->player->angle += data->player->rotation_speed * delta;
 	if (data->key_tab[2] && data->key_tab[4])
-		return (move(data, 0.05f, 0.0f), move(data, 0.05f, M_PI_2));
+		return (move(data, data->player->player_speed / 2.0f * delta, 0.0f), move(data, data->player->player_speed / 2.0f * delta, M_PI_2));
 	if (data->key_tab[2] && data->key_tab[5])
-		return (move(data, 0.05f, 0.0f), move(data, -0.05f, M_PI_2));
+		return (move(data, data->player->player_speed / 2.0f * delta, 0.0f), move(data, -data->player->player_speed / 2.0f * delta, M_PI_2));
 	if (data->key_tab[3] && data->key_tab[4])
-		return (move(data, -0.05f, 0.0f), move(data, 0.05f, M_PI_2));
+		return (move(data, -data->player->player_speed / 2.0f * delta, 0.0f), move(data, data->player->player_speed / 2.0f * delta, M_PI_2));
 	if (data->key_tab[3] && data->key_tab[5])
-		return (move(data, -0.05f, 0.0f), move(data, -0.05f, M_PI_2));
+		return (move(data, -data->player->player_speed / 2.0f * delta, 0.0f), move(data, -data->player->player_speed / 2.0f * delta, M_PI_2));
 	if (data->key_tab[2] == 1)
-		move(data, 0.1f, 0.0f);
+		move(data, data->player->player_speed * delta, 0.0f);
 	if (data->key_tab[3] == 1)
-		move(data, -0.1f, 0.0f);
+		move(data, -data->player->player_speed * delta, 0.0f);
 	if (data->key_tab[4] == 1)
-		move(data, 0.1f, M_PI_2);
+		move(data, data->player->player_speed * delta, M_PI_2);
 	if (data->key_tab[5] == 1)
-		move(data, -0.1f, M_PI_2);
+		move(data, -data->player->player_speed * delta, M_PI_2);
 }

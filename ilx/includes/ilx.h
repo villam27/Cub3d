@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 20:48:25 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/24 11:59:01 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/01 10:17:49 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ enum {
 	ON_MOUSEDOWN = 4,
 	ON_MOUSEUP = 5,
 	ON_MOUSEMOVE = 6,
+	ENTER_WIN = 7,
+	EXIT_WIN = 8,
 	ON_EXPOSE = 12,
 	ON_DESTROY = 17
 };

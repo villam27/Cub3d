@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/01 19:26:32 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:44:25 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int	get_id(char *line)
 {
+	if (line[0] == '\n')
+		return (-1);
 	if (!ft_strncmp(line, "NO", 2))
 		return (1);
 	if (!ft_strncmp(line, "SO", 2))

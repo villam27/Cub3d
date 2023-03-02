@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 19:17:12 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:59:16 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,16 +101,16 @@ int	main(void)
 	t_gui			*test;
 	t_button		*quit_b;
 	t_player		player;
-	int				**map;
+	//int				**map;
 	int				tmp;
 
-	player.pos.x = 4.0f;
-	player.pos.y = 5.0f;
+	player.pos.x = 5.0f;
+	player.pos.y = 6.0f;
 	player.angle = M_PI_2;
 	player.player_speed = 9.5f;
 	player.rotation_speed = M_PI;
 	player.sprint_add = 3.0f;
-	map = create_map();
+	//map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	test = ilx_create_gui();
@@ -118,16 +118,16 @@ int	main(void)
 	data.clic = 0;
 	mlx_mouse_get_pos(ilx.mlx, ilx.window->window, &data.prev_x, &tmp);
 	data.enable_input = 1;
-	data.map = map;
+	//data.map = map;
 	data.player = &player;
 	data.gui = test;
 	data.current_gui = data.gui;
 	data.ilx = &ilx;
+	load_maps(&data, "maps/map01.cub");
 	/*data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
 	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
 	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
 	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");*/
-	load_maps(&data, "maps/map01.cub");
 	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
 	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");

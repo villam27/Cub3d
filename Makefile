@@ -6,7 +6,7 @@
 #    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/01 18:52:41 by alboudje         ###   ########.fr        #
+#    Updated: 2023/03/02 11:33:59 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ BUILDDIR	= .build
 OBJS		= $(SRCS:%.c=$(BUILDDIR)/%.o) 
 DEPS		= $(SRCS:%.c=$(BUILDDIR)/%.d) 
 CC			= cc
-CCWFLGS		= -Wall -Wextra -Werror #-g -fsanitize=address
+CCWFLGS		= -Wall -Wextra -Werror -g -fsanitize=address
 CCDBGFLGS	= -DDEBUG
 CCDEPSFLAGS	= -MMD -MP
 RM			= rm -Rf

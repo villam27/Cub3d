@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 19:14:49 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:12:34 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <float.h>
 # include <string.h>
 
-# define MAP_WIDTH 20
-# define MAP_HEIGHT 20
+# define MAP_WIDTH 34
+# define MAP_HEIGHT 14
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720

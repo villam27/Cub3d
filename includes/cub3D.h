@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:32:31 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 12:10:56 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # define MAP_WIDTH 20
 # define MAP_HEIGHT 20
 
-# define WIN_WIDTH 1200
-# define WIN_HEIGHT 720
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 typedef struct s_vec2d
 {
@@ -60,6 +60,39 @@ typedef struct s_ray
 	t_vec2d	step;
 	t_vec2d	pos;
 }	t_ray;
+
+typedef struct s_raycast
+{
+	int				hit;
+	int				side;
+	float			x_view;
+	float			wall_dist;
+	float			wall_x;
+	int				start;
+	int				end;
+	int				wall_size;
+	t_ilx_texture	*current_texture;
+	int				texture_x;
+	int				texture_y;
+	float			texture_step;
+	float			texture_pos;
+	int				mask;
+}	t_raycast;
+
+typedef struct s_backgound
+{
+	t_vec2d		ray_dir_1;
+	t_vec2d		ray_dir_2;
+	t_vec2d		step;
+	t_vec2d		floor_pos;
+	t_ivec2d	cell;
+	t_ivec2d	f_texture_coord;
+	int			horizon;
+	float		camera_z;
+	float		camera_dist;
+	uint32_t	*floor;
+	uint32_t	*ceiling;
+}	t_background;
 
 /*
 	TODO: Remove test variables
@@ -100,6 +133,8 @@ int		move_mouse(void *param);
 void	move(t_data *data, float value, float angle_offset);
 void	move_player(t_data *data, float delta);
 
+void	init_ray_val(t_data *data, t_raycast *raycast, int i);
+void	init_step_ray(t_data *data);
 void	update_ray(t_data *data);
 
 int		on_clic(int key, int x, int y, t_data *data);

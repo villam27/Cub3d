@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 13:53:58 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 10:42:38 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	ft_render_next_frame(t_data *data)
 	static long		prev_time;
 	static long		frame_time;
 	static double	time = 0;
+	static int i = 0;
 
 	prev_time = get_start_time();
 	move_player(data, time);
@@ -66,11 +67,13 @@ int	ft_render_next_frame(t_data *data)
 	ilx_draw_gui_text(data->ilx, data->current_gui);
 	ilx_render_copy(data->ilx->window, data->test_texutre,
 		&data->test_pts, &data->test_rect);
-	data->test_rect.x += 28;
+	if ((i % 10) == 0)
+		data->test_rect.x += 28;
 	if (data->test_rect.x > 28 * 5)
 		data->test_rect.x = 0;
 	frame_time = get_frame_time(prev_time);
 	time = frame_time / 1000.0;
+	i++;
 	//printf("%f\n", 1 / time);
 	return (0);
 }
@@ -107,9 +110,9 @@ int	main(void)
 	player.pos.x = 4.0f;
 	player.pos.y = 5.0f;
 	player.angle = M_PI_2;
-	player.player_speed = 9.5f;
+	player.player_speed = 8.5f;
 	player.rotation_speed = M_PI;
-	player.sprint_add = 3.0f;
+	player.sprint_add = 5.0f;
 	map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
@@ -148,8 +151,8 @@ int	main(void)
 	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEUP, 1L << 3, on_release, &data);
 	mlx_hook(ilx.window->window, ON_KEYDOWN, 1L << 0, ft_press_key, &data);
-	mlx_hook(ilx.window->window, ON_MOUSEMOVE, 1L << 6, rotate, &data);
 	mlx_hook(ilx.window->window, ON_KEYUP, 1L << 1, ft_up_key, &data);
+	mlx_hook(ilx.window->window, ON_MOUSEMOVE, 1L << 6, rotate, &data);
 	mlx_hook(ilx.window->window, EXIT_WIN, 1L << 5, move_mouse, &data);
 	mlx_loop(ilx.mlx);
 

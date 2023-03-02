@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:25:39 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 11:28:00 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 11:06:53 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	ft_press_key(int keycode, t_data *data)
 {
 	if (keycode == LSHIFT)
 		data->player->player_speed += data->player->sprint_add;
+	if (keycode == ESC)
+		quit(data);
 	if (data->current_gui)
 		return (0);
 	if (keycode == RIGHT)
@@ -57,8 +59,6 @@ int	ft_press_key(int keycode, t_data *data)
 		data->key_tab[4] = 1;
 	else if (keycode == D)
 		data->key_tab[5] = 1;
-	else if (keycode == ESC)
-		quit(data);
 	return (0);
 }
 

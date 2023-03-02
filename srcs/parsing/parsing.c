@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/02 11:58:34 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:19:22 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,12 @@ int	load_maps(t_data *data, char *path)
 		line = get_next_line(fd_map);
 	}
 	ft_printf(">> w:%d h:%d\n", map_data->h, map_data->w);
-	data->map = malloc(sizeof(int *) * 14);
+	data->map = malloc(sizeof(int *) * map_data->h);
 	if (!data->map)
 		return (free(line), 0);
 	while (line)
 	{
-		data->map[i] = set_line(line, 34);
+		data->map[i] = set_line(line, map_data->w);
 		i++;
 		free(line);
 		line = get_next_line(fd_map);

@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:48 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/24 12:21:33 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 12:27:37 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ void	ilx_draw_fill_rect(t_window *win, t_rectangle *rect, uint32_t color)
 		j = 0;
 		while (j < rect->width)
 		{
-			//ilx_pixel_put(win, j + rect->x, i + rect->y, color);
-			//if (i == 0 && j == 0)
-			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
-			win->renderer[(j + (int)rect->x + (i + (int)rect->y) * win->win_width)] = color;
+			win->renderer[(j + (int)rect->x + (i + (int)rect->y)
+					* win->win_width)] = color;
 			j++;
 		}
 		i++;
@@ -71,10 +69,8 @@ void	ilx_draw_rect(t_window *win, t_rectangle *rect, uint32_t color)
 		{
 			if (j == 1 && i != 0 && i != rect->height - 1)
 				j = rect->width - 1;
-			//ilx_pixel_put(win, j + rect->x, i + rect->y, color);
-			//if (i == 0 && j == 0)
-			//	printf("%p\n", &img[j + (int)rect->x + (i + (int)rect->y) * WIN_WIDTH]);
-			win->renderer[(j + (int)rect->x + (i + (int)rect->y) * win->win_width)] = color;
+			win->renderer[(j + (int)rect->x + (i + (int)rect->y)
+					* win->win_width)] = color;
 			j++;
 		}
 		i++;

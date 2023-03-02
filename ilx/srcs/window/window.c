@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 10:00:23 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/21 14:46:00 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 12:18:06 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ilx_clear_window(t_window *window, uint32_t color)
 {
 	int	i;
 	int	max;
-	
+
 	i = 0;
 	max = window->win_height * window->win_width;
 	while (i < max)
@@ -50,7 +50,6 @@ void	ilx_clear_window(t_window *window, uint32_t color)
 		i++;
 	}
 }
-
 
 t_window	*ft_new_window(void *win, char *win_name)
 {

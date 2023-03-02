@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ilx_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/28 17:01:43 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:21:58 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_ilx_texture	*ilx_create_texture(t_ilx *ilx, char *path)
 void	ilx_draw_texture(t_window *win, int x, int y,
 			t_ilx_texture *tex)
 {
-	//char	*dst;
 	uint32_t	*src;
 	int			i;
 	int			j;
@@ -52,28 +51,25 @@ void	ilx_draw_texture(t_window *win, int x, int y,
 		i_y = (i + y) * win->win_width + x;
 		while (j < tex->w)
 		{
-			//if (x < win->win_width && x >= 0 && y < win->win_height && y >= 0)
-			//{
-				//dst = (win->addr + ((y + i) * win->line_length + (x + j)
-				//			*(win->bits_per_pixel >> 3)));
-				src = (tex->buffer + (i_w + j));
-				if (*src != 0xff000000)
-					win->renderer[i_y + j] = *src;
-			//}
+			src = (tex->buffer + (i_w + j));
+			if (*src != 0xff000000)
+				win->renderer[i_y + j] = *src;
 			j++;
 		}
 		i++;
 	}
 }
 
-static void	ilx_render_px(t_window *win, t_ilx_texture *tex, t_rectangle *values)
+static void	ilx_render_px(t_window *win, t_ilx_texture *tex,
+	t_rectangle *values)
 {
 	char		*dst;
 	char		*src;
 
 	dst = (win->addr + (((int)values->x) * win->line_length + ((int)values->y)
 				*(win->bits_per_pixel >> 3)));
-	src = (tex->addr + (((int)values->width) * tex->line_len + ((int)values->height)
+	src = (tex->addr + (((int)values->width) * tex->line_len
+				+ ((int)values->height)
 				*(tex->bits_per_px >> 3)));
 	if (*(unsigned *)src != 0xff000000)
 		*(unsigned long *)dst = *(unsigned long *)src;
@@ -96,13 +92,10 @@ void	ilx_render_copy(t_window *win, t_ilx_texture *tex,
 			if (tex->flip)
 				p = ilx_new_rect(pos->y + i, pos->x + j, rec->y + i,
 						rec->width + rec->x - j - 1);
-			/*if ((pos->x < MAX_MAP && pos->x >= 0 && pos->y < MAX_MAP
-					&& pos->y >= 0) && (rec->x + j < tex->w && rec->x + j >= 0
-					&& rec->y + i < tex->h && rec->y + i >= 0))*/
 			ilx_render_px(win, tex, &p);
 			j++;
 		}
-	i++;
+		i++;
 	}
 }
 

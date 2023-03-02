@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:46 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/25 11:37:55 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 12:26:38 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,15 @@ void	ilx_draw_line(t_window *win, t_line *line, int size, uint32_t colors)
 	i = 0;
 	while (i <= step)
 	{
-		//if (((int)x + (int)y * win->win_width) >= 0 && ((int)x + (int)y * win->win_width) < win->win_height * win->win_width)
-			win->renderer[((int)x + (int)y * win->win_width)] = colors;
-		//ilx_pixel_put(win, x, y, colors);
+		win->renderer[((int)x + (int)y * win->win_width)] = colors;
 		x += ln.p1.x;
 		y += ln.p1.y;
 		i++;
 	}
 }
 
-void	ilx_draw_texture_line(t_window *win, t_line *line, int size, uint32_t *colors)
+void	ilx_draw_texture_line(t_window *win, t_line *line, int size,
+	uint32_t *colors)
 {
 	t_line	ln;
 	float	x;
@@ -88,29 +87,12 @@ void	ilx_draw_texture_line(t_window *win, t_line *line, int size, uint32_t *colo
 	ln.p1.y /= step;
 	x = line->p1.x;
 	y = line->p1.y;
-	i = 0;
-	while (i <= step)
+	i = -1;
+	while (++i <= step)
 	{
-		//if (((int)x + (int)y * win->win_width) >= 0 && ((int)x + (int)y * win->win_width) < win->win_height * win->win_width)
-			win->renderer[((int)x + (int)y * win->win_width)] = colors[(int)step - i - 1];
-		//ilx_pixel_put(win, x, y, colors);
+		win->renderer[((int)x + (int)y * win->win_width)]
+			= colors[(int)step - i - 1];
 		x += ln.p1.x;
 		y += ln.p1.y;
-		i++;
-	}
-}
-
-#include <string.h>
-
-void	ilx_draw_line_vertical(t_window *win, int start, int end, int x, uint32_t *colors)
-{
-	int	i;
-
-	i = 0;
-	while (start < end)
-	{
-		win->renderer[(x + start * win->win_width)] = colors[i];
-		start++;
-		i++;
 	}
 }

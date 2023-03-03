@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/03 12:08:21 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:12:48 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@
 int	get_id(char *line)
 {
 	if (line[0] == '\n')
-		return (-1);
+		return (EMPTY_LINE);
 	if (!ft_strncmp(line, "NO", 2))
-		return (1);
+		return (NO);
 	if (!ft_strncmp(line, "SO", 2))
-		return (2);
+		return (SO);
 	if (!strncmp(line, "WE", 2))
-		return (3);
+		return (WE);
 	if (!strncmp(line, "EA", 2))
-		return (4);
+		return (EA);
 	if (!strncmp(line, "F", 1))
-		return (5);
+		return (FL);
 	if (!strncmp(line, "C", 1))
-		return (6);
-	return (0);
+		return (CE);
+	return (NO_ID);
 }
 
 void	set_id(int id, t_data *map_data, char *line)
@@ -38,22 +38,23 @@ void	set_id(int id, t_data *map_data, char *line)
 
 	len = ft_strlen(line);
 	line[len - 1] = 0;
-	if (id < 0)
+	if (id == EMPTY_LINE)
 		return ;
-	if (id == 1)
+	if (id == NO)
 		map_data->north_texture = ilx_create_texture(map_data->ilx, line + 3);
-	if (id == 2)
+	if (id == SO)
 		map_data->south_texture = ilx_create_texture(map_data->ilx, line + 3);
-	if (id == 3)
+	if (id == WE)
 		map_data->west_texture = ilx_create_texture(map_data->ilx, line + 3);
-	if (id == 4)
+	if (id == EA)
 		map_data->east_texture = ilx_create_texture(map_data->ilx, line + 3);
 	ft_printf("%s\n", line + 3);
 }
 
-int	check_data_integrity(t_map_data *map_data)
+int	check_data_integrity(t_data *data)
 {
-	(void)map_data;
+	if (data->north_texture == NULL || data->south_texture == NULL || data->west_texture == NULL || data->east_texture == NULL)
+		return (1);
 	return (0);
 }
 
@@ -81,8 +82,8 @@ t_map_data	*get_map_data(char *path, t_data *data)
 		return (NULL);
 	fd_map = open(path, O_RDONLY);
 	line = get_next_line(fd_map);
-	id = -1;
-	while (id != 0)
+	id = EMPTY_LINE;
+	while (id != NO_ID)
 	{
 		id = get_id(line);
 		if (id)
@@ -92,7 +93,7 @@ t_map_data	*get_map_data(char *path, t_data *data)
 			line = get_next_line(fd_map);
 		}
 	}
-	if (check_data_integrity(map_data))
+	if (check_data_integrity(data))
 		return (free(line), NULL); //free all
 	while (line)
 	{
@@ -121,44 +122,44 @@ int *set_line(char *line, int len)
 	(void)line;
 	while (i < len)
 	{
-		line_data[i] = 2;
+		line_data[i] = NOTHING;
 		if (l_len > i && line[i] == '1')
-			line_data[i] = 1;
+			line_data[i] = WALL;
 		if (l_len > i && line[i] == '0')
-			line_data[i] = 0;
+			line_data[i] = FLOOR;
 		i++;
 	}
 	return (line_data);
 }
 
-int	**copy_map(int **map, int w, int h)
+int	**copy_map(int **map, t_map_data *map_data)
 {
 	int	**map_cpy;
 	int	i;
 	int	j;
 
 	i = 0;
-	map_cpy = malloc(sizeof(int *) * (h + 2));
+	map_cpy = malloc(sizeof(int *) * (map_data->h + 2));
 	if (!map_cpy)
 		return (NULL);
-	while (i < h + 2)
+	while (i < map_data->h + 2)
 	{
-		map_cpy[i] = malloc(sizeof(int) * (w + 1));
+		map_cpy[i] = malloc(sizeof(int) * (map_data->w + 1));
 		if (!map_cpy[i])
 			return (NULL);
 		j = 0;
-		while (j < w + 1)
+		while (j < map_data->w + 1)
 		{
-			map_cpy[i][j] = 2;
+			map_cpy[i][j] = NOTHING;
 			j++;
 		}
 		i++;
 	}
 	i = 1;
-	while (i < h + 1)
+	while (i < map_data->h + 1)
 	{
 		j = 1;
-		while (j < w)
+		while (j < map_data->w)
 		{
 			map_cpy[i][j] = map[i - 1][j - 1];
 			j++;
@@ -171,36 +172,46 @@ int	**copy_map(int **map, int w, int h)
 
 void	check_walls(int **map, int x, int y, int *closed)
 {
-	
-	ft_printf("%d %d\n", x, y);
-	if (map[y][x] == 0)
+	if (map[y][x] == FLOOR)
 		*closed = 0;
-	if (map[y][x] == 2)
-		map[y][x] = 9;
+	if (map[y][x] == NOTHING)
+		map[y][x] = BT_FILL;
 	else
 		return ;
-	if (x - 1 > 0 && map[y][x - 1] >= 0)
+	if (x - 1 > 0 && map[y][x - 1] >= FLOOR)
 		check_walls(map, x - 1, y, closed);
-	if (x + 1 < MAP_WIDTH + 1&& map[y][x + 1] >= 0)
+	if (x + 1 < MAP_WIDTH + 1 && map[y][x + 1] >= FLOOR)
 		check_walls(map, x + 1, y, closed);
-	if (y + 1 < MAP_HEIGHT + 2 && map[y + 1][x] >= 0)
+	if (y + 1 < MAP_HEIGHT + 2 && map[y + 1][x] >= FLOOR)
 		check_walls(map, x, y + 1, closed);
-	if (y - 1 > 0 && map[y - 1][x] >= 0)
+	if (y - 1 > 0 && map[y - 1][x] >= FLOOR)
 		check_walls(map, x, y - 1, closed);
 }
 
-int	is_valid_map(int **map, int w, int h)
+void	free_map(int **map, int h)
+{
+	int	i;
+
+	i = 0;
+	while (i < h)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
+int	is_valid_map(int **map, t_map_data *map_data)
 {
 	int	**map_cpy;
 	int closed;
-	
+
 	closed = 1;
-	map_cpy = copy_map(map, w, h);
-	//ft_printf("x: %d | y: %d\n", start_pos.x , start_pos.y);
+	map_cpy = copy_map(map, map_data);
 	check_walls(map_cpy, 0, 0, &closed);
-	ft_printf("closed :%d\n", closed);
 	print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
-	return (0);
+	free_map(map_cpy, map_data->h + 2);
+	return (closed);
 }
 
 int	load_maps(t_data *data, char *path)
@@ -209,6 +220,7 @@ int	load_maps(t_data *data, char *path)
 	char		*line;
 	int			fd_map;
 	int			i;
+	int			valid;
 
 	i = 0;
 	map_data = get_map_data(path, data);
@@ -219,7 +231,6 @@ int	load_maps(t_data *data, char *path)
 		free(line);
 		line = get_next_line(fd_map);
 	}
-	ft_printf(">> w:%d h:%d\n", map_data->h, map_data->w);
 	data->map = malloc(sizeof(int *) * map_data->h);
 	if (!data->map)
 		return (free(line), 0);
@@ -230,9 +241,9 @@ int	load_maps(t_data *data, char *path)
 		free(line);
 		line = get_next_line(fd_map);
 	}
-	is_valid_map(data->map, map_data->w, map_data->h);
+	valid = is_valid_map(data->map, map_data);
 	free(line);
 	close(fd_map);
 	free(map_data);
-	return (1);
+	return (valid);
 }

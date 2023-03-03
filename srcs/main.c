@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/03 11:43:19 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:05:04 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	print_map(int **map, int w, int h)
 		j = 0;
 		while (j < w)
 		{
-			if (map[i][j] == 9)
+			if (map[i][j] == BT_FILL)
 				printf("\033[31m%d \033[0m", map[i][j]);
-			else if (map[i][j] == 1)
+			else if (map[i][j] == WALL)
 				printf("\033[33m%d \033[0m", map[i][j]);
 			else
 				printf("%d ", map[i][j]);
@@ -99,6 +99,9 @@ void	print_map(int **map, int w, int h)
 	}
 }
 
+/*
+	TODO: Exit if not valid map
+*/
 int	main(void)
 {
 	t_ilx			ilx;
@@ -128,11 +131,12 @@ int	main(void)
 	data.gui = test;
 	data.current_gui = data.gui;
 	data.ilx = &ilx;
-	load_maps(&data, "maps/map01.cub");
-	/*data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
-	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
-	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
-	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");*/
+	data.west_texture = NULL;
+	data.north_texture = NULL;
+	data.south_texture = NULL;
+	data.east_texture = NULL;
+	if (!load_maps(&data, "maps/map01.cub"))
+		ft_printf("Error not a valid map exit\n");
 	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
 	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");

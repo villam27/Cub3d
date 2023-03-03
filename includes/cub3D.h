@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/03 11:29:22 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:12:17 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
+
+enum e_map_value
+{
+	FLOOR = 0,
+	WALL = 1,
+	NOTHING = 2,
+	BT_FILL = 9
+};
+
+enum e_map_identifier
+{
+	EMPTY_LINE = -1,
+	NO_ID,
+	NO,
+	SO,
+	WE,
+	EA,
+	FL,
+	CE
+};
 
 typedef struct s_vec2d
 {

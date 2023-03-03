@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 11:59:16 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:43:19 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,23 @@ int	ft_render_next_frame(t_data *data)
 	return (0);
 }
 
-void	print_map(int **map)
+void	print_map(int **map, int w, int h)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < MAP_HEIGHT)
+	while (i < h)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < w)
 		{
-			printf("%d ", map[i][j]);
+			if (map[i][j] == 9)
+				printf("\033[31m%d \033[0m", map[i][j]);
+			else if (map[i][j] == 1)
+				printf("\033[33m%d \033[0m", map[i][j]);
+			else
+				printf("%d ", map[i][j]);
 			j++;
 		}
 		printf("\n");
@@ -143,7 +148,7 @@ int	main(void)
 
 	ilx_add_button(test, quit_b, &quit);
 
-	print_map(data.map);
+	//print_map(data.map);
 	mlx_loop_hook(ilx.mlx, ft_render_next_frame, &data);
 	mlx_hook(ilx.window->window, ON_DESTROY, 0, cross_quit, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, &data);

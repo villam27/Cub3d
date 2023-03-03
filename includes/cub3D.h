@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 11:12:34 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:29:22 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int			ft_up_key(int keycode, t_data *data);
 long		get_frame_time(long start_time);
 long		get_start_time(void);
 
+void		print_map(int **map, int w, int h);
 int			load_maps(t_data *data, char *path);
 
 void		*quit(void *param);

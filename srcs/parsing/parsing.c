@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/02 12:19:22 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 12:08:21 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,89 @@ int *set_line(char *line, int len)
 	line_data = malloc(sizeof(int) * len);
 	if (!line_data)
 		return (NULL);
-	//memset(line_data, 0, len);
 	(void)line;
 	while (i < len)
 	{
-		line_data[i] = 0;
+		line_data[i] = 2;
 		if (l_len > i && line[i] == '1')
 			line_data[i] = 1;
+		if (l_len > i && line[i] == '0')
+			line_data[i] = 0;
 		i++;
 	}
 	return (line_data);
+}
+
+int	**copy_map(int **map, int w, int h)
+{
+	int	**map_cpy;
+	int	i;
+	int	j;
+
+	i = 0;
+	map_cpy = malloc(sizeof(int *) * (h + 2));
+	if (!map_cpy)
+		return (NULL);
+	while (i < h + 2)
+	{
+		map_cpy[i] = malloc(sizeof(int) * (w + 1));
+		if (!map_cpy[i])
+			return (NULL);
+		j = 0;
+		while (j < w + 1)
+		{
+			map_cpy[i][j] = 2;
+			j++;
+		}
+		i++;
+	}
+	i = 1;
+	while (i < h + 1)
+	{
+		j = 1;
+		while (j < w)
+		{
+			map_cpy[i][j] = map[i - 1][j - 1];
+			j++;
+		}
+		i++;
+	}
+	print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
+	return (map_cpy);
+}
+
+void	check_walls(int **map, int x, int y, int *closed)
+{
+	
+	ft_printf("%d %d\n", x, y);
+	if (map[y][x] == 0)
+		*closed = 0;
+	if (map[y][x] == 2)
+		map[y][x] = 9;
+	else
+		return ;
+	if (x - 1 > 0 && map[y][x - 1] >= 0)
+		check_walls(map, x - 1, y, closed);
+	if (x + 1 < MAP_WIDTH + 1&& map[y][x + 1] >= 0)
+		check_walls(map, x + 1, y, closed);
+	if (y + 1 < MAP_HEIGHT + 2 && map[y + 1][x] >= 0)
+		check_walls(map, x, y + 1, closed);
+	if (y - 1 > 0 && map[y - 1][x] >= 0)
+		check_walls(map, x, y - 1, closed);
+}
+
+int	is_valid_map(int **map, int w, int h)
+{
+	int	**map_cpy;
+	int closed;
+	
+	closed = 1;
+	map_cpy = copy_map(map, w, h);
+	//ft_printf("x: %d | y: %d\n", start_pos.x , start_pos.y);
+	check_walls(map_cpy, 0, 0, &closed);
+	ft_printf("closed :%d\n", closed);
+	print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
+	return (0);
 }
 
 int	load_maps(t_data *data, char *path)
@@ -157,6 +230,7 @@ int	load_maps(t_data *data, char *path)
 		free(line);
 		line = get_next_line(fd_map);
 	}
+	is_valid_map(data->map, map_data->w, map_data->h);
 	free(line);
 	close(fd_map);
 	free(map_data);

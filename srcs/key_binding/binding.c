@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:25:39 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 11:06:53 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 15:25:11 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ int	on_release(int key, int x, int y, t_data *data)
 int	ft_press_key(int keycode, t_data *data)
 {
 	if (keycode == LSHIFT)
-		data->player->player_speed += data->player->sprint_add;
+		data->player->player_speed = data->player->sprint_speed;
+	if (keycode == LCTRL)
+		data->player->player_speed = data->player->sneak_speed;
 	if (keycode == ESC)
 		quit(data);
 	if (data->current_gui)
@@ -64,8 +66,11 @@ int	ft_press_key(int keycode, t_data *data)
 
 int	ft_up_key(int keycode, t_data *data)
 {
-	if (keycode == LSHIFT)
-		data->player->player_speed -= data->player->sprint_add;
+	if ((keycode == LSHIFT
+			&& data->player->player_speed == data->player->sprint_speed)
+		|| (keycode == LCTRL
+			&& data->player->player_speed == data->player->sneak_speed))
+		data->player->player_speed = data->player->normal_speed;
 	if (data->current_gui)
 		return (0);
 	if (keycode == RIGHT)

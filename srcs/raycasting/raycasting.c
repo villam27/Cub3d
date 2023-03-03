@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 14:54:02 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 11:35:33 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 15:47:38 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	update_ray(t_data *data)
 		raycast.start *= data->ilx->window->win_width;
 		raycast.end *= data->ilx->window->win_width;
 		draw_wall(data, &raycast, x);
+		data->z_buffer[i] = raycast.wall_dist;
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 12:10:56 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/02 15:47:29 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # define MAP_WIDTH 20
 # define MAP_HEIGHT 20
 
-# define WIN_WIDTH 1920
-# define WIN_HEIGHT 1080
+# define WIN_WIDTH 1200
+# define WIN_HEIGHT 720
 
 typedef struct s_vec2d
 {
@@ -48,7 +48,9 @@ typedef struct s_player
 	t_vec2d	plane;
 	float	angle;
 	float	player_speed;
-	float	sprint_add;
+	float	normal_speed;
+	float	sprint_speed;
+	float	sneak_speed;
 	float	rotation_speed;
 }	t_player;
 
@@ -60,6 +62,11 @@ typedef struct s_ray
 	t_vec2d	step;
 	t_vec2d	pos;
 }	t_ray;
+
+typedef struct s_minimap
+{
+	t_rectangle	background;
+}	t_minimap;
 
 typedef struct s_raycast
 {
@@ -117,7 +124,9 @@ typedef struct s_data
 	t_point			test_pts;
 	t_rectangle		test_rect;
 	t_ray			ray;
+	float			*z_buffer;
 	int				prev_x;
+	t_minimap		minimap;
 }	t_data;
 
 void	ilx_change_button_color(t_data *data);

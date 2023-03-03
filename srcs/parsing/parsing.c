@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/03 16:12:48 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 19:38:30 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,36 @@ int	get_id(char *line)
 	return (NO_ID);
 }
 
-void	set_id(int id, t_data *map_data, char *line)
+int		set_texture(t_ilx_texture **texture, t_data *data, char *line)
+{
+	if (*texture == NULL)
+		*texture = ilx_create_texture(data->ilx, line + 3);
+	else
+		return (0);
+	return (1);
+}
+
+int	set_id(int id, t_data *map_data, char *line)
 {
 	int	len;
 
 	len = ft_strlen(line);
 	line[len - 1] = 0;
 	if (id == EMPTY_LINE)
-		return ;
+		return (1);
 	if (id == NO)
-		map_data->north_texture = ilx_create_texture(map_data->ilx, line + 3);
+		return (set_texture(&map_data->north_texture, map_data, line));
 	if (id == SO)
-		map_data->south_texture = ilx_create_texture(map_data->ilx, line + 3);
+		return (set_texture(&map_data->south_texture, map_data, line));
 	if (id == WE)
-		map_data->west_texture = ilx_create_texture(map_data->ilx, line + 3);
+		return (set_texture(&map_data->west_texture, map_data, line));
 	if (id == EA)
-		map_data->east_texture = ilx_create_texture(map_data->ilx, line + 3);
-	ft_printf("%s\n", line + 3);
+		return (set_texture(&map_data->east_texture, map_data, line));
+	if (id == FL)
+		map_data->floor_texture = ilx_create_texture(map_data->ilx, line + 2);
+	if (id == CE)
+		map_data->ceiling_texture = ilx_create_texture(map_data->ilx, line + 2);
+	return (1);
 }
 
 int	check_data_integrity(t_data *data)
@@ -88,7 +101,8 @@ t_map_data	*get_map_data(char *path, t_data *data)
 		id = get_id(line);
 		if (id)
 		{
-			set_id(id, data, line);
+			if (!set_id(id, data, line))
+				ft_printf("texture already exist\n");
 			free(line);
 			line = get_next_line(fd_map);
 		}
@@ -166,26 +180,26 @@ int	**copy_map(int **map, t_map_data *map_data)
 		}
 		i++;
 	}
-	print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
+	//print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
 	return (map_cpy);
 }
 
-void	check_walls(int **map, int x, int y, int *closed)
+void	check_walls(int **map, int x, int y, t_map_data *map_data)
 {
 	if (map[y][x] == FLOOR)
-		*closed = 0;
+		map_data->closed = 0;
 	if (map[y][x] == NOTHING)
 		map[y][x] = BT_FILL;
 	else
 		return ;
 	if (x - 1 > 0 && map[y][x - 1] >= FLOOR)
-		check_walls(map, x - 1, y, closed);
-	if (x + 1 < MAP_WIDTH + 1 && map[y][x + 1] >= FLOOR)
-		check_walls(map, x + 1, y, closed);
-	if (y + 1 < MAP_HEIGHT + 2 && map[y + 1][x] >= FLOOR)
-		check_walls(map, x, y + 1, closed);
+		check_walls(map, x - 1, y, map_data);
+	if (x + 1 < map_data->w + 1 && map[y][x + 1] >= FLOOR)
+		check_walls(map, x + 1, y, map_data);
+	if (y + 1 < map_data->h + 2 && map[y + 1][x] >= FLOOR)
+		check_walls(map, x, y + 1, map_data);
 	if (y - 1 > 0 && map[y - 1][x] >= FLOOR)
-		check_walls(map, x, y - 1, closed);
+		check_walls(map, x, y - 1, map_data);
 }
 
 void	free_map(int **map, int h)
@@ -204,14 +218,14 @@ void	free_map(int **map, int h)
 int	is_valid_map(int **map, t_map_data *map_data)
 {
 	int	**map_cpy;
-	int closed;
+	map_data->closed = 1;
 
-	closed = 1;
 	map_cpy = copy_map(map, map_data);
-	check_walls(map_cpy, 0, 0, &closed);
-	print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
+	check_walls(map_cpy, 0, 0, map_data);
+	print_map(map_cpy, map_data->w + 1, map_data->h + 2);
 	free_map(map_cpy, map_data->h + 2);
-	return (closed);
+	ft_printf(">>>> %d\n", map_data->closed);
+	return (map_data->closed);
 }
 
 int	load_maps(t_data *data, char *path)

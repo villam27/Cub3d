@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/03 16:05:04 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 18:59:50 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,10 @@ int	main(void)
 	data.north_texture = NULL;
 	data.south_texture = NULL;
 	data.east_texture = NULL;
+	data.floor_texture = NULL;
+	data.ceiling_texture = NULL;
 	if (!load_maps(&data, "maps/map01.cub"))
 		ft_printf("Error not a valid map exit\n");
-	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
-	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");
 	data.test_pts = ilx_new_point(50, 50);
 	data.test_rect = ilx_new_rect(0, 0, 28, 28);

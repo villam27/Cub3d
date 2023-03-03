@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/03 16:12:17 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/03 19:36:12 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <float.h>
 # include <string.h>
 
-# define MAP_WIDTH 34
-# define MAP_HEIGHT 14
+# define MAP_WIDTH 31
+# define MAP_HEIGHT 21
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
@@ -85,6 +85,7 @@ typedef struct s_map_data
 {
 	int	w;
 	int	h;
+	int	closed;
 	t_ilx_texture	*north_texture;
 	t_ilx_texture	*south_texture;
 	t_ilx_texture	*east_texture;

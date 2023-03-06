@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 15:47:29 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/06 15:46:05 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,31 @@
 # include <float.h>
 # include <string.h>
 
-# define MAP_WIDTH 20
-# define MAP_HEIGHT 20
+# define MAP_WIDTH 31
+# define MAP_HEIGHT 21
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
+
+enum e_map_value
+{
+	FLOOR = 0,
+	WALL = 1,
+	NOTHING = 2,
+	BT_FILL = 9
+};
+
+enum e_map_identifier
+{
+	EMPTY_LINE = -1,
+	NO_ID,
+	NO,
+	SO,
+	WE,
+	EA,
+	FL,
+	CE
+};
 
 typedef struct s_vec2d
 {
@@ -101,6 +121,21 @@ typedef struct s_backgound
 	uint32_t	*ceiling;
 }	t_background;
 
+typedef struct s_map_data
+{
+	int	w;
+	int	h;
+	int	closed;
+	t_ilx_texture	*north_texture;
+	t_ilx_texture	*south_texture;
+	t_ilx_texture	*east_texture;
+	t_ilx_texture	*west_texture;
+	t_ilx_texture	*floor_texture;
+	t_ilx_texture	*ceiling_texture;
+	uint32_t		floor_color;
+	uint32_t		ceiling_color;
+}	t_map_data;
+
 /*
 	TODO: Remove test variables
 */
@@ -129,32 +164,36 @@ typedef struct s_data
 	t_minimap		minimap;
 }	t_data;
 
-void	ilx_change_button_color(t_data *data);
+void		ilx_change_button_color(t_data *data);
 
-void	draw_textured_background(t_data *data);
-void	draw_background(t_window *window, uint32_t color_ceiling,
-			uint32_t color_floor);
+void		draw_textured_background(t_data *data);
+void		draw_background(t_window *window, uint32_t color_ceiling,
+				uint32_t color_floor);
 
-void	update_player_dir(t_player *player);
-void	update_player_plane(t_player *player);
-int		rotate(int x, int y, t_data *data);
-int		move_mouse(void *param);
-void	move(t_data *data, float value, float angle_offset);
-void	move_player(t_data *data, float delta);
+void		update_player_dir(t_player *player);
+void		update_player_plane(t_player *player);
+int			rotate(int x, int y, t_data *data);
+int			move_mouse(void *param);
+void		move(t_data *data, float value, float angle_offset);
+void		move_player(t_data *data, float delta);
 
-void	init_ray_val(t_data *data, t_raycast *raycast, int i);
-void	init_step_ray(t_data *data);
-void	update_ray(t_data *data);
+void		update_ray(t_data *data);
 
-int		on_clic(int key, int x, int y, t_data *data);
-int		on_release(int key, int x, int y, t_data *data);
-int		ft_press_key(int keycode, t_data *data);
-int		ft_up_key(int keycode, t_data *data);
+void		init_ray_val(t_data *data, t_raycast *raycast, int i);
+void		init_step_ray(t_data *data);
+void		update_ray(t_data *data);
+int			on_clic(int key, int x, int y, t_data *data);
+int			on_release(int key, int x, int y, t_data *data);
+int			ft_press_key(int keycode, t_data *data);
+int			ft_up_key(int keycode, t_data *data);
 
-long	get_frame_time(long start_time);
-long	get_start_time(void);
+long		get_frame_time(long start_time);
+long		get_start_time(void);
 
-void	*quit(void *param);
-int		cross_quit(void *param);
+void		print_map(int **map, int w, int h);
+int			load_maps(t_data *data, char *path);
+
+void		*quit(void *param);
+int			cross_quit(void *param);
 
 #endif

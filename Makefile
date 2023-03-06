@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+         #
+#    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/02 15:48:35 by lcrimet          ###   ########lyon.fr    #
+#    Updated: 2023/03/06 15:45:23 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS		= ilx/srcs/window/window.c \
 			  srcs/raycasting/raycasting.c \
 			  srcs/raycasting/raycasting_init.c \
 			  srcs/time/time.c \
+			  srcs/parsing/parsing.c \
 			  srcs/quit.c\
 
 HEADERS		= includes \
@@ -56,7 +57,7 @@ BUILDDIR	= .build
 OBJS		= $(SRCS:%.c=$(BUILDDIR)/%.o) 
 DEPS		= $(SRCS:%.c=$(BUILDDIR)/%.d) 
 CC			= cc
-CCWFLGS		= -Wall -Wextra -Werror #-g -fsanitize=address
+CCWFLGS		= -Wall -Wextra -Werror -g -fsanitize=address
 CCDBGFLGS	= -DDEBUG
 CCDEPSFLAGS	= -MMD -MP
 RM			= rm -Rf

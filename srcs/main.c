@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/03 10:42:26 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/06 15:46:32 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,23 @@ int	ft_render_next_frame(t_data *data)
 	return (0);
 }
 
-void	print_map(int **map)
+void	print_map(int **map, int w, int h)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < MAP_HEIGHT)
+	while (i < h)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < w)
 		{
-			printf("%d ", map[i][j]);
+			if (map[i][j] == BT_FILL)
+				printf("\033[31m%d \033[0m", map[i][j]);
+			else if (map[i][j] == WALL)
+				printf("\033[33m%d \033[0m", map[i][j]);
+			else
+				printf("%d ", map[i][j]);
 			j++;
 		}
 		printf("\n");
@@ -103,6 +108,9 @@ void	print_map(int **map)
 	}
 }
 
+/*
+	TODO: Exit if not valid map
+*/
 int	main(void)
 {
 	t_ilx			ilx;
@@ -110,10 +118,11 @@ int	main(void)
 	t_gui			*test;
 	t_button		*quit_b;
 	t_player		player;
+	//int				**map;
 	int				tmp;
 
-	player.pos.x = 4.0f;
-	player.pos.y = 5.0f;
+	player.pos.x = 5.0f;
+	player.pos.y = 6.0f;
 	player.angle = M_PI_2;
 	player.normal_speed = 4.0f;
 	player.player_speed = player.normal_speed;
@@ -121,6 +130,7 @@ int	main(void)
 	player.sprint_speed = 8.0f;
 	player.sneak_speed = 2.0f;
 	data.map = create_map();
+	//map = create_map();
 	ilx = ilx_init();
 	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
 	test = ilx_create_gui();
@@ -128,16 +138,19 @@ int	main(void)
 	data.clic = 0;
 	mlx_mouse_get_pos(ilx.mlx, ilx.window->window, &data.prev_x, &tmp);
 	data.enable_input = 1;
+	//data.map = map;
 	data.player = &player;
 	data.gui = test;
 	data.current_gui = data.gui;
 	data.ilx = &ilx;
-	data.north_texture = ilx_create_texture(data.ilx, "assets/bluestone.xpm");
-	data.south_texture = ilx_create_texture(data.ilx, "assets/eagle.xpm");
-	data.west_texture = ilx_create_texture(data.ilx, "assets/redbrick.xpm");
-	data.east_texture = ilx_create_texture(data.ilx, "assets/purplestone.xpm");
-	data.floor_texture = ilx_create_texture(data.ilx, "assets/colorstone.xpm");
-	data.ceiling_texture = ilx_create_texture(data.ilx, "assets/wood.xpm");
+	data.west_texture = NULL;
+	data.north_texture = NULL;
+	data.south_texture = NULL;
+	data.east_texture = NULL;
+	data.floor_texture = NULL;
+	data.ceiling_texture = NULL;
+	if (!load_maps(&data, "maps/map01.cub"))
+		ft_printf("Error not a valid map exit\n");
 	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");
 	data.test_pts = ilx_new_point(50, 50);
 	data.test_rect = ilx_new_rect(0, 0, 28, 28);
@@ -153,7 +166,7 @@ int	main(void)
 
 	ilx_add_button(test, quit_b, &quit);
 
-	print_map(data.map);
+	//print_map(data.map);
 	mlx_loop_hook(ilx.mlx, ft_render_next_frame, &data);
 	mlx_hook(ilx.window->window, ON_DESTROY, 0, cross_quit, &data);
 	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, &data);

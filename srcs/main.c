@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/06 15:46:32 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:18:32 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int	ft_render_next_frame(t_data *data)
 		&data->test_pts, &data->test_rect);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
-	if ((i % 10) == 0)
-		data->test_rect.x += 28;
-	if (data->test_rect.x > 28 * 5)
-		data->test_rect.x = 0;
+	if ((i % 1) == 0)
+		data->test_rect.y += 108;
+	if (data->test_rect.y > 108 * 8)
+		data->test_rect.y = 84;
 	frame_time = get_frame_time(prev_time);
 	time = frame_time / 1000.0;
 	i++;
@@ -151,9 +151,9 @@ int	main(void)
 	data.ceiling_texture = NULL;
 	if (!load_maps(&data, "maps/map01.cub"))
 		ft_printf("Error not a valid map exit\n");
-	data.test_texutre = ilx_create_texture(data.ilx, "assets/lifes.xpm");
-	data.test_pts = ilx_new_point(50, 50);
-	data.test_rect = ilx_new_rect(0, 0, 28, 28);
+	data.test_texutre = ilx_create_texture(data.ilx, "assets/ui-sheetx6.xpm");
+	data.test_pts = ilx_new_point(0, 250);
+	data.test_rect = ilx_new_rect(0, 84, 48 * 6, 108);
 	data.key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data.key_tab, sizeof(uint8_t) * 6);
 	data.z_buffer = malloc(sizeof(float) * data.ilx->window->win_width);

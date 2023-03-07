@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 20:45:57 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/07 12:27:57 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:41:59 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef struct s_button
 typedef struct s_textured_buton
 {
 	t_ilx_texture	*text_ptr;
-	t_point			*pos;
+	char			*label;
+	t_point			pos;
 	t_rectangle		default_rect;
 	t_rectangle		default_tex_pos;
 	t_rectangle		under_tex_pos;
@@ -93,6 +94,7 @@ void		ilx_draw_gui_text(t_ilx *ilx, t_gui *gui);
 t_textured_button	*ilx_create_tex_button(int x, int y, char *label, t_ilx_texture *tex_ptr);
 void				ilx_set_tex_button_rects(t_textured_button *button, t_rectangle def, t_rectangle under, t_rectangle click);
 void				ilx_set_tex_button_datas(t_textured_button *button, size_t step, uint32_t speed);
+void				ilx_draw_tex_button(t_window *win, t_textured_button *button);
 
 int					ilx_add_tex_button(t_gui *gui, t_textured_button *add_button, void *(*f)(void *));
 

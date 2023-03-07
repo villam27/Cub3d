@@ -6,7 +6,7 @@
 #    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/06 15:45:23 by alboudje         ###   ########.fr        #
+#    Updated: 2023/03/07 13:23:49 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS		= ilx/srcs/window/window.c \
 			  ilx/srcs/shapes/ilx_point.c \
 			  ilx/srcs/gui/gui.c \
 			  ilx/srcs/gui/button.c \
+			  ilx/srcs/gui/textured_button.c \
 			  ilx/srcs/gui/button_utils.c \
 			  ilx/srcs/textures/ilx_texture.c \
 			  srcs/main.c \

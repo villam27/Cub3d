@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/07 11:16:54 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:24:53 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ typedef struct s_data
 	t_ilx_texture	*floor_texture;
 	t_ilx_texture	*ceiling_texture;
 	t_ilx_texture	*test_texutre;
+	t_textured_button	*tex_button;
 	t_point			test_pts;
 	t_rectangle		test_rect;
 	t_ray			ray;

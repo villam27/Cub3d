@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gui.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 20:45:57 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/15 16:40:34 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/07 12:27:57 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "ilx_shapes.h"
 # include "ilx.h"
 # include "ilx_keycodes.h"
+# include "ilx_texture.h"
 
 typedef struct s_button
 {
@@ -34,6 +35,19 @@ typedef struct s_button
 	uint32_t	current_label_color;
 	void		*(*f)(void *);
 }	t_button;
+
+typedef struct s_textured_buton
+{
+	t_ilx_texture	*text_ptr;
+	t_point			*pos;
+	t_rectangle		default_rect;
+	t_rectangle		default_tex_pos;
+	t_rectangle		under_tex_pos;
+	t_rectangle		clicked_tex_pos;
+	size_t			under_steps;
+	uint32_t		speed;
+	void			*(*f)(void *);
+}	t_textured_button;
 
 typedef struct s_gui
 {
@@ -72,5 +86,14 @@ void		ilx_destroy_gui(t_gui *gui);
 
 void		ilx_draw_gui(t_ilx *ilx, t_gui *gui);
 void		ilx_draw_gui_text(t_ilx *ilx, t_gui *gui);
+
+/*
+	TEXTURED	BUTTONS
+*/
+t_textured_button	*ilx_create_tex_button(int x, int y, char *label, t_ilx_texture *tex_ptr);
+void				ilx_set_tex_button_rects(t_textured_button *button, t_rectangle def, t_rectangle under, t_rectangle click);
+void				ilx_set_tex_button_datas(t_textured_button *button, size_t step, uint32_t speed);
+
+int					ilx_add_tex_button(t_gui *gui, t_textured_button *add_button, void *(*f)(void *));
 
 #endif

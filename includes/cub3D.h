@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/06 16:07:56 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:01:18 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,6 @@ typedef struct s_map_data
 	uint32_t		ceiling_color;
 }	t_map_data;
 
-/*
-	TODO: Remove test variables
-*/
 typedef struct s_data
 {
 	t_ilx			*ilx;
@@ -155,9 +152,6 @@ typedef struct s_data
 	t_ilx_texture	*west_texture;
 	t_ilx_texture	*floor_texture;
 	t_ilx_texture	*ceiling_texture;
-	t_ilx_texture	*test_texutre;
-	t_point			test_pts;
-	t_rectangle		test_rect;
 	t_ray			ray;
 	float			*z_buffer;
 	int				prev_x;

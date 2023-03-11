@@ -3,21 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 15:29:43 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/01 10:13:20 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/11 14:55:00 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static void	ilx_destroy_window(t_ilx *ilx)
+void	ilx_destroy_window(t_ilx *ilx)
 {
+	if (!ilx)
+		return ;
 	mlx_destroy_image(ilx->mlx, ilx->window->img);
 	mlx_destroy_window(ilx->mlx, ilx->window->window);
+	free(ilx->mlx);
 	free(ilx->window->win_name);
 	free(ilx->window);
+	free(ilx);
 }
 
 void	*quit(void *param)
@@ -25,10 +29,8 @@ void	*quit(void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	ilx_destroy_window(data->ilx);
-	mlx_destroy_display(data->ilx->mlx);
-	ilx_destroy_gui(data->gui);
-	free(data->ilx->mlx);
+	//mlx_destroy_display(data->ilx->mlx);
+	destroy_everything(data);
 	exit (0);
 }
 

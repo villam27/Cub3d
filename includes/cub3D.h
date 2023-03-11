@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 14:01:18 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:56:54 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ enum e_map_identifier
 	EA,
 	FL,
 	CE
+};
+
+enum
+{
+	SUCCESS,
+	ERROR
 };
 
 typedef struct s_vec2d
@@ -185,9 +191,12 @@ long		get_frame_time(long start_time);
 long		get_start_time(void);
 
 void		print_map(int **map, int w, int h);
+void		free_map(int **map, int h);
 int			load_maps(t_data *data, char *path);
 
 void		*quit(void *param);
+void		ilx_destroy_window(t_ilx *ilx);
+void		destroy_everything(t_data *data);
 int			cross_quit(void *param);
 
 #endif

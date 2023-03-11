@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gui.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 20:46:23 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/02/17 15:58:23 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/11 15:13:11 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ void	ilx_destroy_gui(t_gui *gui)
 {
 	int	i;
 
+	if (!gui)
+		return ;
 	i = 0;
-	while (gui->buttons[i].label)
+	while (gui->buttons && gui->buttons[i].label)
 	{
 		free(gui->buttons[i].label);
 		i++;

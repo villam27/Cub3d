@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/03 19:38:30 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:13:46 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,12 @@ t_map_data	*get_map_data(char *path, t_data *data)
 	char		*line;
 	int			id;
 
+	fd_map = open(path, O_RDONLY);
+	if (fd_map <= 0)
+		return (NULL);
 	map_data = init_map_data();
 	if (!map_data)
 		return (NULL);
-	fd_map = open(path, O_RDONLY);
 	line = get_next_line(fd_map);
 	id = EMPTY_LINE;
 	while (id != NO_ID)
@@ -187,7 +189,7 @@ int	**copy_map(int **map, t_map_data *map_data)
 void	check_walls(int **map, int x, int y, t_map_data *map_data)
 {
 	if (map[y][x] == FLOOR)
-		map_data->closed = 0;
+		map_data->closed = ERROR;
 	if (map[y][x] == NOTHING)
 		map[y][x] = BT_FILL;
 	else
@@ -206,6 +208,8 @@ void	free_map(int **map, int h)
 {
 	int	i;
 
+	if (!map)
+		return ;
 	i = 0;
 	while (i < h)
 	{
@@ -218,7 +222,7 @@ void	free_map(int **map, int h)
 int	is_valid_map(int **map, t_map_data *map_data)
 {
 	int	**map_cpy;
-	map_data->closed = 1;
+	map_data->closed = SUCCESS;
 
 	map_cpy = copy_map(map, map_data);
 	check_walls(map_cpy, 0, 0, map_data);
@@ -238,6 +242,8 @@ int	load_maps(t_data *data, char *path)
 
 	i = 0;
 	map_data = get_map_data(path, data);
+	if (!map_data)
+		return (ERROR);
 	fd_map = open(path, O_RDONLY);
 	line = get_next_line(fd_map);
 	while (get_id(line) != 0)

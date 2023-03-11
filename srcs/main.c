@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 14:05:39 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:27:33 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,25 +113,38 @@ void	destroy_everything(t_data *data)
 	ilx_destroy_texture(data->ilx, data->floor_texture);
 	ilx_destroy_texture(data->ilx, data->ceiling_texture);
 	ilx_destroy_gui(data->gui);
-	free(data->map);
-	free(data->player);
+	free_map(data->map, 18);
 	free(data->key_tab);
 	free(data->z_buffer);
-	free(data->ilx);
+	ilx_destroy_window(data->ilx);
 	free(data);
+}
+
+int	init_all(t_data *data, char *map_path)
+{
+	data->ilx = init_ilx_data();
+	data->ilx->window = ilx_create_window(data->ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
+	if (!data->ilx || !data->ilx->window)
+		return (destroy_everything(data), ERROR);
+	data->gui = ilx_create_gui();
+	if (!data->gui)
+		return (destroy_everything(data), ERROR);
+	if (load_maps(data, map_path) == ERROR)
+		return (destroy_everything(data), ERROR);
+	data->current_gui = data->gui;
+	data->clic = 0;
+	data->enable_input = 1;
+	return (SUCCESS);
 }
 
 /*
 	TODO: Exit if not valid map
 */
-int	main(void)
+int	main(int argc, char **argv)
 {
-	t_ilx			ilx;
 	t_data			*data;
-	t_gui			*test;
 	t_button		*quit_b;
 	t_player		player;
-	int				tmp;
 
 	//player init
 	player.pos.x = 2.0f;
@@ -144,26 +157,10 @@ int	main(void)
 	player.sneak_speed = 2.0f;
 	
 	//ilx init
-	ilx = ilx_init();
-	ilx.window = ilx_create_window(&ilx, WIN_WIDTH, WIN_HEIGHT, "cub3D");
-	test = ilx_create_gui();
-
 	data = create_data();
-	data->clic = 0;
-	mlx_mouse_get_pos(ilx.mlx, ilx.window->window, &data->prev_x, &tmp);
-	data->enable_input = 1;
+	if (argc != 2 || init_all(data, argv[1]) == ERROR)
+		return (ft_printf("Error on init\n"), free(data), 1);
 	data->player = &player;
-	data->gui = test;
-	data->current_gui = data->gui;
-	data->ilx = &ilx;
-	data->west_texture = NULL;
-	data->north_texture = NULL;
-	data->south_texture = NULL;
-	data->east_texture = NULL;
-	data->floor_texture = NULL;
-	data->ceiling_texture = NULL;
-	if (!load_maps(data, "maps/map01.cub"))
-		ft_printf("Error not a valid map exit\n");
 	data->key_tab = malloc(sizeof(uint8_t) * 6);
 	ft_bzero(data->key_tab, sizeof(uint8_t) * 6);
 	data->z_buffer = malloc(sizeof(float) * data->ilx->window->win_width);
@@ -174,18 +171,18 @@ int	main(void)
 	ilx_label_button_color(quit_b, 0xffffff, 0, 0);
 	ilx_add_button_label(quit_b, "Quit");
 
-	ilx_add_button(test, quit_b, &quit);
+	ilx_add_button(data->gui, quit_b, &quit);
 
 	//print_map(data.map);
-	mlx_loop_hook(ilx.mlx, ft_render_next_frame, data);
-	mlx_hook(ilx.window->window, ON_DESTROY, 0, cross_quit, data);
-	mlx_hook(ilx.window->window, ON_MOUSEDOWN, 1L << 2, on_clic, data);
-	mlx_hook(ilx.window->window, ON_MOUSEUP, 1L << 3, on_release, data);
-	mlx_hook(ilx.window->window, ON_KEYDOWN, 1L << 0, ft_press_key, data);
-	mlx_hook(ilx.window->window, ON_KEYUP, 1L << 1, ft_up_key, data);
-	mlx_hook(ilx.window->window, ON_MOUSEMOVE, 1L << 6, rotate, data);
-	mlx_hook(ilx.window->window, EXIT_WIN, 1L << 5, move_mouse, data);
-	mlx_loop(ilx.mlx);
+	mlx_loop_hook(data->ilx->mlx, ft_render_next_frame, data);
+	mlx_hook(data->ilx->window->window, ON_DESTROY, 0, cross_quit, data);
+	mlx_hook(data->ilx->window->window, ON_MOUSEDOWN, 1L << 2, on_clic, data);
+	mlx_hook(data->ilx->window->window, ON_MOUSEUP, 1L << 3, on_release, data);
+	mlx_hook(data->ilx->window->window, ON_KEYDOWN, 1L << 0, ft_press_key, data);
+	mlx_hook(data->ilx->window->window, ON_KEYUP, 1L << 1, ft_up_key, data);
+	mlx_hook(data->ilx->window->window, ON_MOUSEMOVE, 1L << 6, rotate, data);
+	mlx_hook(data->ilx->window->window, EXIT_WIN, 1L << 5, move_mouse, data);
+	mlx_loop(data->ilx->mlx);
 
 	return (0);
 }

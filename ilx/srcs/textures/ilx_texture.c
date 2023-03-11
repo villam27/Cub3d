@@ -3,19 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ilx_texture.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:47:14 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/02 12:21:58 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/11 16:54:03 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ilx_texture.h"
+#include <fcntl.h>
 
 t_ilx_texture	*ilx_create_texture(t_ilx *ilx, char *path)
 {
 	t_ilx_texture	*sprite;
+	int				fd;
 
+	fd = open(path, O_RDONLY);
+	if (fd <= 0)
+		return (close(fd), NULL);
+	close(fd);
 	sprite = malloc(sizeof(t_ilx_texture));
 	if (!sprite)
 		return (NULL);

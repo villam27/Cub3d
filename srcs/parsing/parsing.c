@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/11 15:13:46 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 16:56:22 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int	get_id(char *line)
 {
+	if (!line)
+		return (NO_ID);
 	if (line[0] == '\n')
 		return (EMPTY_LINE);
 	if (!ft_strncmp(line, "NO", 2))
@@ -37,8 +39,8 @@ int		set_texture(t_ilx_texture **texture, t_data *data, char *line)
 	if (*texture == NULL)
 		*texture = ilx_create_texture(data->ilx, line + 3);
 	else
-		return (0);
-	return (1);
+		return (SUCCESS);
+	return (ERROR);
 }
 
 int	set_id(int id, t_data *map_data, char *line)
@@ -48,7 +50,7 @@ int	set_id(int id, t_data *map_data, char *line)
 	len = ft_strlen(line);
 	line[len - 1] = 0;
 	if (id == EMPTY_LINE)
-		return (1);
+		return (ERROR);
 	if (id == NO)
 		return (set_texture(&map_data->north_texture, map_data, line));
 	if (id == SO)
@@ -61,14 +63,15 @@ int	set_id(int id, t_data *map_data, char *line)
 		map_data->floor_texture = ilx_create_texture(map_data->ilx, line + 2);
 	if (id == CE)
 		map_data->ceiling_texture = ilx_create_texture(map_data->ilx, line + 2);
-	return (1);
+	return (ERROR);
 }
 
 int	check_data_integrity(t_data *data)
 {
-	if (data->north_texture == NULL || data->south_texture == NULL || data->west_texture == NULL || data->east_texture == NULL)
-		return (1);
-	return (0);
+	if (data->north_texture == NULL || data->south_texture == NULL || data->west_texture == NULL || data->east_texture == NULL
+		|| data->floor_texture == NULL || data->ceiling_texture == NULL)
+		return (ERROR);
+	return (SUCCESS);
 }
 
 t_map_data	*init_map_data(void)
@@ -109,15 +112,15 @@ t_map_data	*get_map_data(char *path, t_data *data)
 			line = get_next_line(fd_map);
 		}
 	}
-	if (check_data_integrity(data))
-		return (free(line), NULL); //free all
+	if (check_data_integrity(data) == ERROR)
+		return (free(line), free(map_data), NULL);
 	while (line)
 	{
 		map_data->h += 1;
 		if (ft_strlen(line) > (size_t)map_data->w)
 			map_data->w = ft_strlen(line);
 		free(line);
-		line = get_next_line(fd_map);
+		line = get_next_line(fd_map); //fix if null
 	}
 	free(line);
 	close(fd_map);
@@ -133,9 +136,8 @@ int *set_line(char *line, int len)
 	i = 0;
 	l_len = ft_strlen(line);
 	line_data = malloc(sizeof(int) * len);
-	if (!line_data)
-		return (NULL);
-	(void)line;
+	if (!line_data || !line)
+		return (free(line_data), NULL);
 	while (i < len)
 	{
 		line_data[i] = NOTHING;
@@ -162,7 +164,7 @@ int	**copy_map(int **map, t_map_data *map_data)
 	{
 		map_cpy[i] = malloc(sizeof(int) * (map_data->w + 1));
 		if (!map_cpy[i])
-			return (NULL);
+			return (free_map(map_cpy, i), NULL);
 		j = 0;
 		while (j < map_data->w + 1)
 		{
@@ -182,7 +184,6 @@ int	**copy_map(int **map, t_map_data *map_data)
 		}
 		i++;
 	}
-	//print_map(map_cpy, MAP_WIDTH + 1, MAP_HEIGHT + 2);
 	return (map_cpy);
 }
 
@@ -191,7 +192,7 @@ void	check_walls(int **map, int x, int y, t_map_data *map_data)
 	if (map[y][x] == FLOOR)
 		map_data->closed = ERROR;
 	if (map[y][x] == NOTHING)
-		map[y][x] = BT_FILL;
+		map[y][x] = CHECKED;
 	else
 		return ;
 	if (x - 1 > 0 && map[y][x - 1] >= FLOOR)
@@ -225,11 +226,33 @@ int	is_valid_map(int **map, t_map_data *map_data)
 	map_data->closed = SUCCESS;
 
 	map_cpy = copy_map(map, map_data);
+	if (!map_cpy)
+		return (ERROR);
 	check_walls(map_cpy, 0, 0, map_data);
-	print_map(map_cpy, map_data->w + 1, map_data->h + 2);
 	free_map(map_cpy, map_data->h + 2);
-	ft_printf(">>>> %d\n", map_data->closed);
 	return (map_data->closed);
+}
+
+int **get_map(t_map_data *map_data, int fd_map, char *line)
+{
+	int		**map;
+	int		i;
+
+	i = 0;
+	(void)fd_map;
+	map = malloc(sizeof(int *) * map_data->h);
+	if (!map)
+		return (NULL);
+	while (line)
+	{
+		map[i] = set_line(line, map_data->w);
+		i++;
+		free(line);
+		line = get_next_line(fd_map);
+	}
+	if (i != map_data->h)
+		return (free_map(map, i), NULL);
+	return (map);
 }
 
 int	load_maps(t_data *data, char *path)
@@ -237,10 +260,8 @@ int	load_maps(t_data *data, char *path)
 	t_map_data	*map_data;
 	char		*line;
 	int			fd_map;
-	int			i;
 	int			valid;
 
-	i = 0;
 	map_data = get_map_data(path, data);
 	if (!map_data)
 		return (ERROR);
@@ -251,18 +272,12 @@ int	load_maps(t_data *data, char *path)
 		free(line);
 		line = get_next_line(fd_map);
 	}
-	data->map = malloc(sizeof(int *) * map_data->h);
+	if (!line)
+		return (free(map_data), close(fd_map), ERROR);
+	data->map = get_map(map_data, fd_map, line);
 	if (!data->map)
-		return (free(line), 0);
-	while (line)
-	{
-		data->map[i] = set_line(line, map_data->w);
-		i++;
-		free(line);
-		line = get_next_line(fd_map);
-	}
+		return (free(map_data), close(fd_map), ERROR);
 	valid = is_valid_map(data->map, map_data);
-	free(line);
 	close(fd_map);
 	free(map_data);
 	return (valid);

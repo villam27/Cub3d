@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 14:56:54 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:38:30 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ enum e_map_value
 	FLOOR = 0,
 	WALL = 1,
 	NOTHING = 2,
-	BT_FILL = 9
+	CHECKED = 9
 };
 
 enum e_map_identifier

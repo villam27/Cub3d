@@ -1,11 +1,10 @@
-NO assets/rocket.xpm
+NO assets/mossy.xpm
 SO assets/bluestone.xpm
-WE assets/cobble.xpm
-WE assets/cobble.xpm
+WE assets/purplestone.xpm
 EA assets/eagle.xpm
 
-F assets/wood.xpm
-C assets/eagle.xpm
+F assets/greystone.xpm
+C assets/wood.xpm
 
 111111111111111111111111111111
 100000000000000000000000000001

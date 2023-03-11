@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 15:27:33 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:58:14 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	draw_minimap(t_data *data)
 	ilx_draw_fill_rect(data->ilx->window, &data->minimap.background, 0);
 }
 
-//draw_background(data->ilx->window, 0x87CEFA, 0x353535);
 int	ft_render_next_frame(t_data *data)
 {
 	static long		prev_time;
@@ -54,7 +53,7 @@ void	print_map(int **map, int w, int h)
 		j = 0;
 		while (j < w)
 		{
-			if (map[i][j] == BT_FILL)
+			if (map[i][j] == CHECKED)
 				printf("\033[31m%d \033[0m", map[i][j]);
 			else if (map[i][j] == WALL)
 				printf("\033[33m%d \033[0m", map[i][j]);
@@ -134,6 +133,14 @@ int	init_all(t_data *data, char *map_path)
 	data->current_gui = data->gui;
 	data->clic = 0;
 	data->enable_input = 1;
+	data->key_tab = malloc(sizeof(uint8_t) * 6);
+	if (!data->key_tab)
+		return (destroy_everything(data), ERROR);
+	ft_bzero(data->key_tab, sizeof(uint8_t) * 6);
+	data->z_buffer = malloc(sizeof(float) * data->ilx->window->win_width);
+	if (!data->z_buffer)
+		return (destroy_everything(data), ERROR);
+	data->minimap.background = ilx_new_rect(20.0f, 20.0f, 200.0f, 200.0f);
 	return (SUCCESS);
 }
 
@@ -157,15 +164,14 @@ int	main(int argc, char **argv)
 	player.sneak_speed = 2.0f;
 	
 	//ilx init
+	if (argc != 2)
+		return (ft_printf("Error: usage %s <path_to_map>\n", argv[0]), 1);
 	data = create_data();
-	if (argc != 2 || init_all(data, argv[1]) == ERROR)
-		return (ft_printf("Error on init\n"), free(data), 1);
+	if (init_all(data, argv[1]) == ERROR)
+		return (ft_printf("Error on init\n"), 1);
 	data->player = &player;
-	data->key_tab = malloc(sizeof(uint8_t) * 6);
-	ft_bzero(data->key_tab, sizeof(uint8_t) * 6);
-	data->z_buffer = malloc(sizeof(float) * data->ilx->window->win_width);
-	data->minimap.background = ilx_new_rect(20.0f, 20.0f, 200.0f, 200.0f);
 
+	//TODO: move this to a separate function
 	quit_b = ilx_create_button(350, 500, 90, 40);
 	ilx_background_button_color(quit_b, 0xff0000, 0x00ff00, 0x0000ff);
 	ilx_label_button_color(quit_b, 0xffffff, 0, 0);

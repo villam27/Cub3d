@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 15:29:43 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 14:55:00 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/12 13:17:26 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,18 @@ void	*quit(void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	//mlx_destroy_display(data->ilx->mlx);
 	destroy_everything(data);
 	exit (0);
+}
+
+void	*start(void *param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	mlx_mouse_hide(data->ilx->mlx, data->ilx->window->window);
+	data->current_gui = NULL;
+	return (NULL);
 }
 
 int	cross_quit(void *param)

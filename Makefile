@@ -6,7 +6,7 @@
 #    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/06 15:45:23 by alboudje         ###   ########.fr        #
+#    Updated: 2023/03/12 13:38:20 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,8 @@ SRCS		= ilx/srcs/window/window.c \
 			  ilx/srcs/gui/button_utils.c \
 			  ilx/srcs/textures/ilx_texture.c \
 			  srcs/main.c \
+			  srcs/init/init.c \
+			  srcs/init/destroy.c \
 			  srcs/player/move.c \
 			  srcs/player/update_player.c \
 			  srcs/gui/buttons.c \
@@ -34,6 +36,8 @@ SRCS		= ilx/srcs/window/window.c \
 			  srcs/raycasting/raycasting_init.c \
 			  srcs/time/time.c \
 			  srcs/parsing/parsing.c \
+			  srcs/parsing/parse_data.c \
+			  srcs/parsing/parse_data_utils.c \
 			  srcs/quit.c\
 
 HEADERS		= includes \

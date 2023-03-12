@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/12 12:21:45 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/12 13:43:09 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,10 @@ void		move_player(t_data *data, float delta);
 
 void		update_ray(t_data *data);
 
+
+int			init_all(t_data *data, char *map_path);
+t_data		*create_data(void);
+void		destroy_everything(t_data *data);
 void		init_ray_val(t_data *data, t_raycast *raycast, int i);
 void		init_step_ray(t_data *data);
 void		update_ray(t_data *data);
@@ -192,8 +196,15 @@ long		get_start_time(void);
 
 void		print_map(int **map, int w, int h);
 void		free_map(int **map, int h);
+int			get_player_pos(char *line, t_map_data *map_data);
+int			get_id(char *line);
+int 		*set_line(char *line, int len);
+int			check_data_integrity(t_data *data);
+int			**copy_map(int **map, t_map_data *map_data);
+t_map_data	*get_map_data(char *path, t_data *data);
 int			load_maps(t_data *data, char *path);
 
+void		*start(void *param);
 void		*quit(void *param);
 void		ilx_destroy_window(t_ilx *ilx);
 void		destroy_everything(t_data *data);

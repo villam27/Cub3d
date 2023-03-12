@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 15:58:14 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/12 12:25:00 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ t_data	*create_data(void)
 	data->gui = NULL;
 	data->current_gui = NULL;
 	data->map = NULL;
+	data->map_data = NULL;
 	data->player = NULL;
 	data->key_tab = NULL;
 	data->west_texture = NULL;
@@ -112,11 +113,40 @@ void	destroy_everything(t_data *data)
 	ilx_destroy_texture(data->ilx, data->floor_texture);
 	ilx_destroy_texture(data->ilx, data->ceiling_texture);
 	ilx_destroy_gui(data->gui);
-	free_map(data->map, 18);
+	if (data->map_data)
+		free_map(data->map, data->map_data->h);
 	free(data->key_tab);
 	free(data->z_buffer);
+	free(data->map_data);
+	free(data->player);
 	ilx_destroy_window(data->ilx);
 	free(data);
+}
+
+t_player	*init_player(t_data *data)
+{
+	t_player	*player;
+
+	player = malloc(sizeof(t_player));
+	if (!player)
+		return (NULL);
+	(void)data;
+	player->pos.x = (float)data->map_data->player_pos.x + PLAYER_SPAWN_OFFSET;
+	player->pos.y = (float)data->map_data->player_pos.y + PLAYER_SPAWN_OFFSET;
+	if (data->map_data->direction == 'N')
+		player->angle = M_PI;
+	if (data->map_data->direction == 'W')
+		player->angle = 3*M_PI_2;
+	if (data->map_data->direction == 'E')
+		player->angle = M_PI_2;
+	if (data->map_data->direction == 'S')
+		player->angle = 0;
+	player->normal_speed = NORMAL_SPEED;
+	player->player_speed = player->normal_speed;
+	player->rotation_speed = M_PI;
+	player->sprint_speed = SPRINT_SPEED;
+	player->sneak_speed = SNEAK_SPEED;
+	return (player);
 }
 
 int	init_all(t_data *data, char *map_path)
@@ -129,6 +159,9 @@ int	init_all(t_data *data, char *map_path)
 	if (!data->gui)
 		return (destroy_everything(data), ERROR);
 	if (load_maps(data, map_path) == ERROR)
+		return (destroy_everything(data), ERROR);
+	data->player = init_player(data);
+	if (!data->player)
 		return (destroy_everything(data), ERROR);
 	data->current_gui = data->gui;
 	data->clic = 0;
@@ -151,17 +184,6 @@ int	main(int argc, char **argv)
 {
 	t_data			*data;
 	t_button		*quit_b;
-	t_player		player;
-
-	//player init
-	player.pos.x = 2.0f;
-	player.pos.y = 2.0f;
-	player.angle = M_PI_2;
-	player.normal_speed = 4.0f;
-	player.player_speed = player.normal_speed;
-	player.rotation_speed = M_PI;
-	player.sprint_speed = 8.0f;
-	player.sneak_speed = 2.0f;
 	
 	//ilx init
 	if (argc != 2)
@@ -169,8 +191,6 @@ int	main(int argc, char **argv)
 	data = create_data();
 	if (init_all(data, argv[1]) == ERROR)
 		return (ft_printf("Error on init\n"), 1);
-	data->player = &player;
-
 	//TODO: move this to a separate function
 	quit_b = ilx_create_button(350, 500, 90, 40);
 	ilx_background_button_color(quit_b, 0xff0000, 0x00ff00, 0x0000ff);

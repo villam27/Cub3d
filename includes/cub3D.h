@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 15:38:30 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/12 12:21:45 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@
 
 # define WIN_WIDTH 1200
 # define WIN_HEIGHT 720
+
+# define NORMAL_SPEED 6.0f
+# define SPRINT_SPEED 10.0f
+# define SNEAK_SPEED 4.0f
+# define PLAYER_SPAWN_OFFSET 0.5f
 
 enum e_map_value
 {
@@ -129,17 +134,11 @@ typedef struct s_backgound
 
 typedef struct s_map_data
 {
-	int	w;
-	int	h;
-	int	closed;
-	t_ilx_texture	*north_texture;
-	t_ilx_texture	*south_texture;
-	t_ilx_texture	*east_texture;
-	t_ilx_texture	*west_texture;
-	t_ilx_texture	*floor_texture;
-	t_ilx_texture	*ceiling_texture;
-	uint32_t		floor_color;
-	uint32_t		ceiling_color;
+	int				w;
+	int				h;
+	int				closed;
+	t_ivec2d		player_pos;
+	char			direction;
 }	t_map_data;
 
 typedef struct s_data
@@ -149,6 +148,7 @@ typedef struct s_data
 	uint8_t			clic;
 	uint8_t			enable_input;
 	t_gui			*current_gui;
+	t_map_data		*map_data;
 	int				**map;
 	t_player		*player;
 	uint8_t			*key_tab;

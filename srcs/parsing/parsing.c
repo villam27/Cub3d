@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/11 16:56:22 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/12 12:12:27 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,28 @@ t_map_data	*init_map_data(void)
 	return (map_data);
 }
 
+int	get_player_pos(char *line, t_map_data *map_data)
+{
+	int			i;
+
+	i = 0;
+	if (!line)
+		return (ERROR);
+	while (line[i])
+	{
+		if (ft_strchr("NSEW", line[i]))
+		{
+			if (map_data->player_pos.x > 0)
+				return (ERROR);
+			map_data->player_pos.x = i;
+			map_data->player_pos.y = map_data->h - 1;
+			map_data->direction = line[i];
+		}
+		i++;
+	}
+	return (SUCCESS);
+}
+
 t_map_data	*get_map_data(char *path, t_data *data)
 {
 	int			fd_map;
@@ -99,6 +121,7 @@ t_map_data	*get_map_data(char *path, t_data *data)
 	map_data = init_map_data();
 	if (!map_data)
 		return (NULL);
+	map_data->player_pos.x = -1;
 	line = get_next_line(fd_map);
 	id = EMPTY_LINE;
 	while (id != NO_ID)
@@ -107,7 +130,7 @@ t_map_data	*get_map_data(char *path, t_data *data)
 		if (id)
 		{
 			if (!set_id(id, data, line))
-				ft_printf("texture already exist\n");
+				return (free(line), free(map_data), NULL);
 			free(line);
 			line = get_next_line(fd_map);
 		}
@@ -119,6 +142,8 @@ t_map_data	*get_map_data(char *path, t_data *data)
 		map_data->h += 1;
 		if (ft_strlen(line) > (size_t)map_data->w)
 			map_data->w = ft_strlen(line);
+		if (get_player_pos(line, map_data) == ERROR)
+			return (free(line), free(map_data), NULL);
 		free(line);
 		line = get_next_line(fd_map); //fix if null
 	}
@@ -143,7 +168,7 @@ int *set_line(char *line, int len)
 		line_data[i] = NOTHING;
 		if (l_len > i && line[i] == '1')
 			line_data[i] = WALL;
-		if (l_len > i && line[i] == '0')
+		if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
 			line_data[i] = FLOOR;
 		i++;
 	}
@@ -257,15 +282,16 @@ int **get_map(t_map_data *map_data, int fd_map, char *line)
 
 int	load_maps(t_data *data, char *path)
 {
-	t_map_data	*map_data;
 	char		*line;
 	int			fd_map;
 	int			valid;
 
-	map_data = get_map_data(path, data);
-	if (!map_data)
-		return (ERROR);
 	fd_map = open(path, O_RDONLY);
+	if (fd_map <= 0)
+		return (ERROR);
+	data->map_data = get_map_data(path, data);
+	if (!data->map_data)
+		return (ERROR);
 	line = get_next_line(fd_map);
 	while (get_id(line) != 0)
 	{
@@ -273,12 +299,12 @@ int	load_maps(t_data *data, char *path)
 		line = get_next_line(fd_map);
 	}
 	if (!line)
-		return (free(map_data), close(fd_map), ERROR);
-	data->map = get_map(map_data, fd_map, line);
+		return (close(fd_map), ERROR);
+	data->map = get_map(data->map_data, fd_map, line);
 	if (!data->map)
-		return (free(map_data), close(fd_map), ERROR);
-	valid = is_valid_map(data->map, map_data);
+		return (close(fd_map), free(line), ERROR);
+	valid = is_valid_map(data->map, data->map_data);
 	close(fd_map);
-	free(map_data);
+	ft_printf("x:%d y:%d dir:%c\n", data->map_data->player_pos.x, data->map_data->player_pos.y, data->map_data->direction);
 	return (valid);
 }

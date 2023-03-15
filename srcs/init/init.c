@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:09:20 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 20:01:29 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:48:57 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ t_data	*create_data(void)
 	data->east_texture = NULL;
 	data->floor_texture = NULL;
 	data->ceiling_texture = NULL;
+	data->gun_texture = NULL;
+	data->gun_pos = ilx_new_point(WIN_WIDTH / 2, WIN_HEIGHT - 360);
+	data->gun_rect = ilx_new_rect(0, 0, 360, 360);
 	data->floor_color = 0;
 	data->ceiling_color = 0;
 	data->z_buffer = NULL;
@@ -117,12 +120,12 @@ int	init_all(t_data *data, char *map_path)
 	data->enable_input = 1;
 	data->player = init_player(data);
 	data->key_tab = malloc(sizeof(uint8_t) * 6);
-	if (!data->key_tab || !data->player)
+	data->gun_texture = ilx_create_texture(data->ilx, "assets/gun.xpm");
+	if (!data->key_tab || !data->player || !data->gun_texture)
 		return (destroy_everything(data), ERROR);
 	ft_bzero(data->key_tab, sizeof(uint8_t) * 6);
 	data->z_buffer = malloc(sizeof(float) * data->ilx->window->win_width);
 	if (!data->z_buffer)
 		return (destroy_everything(data), ERROR);
-	data->minimap.background = ilx_new_rect(20.0f, 20.0f, 200.0f, 200.0f);
 	return (SUCCESS);
 }

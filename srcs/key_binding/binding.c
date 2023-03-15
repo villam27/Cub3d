@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   binding.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:25:39 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/02 15:25:11 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/16 00:50:40 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	on_release(int key, int x, int y, t_data *data)
 	int	i;
 
 	i = 0;
+	if (key == LEFT_CLICK && data->clic < 0)
+		data->clic = 0;
 	if (key == LEFT_CLICK && data->current_gui)
 	{
 		data->clic = 0;

@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/15 20:34:36 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:49:21 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,6 @@ typedef struct s_ray
 	t_vec2d	pos;
 }	t_ray;
 
-typedef struct s_minimap
-{
-	t_rectangle	background;
-}	t_minimap;
-
 typedef struct s_raycast
 {
 	int				hit;
@@ -144,7 +139,7 @@ typedef struct s_data
 {
 	t_ilx			*ilx;
 	t_gui			*gui;
-	uint8_t			clic;
+	int				clic;
 	uint8_t			enable_input;
 	t_gui			*current_gui;
 	t_map_data		*map_data;
@@ -157,12 +152,14 @@ typedef struct s_data
 	t_ilx_texture	*west_texture;
 	t_ilx_texture	*floor_texture;
 	t_ilx_texture	*ceiling_texture;
+	t_ilx_texture	*gun_texture;
+	t_point			gun_pos;
+	t_rectangle		gun_rect;
 	uint32_t		floor_color;
 	uint32_t		ceiling_color;
 	t_ray			ray;
 	float			*z_buffer;
 	int				prev_x;
-	t_minimap		minimap;
 }	t_data;
 
 void		ilx_change_button_color(t_data *data);

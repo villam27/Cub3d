@@ -6,8 +6,8 @@ EA assets/eagle.xpm
 F 128,45,62
 C 42,43,153
 
-FT assets/gold.xp
-CT assets/wood.xpm
+FT assets/gold.xpm
+CT assets/gold.xpm
 
 11111111111111111111111111111
 100000000000000000000000000011

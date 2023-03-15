@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 11:27:45 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/12 13:01:49 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:37:50 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	on_clic(int key, int x, int y, t_data *data)
 	i = 0;
 	if (key == RIGHT_CLICK)
 		r_clic(data);
+	if (key == LEFT_CLICK)
+		data->clic = -1;
 	if (key == LEFT_CLICK && data->current_gui)
 	{
 		data->clic = 1;

@@ -6,15 +6,22 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/15 21:21:40 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:52:30 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	draw_minimap(t_data *data)
+void	update_gun(t_data *data)
 {
-	ilx_draw_fill_rect(data->ilx->window, &data->minimap.background, 0);
+	if (data->clic == -1)
+	{
+		data->gun_rect.x += 360;
+		if (data->gun_rect.x > 1440)
+			data->gun_rect.x = 0;
+	}
+	else
+		data->gun_rect.x = 0;
 }
 
 int	ft_render_next_frame(t_data *data)
@@ -22,7 +29,6 @@ int	ft_render_next_frame(t_data *data)
 	static long		prev_time;
 	static long		frame_time;
 	static double	time = 0;
-	static int		i = 0;
 
 	prev_time = get_start_time();
 	move_player(data, time);
@@ -37,12 +43,13 @@ int	ft_render_next_frame(t_data *data)
 		ilx_change_button_color(data);
 	update_ray(data);
 	ilx_draw_gui(data->ilx, data->current_gui);
-	draw_minimap(data);
+	ilx_render_copy(data->ilx->window, data->gun_texture,
+		&data->gun_pos, &data->gun_rect);
+	update_gun(data);
 	ilx_put_img_to_window(data->ilx);
 	ilx_draw_gui_text(data->ilx, data->current_gui);
 	frame_time = get_frame_time(prev_time);
 	time = frame_time / 1000.0;
-	i++;
 	return (0);
 }
 
@@ -52,6 +59,8 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (ft_printf("Error: usage %s <path_to_map>\n", argv[0]), ERROR);
+	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 4))
+		return (ft_printf("Error: not a .cub\n", argv[0]), ERROR);
 	data = create_data();
 	if (init_all(data, argv[1]) == ERROR)
 		return (ft_printf("Error on init\n"), ERROR);

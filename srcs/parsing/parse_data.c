@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:34:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 21:20:46 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:15:04 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,6 @@ t_map_data	*init_map_data(void)
 	map_data->h = 0;
 	return (map_data);
 }
-
-/*
-	TODO: fix line = NULL;
-*/
 
 int	get_data_utils(t_data *data, char *line, int fd_map, t_map_data *map_data)
 {

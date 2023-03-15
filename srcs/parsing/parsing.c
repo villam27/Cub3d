@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 19:07:40 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:19:23 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 	int		i;
 
 	i = 0;
-	(void)fd_map;
 	map = malloc(sizeof(int *) * map_data->h);
 	if (!map)
 		return (NULL);
@@ -73,7 +72,7 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 	{
 		map[i] = set_line(line, map_data->w);
 		if (!map[i])
-			return (free_map(map, i), free(line), NULL);
+			return (free_map(map, i), NULL);
 		i++;
 		free(line);
 		line = get_next_line(fd_map);
@@ -105,7 +104,7 @@ int	load_maps(t_data *data, char *path)
 		return (close(fd_map), ERROR);
 	data->map = get_map(data->map_data, fd_map, line);
 	if (!data->map)
-		return (close(fd_map), ERROR);
+		return (close(fd_map), free(line), ERROR);
 	valid = is_valid_map(data->map, data->map_data);
 	close(fd_map);
 	return (valid);

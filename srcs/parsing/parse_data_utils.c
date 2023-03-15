@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:36:50 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/12 13:47:21 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 12:08:56 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	*set_line(char *line, int len)
 			line_data[i] = WALL;
 		if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
 			line_data[i] = FLOOR;
+		else
+			return (free(line_data), NULL);
 		i++;
 	}
 	return (line_data);

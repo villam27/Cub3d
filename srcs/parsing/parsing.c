@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/12 13:46:58 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 12:12:41 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 	while (line)
 	{
 		map[i] = set_line(line, map_data->w);
+		if (!map[i])
+			return (free_map(map, i), NULL);
 		i++;
 		free(line);
 		line = get_next_line(fd_map);
@@ -91,8 +93,8 @@ int	load_maps(t_data *data, char *path)
 	if (fd_map <= 0)
 		return (ERROR);
 	data->map_data = get_map_data(path, data);
-	if (!data->map_data)
-		return (ERROR);
+	if (!data->map_data || data->map_data->player_pos.x == -1)
+		return (close(fd_map), ERROR);
 	line = get_next_line(fd_map);
 	while (get_id(line) != 0)
 	{

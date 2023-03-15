@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:09:20 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/12 13:18:14 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:01:29 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_data	*create_data(void)
 	data->east_texture = NULL;
 	data->floor_texture = NULL;
 	data->ceiling_texture = NULL;
+	data->floor_color = 0;
+	data->ceiling_color = 0;
 	data->z_buffer = NULL;
 	return (data);
 }

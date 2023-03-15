@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:36:50 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 12:08:56 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:02:22 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	get_player_pos(char *line, t_map_data *map_data)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	if (!line)
@@ -37,8 +37,9 @@ int	get_player_pos(char *line, t_map_data *map_data)
 int	check_data_integrity(t_data *data)
 {
 	if (data->north_texture == NULL || data->south_texture == NULL
-		|| data->west_texture == NULL || data->east_texture == NULL
-		|| data->floor_texture == NULL || data->ceiling_texture == NULL)
+		|| data->west_texture == NULL || data->east_texture == NULL)
+		return (ERROR);
+	if (data->ceiling_color == 0 || data->floor_color == 0)
 		return (ERROR);
 	return (SUCCESS);
 }
@@ -59,10 +60,10 @@ int	*set_line(char *line, int len)
 		line_data[i] = NOTHING;
 		if (l_len > i && line[i] == '1')
 			line_data[i] = WALL;
-		if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
+		else if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
 			line_data[i] = FLOOR;
-		else
-			return (free(line_data), NULL);
+		else if (l_len - 1 > i)
+			return (ft_putstr_fd("Wrong char in map\n", 2), free(line_data), NULL);
 		i++;
 	}
 	return (line_data);

@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ilx_point.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 00:38:50 by alboudje          #+#    #+#             */
-/*   Updated: 2023/02/21 11:29:45 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/15 19:42:34 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ilx.h"
+
+uint32_t	ilx_create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
 
 t_point	*ilx_create_point(float x, float y)
 {

@@ -6,12 +6,13 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:34:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/12 13:48:01 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:14:43 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 #include "fcntl.h"
+#include "errno.h"
 
 int	get_id(char *line)
 {
@@ -23,14 +24,18 @@ int	get_id(char *line)
 		return (NO);
 	if (!ft_strncmp(line, "SO", 2))
 		return (SO);
-	if (!strncmp(line, "WE", 2))
+	if (!ft_strncmp(line, "WE", 2))
 		return (WE);
-	if (!strncmp(line, "EA", 2))
+	if (!ft_strncmp(line, "EA", 2))
 		return (EA);
-	if (!strncmp(line, "F", 1))
+	if (!ft_strncmp(line, "F ", 2))
 		return (FL);
-	if (!strncmp(line, "C", 1))
+	if (!ft_strncmp(line, "C ", 2))
 		return (CE);
+	if (!ft_strncmp(line, "FT", 2))
+		return (FT);
+	if (!ft_strncmp(line, "CT", 2))
+		return (CT);
 	return (NO_ID);
 }
 
@@ -51,8 +56,35 @@ int	set_texture(t_ilx_texture **texture, t_data *data, char *line)
 	if (*texture == NULL)
 		*texture = ilx_create_texture(data->ilx, line + 3);
 	else
-		return (SUCCESS);
-	return (ERROR);
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int set_color(uint32_t *color, char *line)
+{
+	char **sp;
+	int	i;
+	int r;
+	int g;
+	int b;
+
+	if (*color != 0)
+		return (ERROR);
+	i = 0;
+	sp = ft_split(line + 2, ",");
+	if (!sp)
+		return (ERROR);
+	while (sp[i])
+		i++;
+	if (i != 3)
+		return (ft_freeall(sp), ERROR);
+	r = ft_atoi(sp[0]);	
+	g = ft_atoi(sp[1]);	
+	b = ft_atoi(sp[2]);	
+	if ((r < 0 || r > 255) || (g < 0 || g > 255) || (b < 0 || b > 255) || errno == 42)
+		return (ft_freeall(sp), ERROR);
+	*color = ilx_create_trgb(255, r, g, b);
+	return (ft_freeall(sp), SUCCESS);
 }
 
 int	set_id(int id, t_data *map_data, char *line)
@@ -62,7 +94,7 @@ int	set_id(int id, t_data *map_data, char *line)
 	len = ft_strlen(line);
 	line[len - 1] = 0;
 	if (id == EMPTY_LINE)
-		return (ERROR);
+		return (SUCCESS);
 	if (id == NO)
 		return (set_texture(&map_data->north_texture, map_data, line));
 	if (id == SO)
@@ -71,10 +103,14 @@ int	set_id(int id, t_data *map_data, char *line)
 		return (set_texture(&map_data->west_texture, map_data, line));
 	if (id == EA)
 		return (set_texture(&map_data->east_texture, map_data, line));
+	if (id == FT)
+		return (set_texture(&map_data->floor_texture, map_data, line));
+	if (id == CT)
+		return (set_texture(&map_data->ceiling_texture, map_data, line));
 	if (id == FL)
-		map_data->floor_texture = ilx_create_texture(map_data->ilx, line + 2);
+		return (set_color(&map_data->floor_color, line));
 	if (id == CE)
-		map_data->ceiling_texture = ilx_create_texture(map_data->ilx, line + 2);
+		return (set_color(&map_data->ceiling_color, line));
 	return (ERROR);
 }
 
@@ -102,8 +138,8 @@ t_map_data	*get_map_data(char *path, t_data *data)
 		id = get_id(line);
 		if (id)
 		{
-			if (!set_id(id, data, line))
-				return (free(line), free(map_data), NULL);
+			if (set_id(id, data, line))
+				return (ft_putstr_fd("Incorrect texture\n", 2), free(line), free(map_data), NULL);
 			free(line);
 			line = get_next_line(fd_map);
 		}

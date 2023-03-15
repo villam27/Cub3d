@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/15 11:15:21 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 19:28:10 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ enum e_map_identifier
 	WE,
 	EA,
 	FL,
-	CE
+	CE,
+	FT,
+	CT
 };
 
 enum
@@ -155,6 +157,8 @@ typedef struct s_data
 	t_ilx_texture	*west_texture;
 	t_ilx_texture	*floor_texture;
 	t_ilx_texture	*ceiling_texture;
+	uint32_t		floor_color;
+	uint32_t		ceiling_color;
 	t_ray			ray;
 	float			*z_buffer;
 	int				prev_x;

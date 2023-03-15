@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcrimet <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 16:09:40 by lcrimet           #+#    #+#             */
-/*   Updated: 2022/11/07 16:49:11 by lcrimet          ###   ########lyon.fr   */
+/*   Updated: 2023/03/15 20:14:13 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "errno.h"
 
 int	ft_atoi(const char *str)
 {
@@ -32,6 +34,8 @@ int	ft_atoi(const char *str)
 		n = n * 10 + str[i] - 48;
 		i++;
 	}
+	if (str[i])
+		errno = 42;
 	n *= m;
 	return (n);
 }

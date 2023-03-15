@@ -3,8 +3,8 @@ SO assets/bluestone.xpm
 WE assets/purplestone.xpm
 EA assets/eagle.xpm
 
-F 255,0,0
-C 0,0,0
+F 128,45,62
+C 42,43,153
 
 FT assets/gold.xp
 CT assets/wood.xpm

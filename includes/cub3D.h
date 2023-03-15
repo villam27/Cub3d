@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/15 19:28:10 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:34:36 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,9 @@ int			check_data_integrity(t_data *data);
 int			**copy_map(int **map, t_map_data *map_data);
 t_map_data	*get_map_data(char *path, t_data *data);
 int			load_maps(t_data *data, char *path);
+int			set_color(uint32_t *color, char *line);
+int			set_texture(t_ilx_texture **texture, t_data *data, char *line);
+int			set_id(int id, t_data *map_data, char *line);
 
 void		*start(void *param);
 void		*quit(void *param);

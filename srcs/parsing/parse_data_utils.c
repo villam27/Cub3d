@@ -6,11 +6,12 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:36:50 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 20:02:22 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 21:37:06 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+#include "errno.h"
 
 int	get_player_pos(char *line, t_map_data *map_data)
 {
@@ -63,10 +64,28 @@ int	*set_line(char *line, int len)
 		else if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
 			line_data[i] = FLOOR;
 		else if (l_len - 1 > i)
-			return (ft_putstr_fd("Wrong char in map\n", 2), free(line_data), NULL);
+			return (free(line_data), NULL);
 		i++;
 	}
 	return (line_data);
+}
+
+void	copy_map_data(int **map, int ***map_cpy, t_map_data *map_data)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (i < map_data->h + 1)
+	{
+		j = 1;
+		while (j < map_data->w)
+		{
+			(*map_cpy)[i][j] = map[i - 1][j - 1];
+			j++;
+		}
+		i++;
+	}
 }
 
 int	**copy_map(int **map, t_map_data *map_data)
@@ -92,16 +111,6 @@ int	**copy_map(int **map, t_map_data *map_data)
 		}
 		i++;
 	}
-	i = 1;
-	while (i < map_data->h + 1)
-	{
-		j = 1;
-		while (j < map_data->w)
-		{
-			map_cpy[i][j] = map[i - 1][j - 1];
-			j++;
-		}
-		i++;
-	}
+	copy_map_data(map, &map_cpy, map_data);
 	return (map_cpy);
 }

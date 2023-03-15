@@ -6,7 +6,7 @@
 #    By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/22 09:47:26 by lcrimet           #+#    #+#              #
-#    Updated: 2023/03/12 13:38:20 by alboudje         ###   ########.fr        #
+#    Updated: 2023/03/15 20:35:05 by alboudje         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS		= ilx/srcs/window/window.c \
 			  srcs/raycasting/raycasting_init.c \
 			  srcs/time/time.c \
 			  srcs/parsing/parsing.c \
+			  srcs/parsing/parse_set.c \
 			  srcs/parsing/parse_data.c \
 			  srcs/parsing/parse_data_utils.c \
 			  srcs/quit.c\

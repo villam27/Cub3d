@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/15 20:05:50 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/15 21:21:40 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	ft_render_next_frame(t_data *data)
 	if (data->ceiling_texture && data->floor_texture)
 		draw_textured_background(data);
 	else
-		draw_background(data->ilx->window, data->ceiling_color, data->floor_color);
+		draw_background(data->ilx->window,
+			data->ceiling_color, data->floor_color);
 	if (!data->clic)
 		ilx_change_button_color(data);
 	update_ray(data);

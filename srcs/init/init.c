@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:09:20 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 00:48:57 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:25:57 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,12 @@ static int	create_buttons(t_data *data)
 int	init_all(t_data *data, char *map_path)
 {
 	data->ilx = init_ilx_data();
+	if (!data->ilx)
+		return (destroy_everything(data), ERROR);
 	data->ilx->window = ilx_create_window(data->ilx,
 			WIN_WIDTH, WIN_HEIGHT, "cub3D");
-	if (!data->ilx || !data->ilx->window)
-		return (destroy_everything(data), ERROR);
 	data->gui = ilx_create_gui();
-	if (!data->gui)
+	if (!data->gui || !data->ilx->window)
 		return (destroy_everything(data), ERROR);
 	if (load_maps(data, map_path) == ERROR || create_buttons(data) == ERROR)
 		return (destroy_everything(data), ERROR);

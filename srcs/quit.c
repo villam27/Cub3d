@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 15:29:43 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/12 13:17:26 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:09:52 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	ilx_destroy_window(t_ilx *ilx)
 {
 	if (!ilx)
 		return ;
-	mlx_destroy_image(ilx->mlx, ilx->window->img);
-	mlx_destroy_window(ilx->mlx, ilx->window->window);
+	if (ilx->window)
+	{
+		mlx_destroy_image(ilx->mlx, ilx->window->img);
+		mlx_destroy_window(ilx->mlx, ilx->window->window);
+		free(ilx->window->win_name);
+	}
 	free(ilx->mlx);
-	free(ilx->window->win_name);
 	free(ilx->window);
 	free(ilx);
 }

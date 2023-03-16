@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 00:52:30 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:21:41 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	main(int argc, char **argv)
 	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 4))
 		return (ft_printf("Error: not a .cub\n", argv[0]), ERROR);
 	data = create_data();
+	if (!data)
+		return (ERROR);
 	if (init_all(data, argv[1]) == ERROR)
 		return (ft_printf("Error on init\n"), ERROR);
 	mlx_loop_hook(data->ilx->mlx, ft_render_next_frame, data);

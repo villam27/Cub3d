@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 20:46:23 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/11 15:13:11 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 08:45:18 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ t_gui	*ilx_create_gui(void)
 	t_gui	*gui;
 
 	gui = malloc(sizeof(t_gui));
+	if (!gui)
+		return (NULL);
 	gui->buttons = NULL;
 	return (gui);
 }

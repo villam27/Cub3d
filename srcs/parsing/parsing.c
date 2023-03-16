@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 10:37:46 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:16:39 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	is_valid_map(int **map, t_map_data *map_data)
 	if (!map_cpy)
 		return (ERROR);
 	check_walls(map_cpy, 0, 0, map_data);
+	if (check_spaces(map_cpy, map_data) == ERROR)
+		return (free_map(map_cpy, map_data->h + 2), ERROR);
 	free_map(map_cpy, map_data->h + 2);
 	if (map_data->closed)
 		ilx_err("Map not closed");
@@ -72,7 +74,7 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 		return (NULL);
 	while (line)
 	{
-		map[i] = set_line(line, map_data->w, map, i);
+		map[i] = set_line(line, map_data->w);
 		if (!map[i])
 			return (free_map(map, i), free(line), NULL);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 10:38:18 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:40:31 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <float.h>
 # include <string.h>
 
-# define WIN_WIDTH 1200
-# define WIN_HEIGHT 720
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 
 # define NORMAL_SPEED 6.0f
 # define SPRINT_SPEED 10.0f
@@ -196,7 +196,7 @@ void		print_map(int **map, int w, int h);
 void		free_map(int **map, int h);
 int			get_player_pos(char *line, t_map_data *map_data);
 int			get_id(char *line);
-int			*set_line(char *line, int len, int **map, int y);
+int			*set_line(char *line, int len);
 int			check_data_integrity(t_data *data);
 int			**copy_map(int **map, t_map_data *map_data);
 t_map_data	*get_map_data(char *path, t_data *data);
@@ -204,6 +204,7 @@ int			load_maps(t_data *data, char *path);
 int			set_color(uint32_t *color, char *line);
 int			set_texture(t_ilx_texture **texture, t_data *data, char *line);
 int			set_id(int id, t_data *map_data, char *line);
+int			check_spaces(int **map, t_map_data *data);
 
 void		*start(void *param);
 void		*quit(void *param);

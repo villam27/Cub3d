@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:01 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 20:33:59 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 11:39:32 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,32 @@ int	set_texture(t_ilx_texture **texture, t_data *data, char *line)
 		*texture = ilx_create_texture(data->ilx, line + 3);
 	else
 		return (ERROR);
+	return (SUCCESS);
+}
+
+int	check_spaces(int **map, t_map_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (i < data->w)
+	{
+		j = 1;
+		while (j < data->h)
+		{
+			if (map[j][i] == NOTHING)
+			{
+				if ((i > 0 && map[j][i - 1] == FLOOR)
+					|| (i < data->w && map[j][i + 1] == FLOOR))
+					return (ERROR);
+				if ((j > 0 && map[j - 1][i] == FLOOR)
+					|| (j < data->w && map[j + 1][i] == FLOOR))
+					return (ERROR);
+			}
+			j++;
+		}
+		i++;
+	}
 	return (SUCCESS);
 }

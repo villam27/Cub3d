@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 00:49:21 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:31:00 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,7 @@ int			set_id(int id, t_data *map_data, char *line);
 
 void		*start(void *param);
 void		*quit(void *param);
+void		ilx_err(char *str);
 void		ilx_destroy_window(t_ilx *ilx);
 void		destroy_everything(t_data *data);
 int			cross_quit(void *param);

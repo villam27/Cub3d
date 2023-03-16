@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:09:20 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 09:25:57 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:36:39 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,10 @@ int	init_all(t_data *data, char *map_path)
 	data->gui = ilx_create_gui();
 	if (!data->gui || !data->ilx->window)
 		return (destroy_everything(data), ERROR);
-	if (load_maps(data, map_path) == ERROR || create_buttons(data) == ERROR)
+	if (create_buttons(data) == ERROR)
 		return (destroy_everything(data), ERROR);
+	if (load_maps(data, map_path) == ERROR)
+		return (ilx_err("map load failed"), destroy_everything(data), ERROR);
 	data->current_gui = data->gui;
 	data->clic = 0;
 	data->enable_input = 1;

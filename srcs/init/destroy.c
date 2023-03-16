@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:13:05 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 00:25:12 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:30:37 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,11 @@ void	destroy_everything(t_data *data)
 	free(data->player);
 	ilx_destroy_window(data->ilx);
 	free(data);
+}
+
+void	ilx_err(char *str)
+{
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 09:21:41 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:34:55 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	main(int argc, char **argv)
 	t_data	*data;
 
 	if (argc != 2)
-		return (ft_printf("Error: usage %s <path_to_map>\n", argv[0]), ERROR);
+		return (ilx_err("Usage ./cub3d <path_to_map.cub>"), ERROR);
 	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 4))
-		return (ft_printf("Error: not a .cub\n", argv[0]), ERROR);
+		return (ilx_err("Not a .cub file"), ERROR);
 	data = create_data();
 	if (!data)
 		return (ERROR);
 	if (init_all(data, argv[1]) == ERROR)
-		return (ft_printf("Error on init\n"), ERROR);
+		return (ilx_err("initialization failed"), ERROR);
 	mlx_loop_hook(data->ilx->mlx, ft_render_next_frame, data);
 	mlx_hook(data->ilx->window->window, ON_DESTROY, 0, cross_quit, data);
 	mlx_hook(data->ilx->window->window, ON_MOUSEDOWN, 1L << 2, on_clic, data);

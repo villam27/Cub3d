@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 22:19:23 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:40:23 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	is_valid_map(int **map, t_map_data *map_data)
 		return (ERROR);
 	check_walls(map_cpy, 0, 0, map_data);
 	free_map(map_cpy, map_data->h + 2);
+	if (map_data->closed)
+		ilx_err("Map not closed");
 	return (map_data->closed);
 }
 
@@ -93,7 +95,7 @@ int	load_maps(t_data *data, char *path)
 		return (ERROR);
 	data->map_data = get_map_data(path, data);
 	if (!data->map_data || data->map_data->player_pos.x == -1)
-		return (close(fd_map), ERROR);
+		return (ilx_err("incorrect map data"), close(fd_map), ERROR);
 	line = get_next_line(fd_map);
 	while (get_id(line) != 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 11:40:31 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:46:25 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/time.h>
 # include <math.h>
 # include <float.h>
-# include <string.h>
 
 # define WIN_WIDTH 1920
 # define WIN_HEIGHT 1080
@@ -176,7 +175,6 @@ void		move(t_data *data, float value, float angle_offset);
 void		move_player(t_data *data, float delta);
 
 void		update_ray(t_data *data);
-
 
 int			init_all(t_data *data, char *map_path);
 t_data		*create_data(void);

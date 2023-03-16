@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 14:04:14 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 09:34:55 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:26:59 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 void	update_gun(t_data *data)
 {
+	static int	i = 0;
+	static int	trig = 0;
+
 	if (data->clic == -1)
+		trig = 1;
+	if (trig)
 	{
-		data->gun_rect.x += 360;
-		if (data->gun_rect.x > 1440)
+		if (i % 7 == 0)
+			data->gun_rect.x += 360;
+		if (data->gun_rect.x > 1440 && i % 7 == 0)
+		{
 			data->gun_rect.x = 0;
+			trig = 0;
+		}
 	}
-	else
-		data->gun_rect.x = 0;
+	i++;
 }
 
 int	ft_render_next_frame(t_data *data)
@@ -59,11 +67,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return (ilx_err("Usage ./cub3d <path_to_map.cub>"), ERROR);
-	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 4))
+	if (ft_strncmp(ft_strrchr(argv[1], '.'), ".cub", 5))
 		return (ilx_err("Not a .cub file"), ERROR);
 	data = create_data();
 	if (!data)
-		return (ERROR);
+		return (ilx_err("initialization failed"), ERROR);
 	if (init_all(data, argv[1]) == ERROR)
 		return (ilx_err("initialization failed"), ERROR);
 	mlx_loop_hook(data->ilx->mlx, ft_render_next_frame, data);

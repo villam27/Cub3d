@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 11:16:39 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:42:45 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 	i = 0;
 	map = malloc(sizeof(int *) * map_data->h);
 	if (!map)
-		return (NULL);
+		return (free(line), NULL);
 	while (line)
 	{
 		map[i] = set_line(line, map_data->w);

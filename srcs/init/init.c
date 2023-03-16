@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lcrimet <lcrimet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:09:20 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 09:36:39 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 13:30:44 by lcrimet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,16 @@ static int	create_buttons(t_data *data)
 	ilx_background_button_color(quit_b, 0xff0000, 0x00ff00, 0x0000ff);
 	ilx_label_button_color(quit_b, 0xffffff, 0, 0);
 	ilx_add_button_label(quit_b, "Quit Game");
-	ilx_add_button(data->gui, quit_b, &quit);
+	if (!ilx_add_button(data->gui, quit_b, &quit))
+		return (ERROR);
 	start_b = ilx_create_button(50, 300, 150, 60);
 	if (!start_b)
 		return (ERROR);
 	ilx_background_button_color(start_b, 0xff0000, 0x00ff00, 0x0000ff);
 	ilx_label_button_color(start_b, 0xffffff, 0, 0);
 	ilx_add_button_label(start_b, "Start Game");
-	ilx_add_button(data->gui, start_b, &start);
+	if (!ilx_add_button(data->gui, start_b, &start))
+		return (ERROR);
 	return (SUCCESS);
 }
 

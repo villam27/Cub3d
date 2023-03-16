@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 16:18:17 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/16 09:40:23 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:37:46 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	**get_map(t_map_data *map_data, int fd_map, char *line)
 		return (NULL);
 	while (line)
 	{
-		map[i] = set_line(line, map_data->w);
+		map[i] = set_line(line, map_data->w, map, i);
 		if (!map[i])
-			return (free_map(map, i), NULL);
+			return (free_map(map, i), free(line), NULL);
 		i++;
 		free(line);
 		line = get_next_line(fd_map);
@@ -106,7 +106,7 @@ int	load_maps(t_data *data, char *path)
 		return (close(fd_map), ERROR);
 	data->map = get_map(data->map_data, fd_map, line);
 	if (!data->map)
-		return (close(fd_map), free(line), ERROR);
+		return (close(fd_map), ERROR);
 	valid = is_valid_map(data->map, data->map_data);
 	close(fd_map);
 	return (valid);

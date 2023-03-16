@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 11:48:05 by lcrimet           #+#    #+#             */
-/*   Updated: 2023/03/16 09:31:00 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:38:18 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void		print_map(int **map, int w, int h);
 void		free_map(int **map, int h);
 int			get_player_pos(char *line, t_map_data *map_data);
 int			get_id(char *line);
-int 		*set_line(char *line, int len);
+int			*set_line(char *line, int len, int **map, int y);
 int			check_data_integrity(t_data *data);
 int			**copy_map(int **map, t_map_data *map_data);
 t_map_data	*get_map_data(char *path, t_data *data);

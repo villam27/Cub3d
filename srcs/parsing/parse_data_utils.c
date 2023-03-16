@@ -6,7 +6,7 @@
 /*   By: alboudje <alboudje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 13:36:50 by alboudje          #+#    #+#             */
-/*   Updated: 2023/03/15 22:20:03 by alboudje         ###   ########.fr       */
+/*   Updated: 2023/03/16 10:37:15 by alboudje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,20 @@ int	check_data_integrity(t_data *data)
 	return (SUCCESS);
 }
 
-int	*set_line(char *line, int len)
+/*int check_closed(int **map, int x, int y, int len)
+{
+	if ((i > 0 && line[i - 1] == '0') || (i < len && line[i + 1] == 0))
+		return (free(line_data), ERROR);
+	return (SUCCESS);
+}*/
+
+int	*set_line(char *line, int len, int **map, int y)
 {
 	int	*line_data;
 	int	i;
 	int	l_len;
+	(void)map;
+	(void)y;
 
 	i = 0;
 	l_len = ft_strlen(line);
@@ -63,6 +72,9 @@ int	*set_line(char *line, int len)
 			line_data[i] = WALL;
 		else if (l_len > i && (line[i] == '0' || ft_strchr("NSEW", line[i])))
 			line_data[i] = FLOOR;
+		/*else if (l_len > i && line[i] == ' ')
+		{
+		}*/
 		else if (l_len - 1 > i)
 			return (free(line_data), NULL);
 		i++;
